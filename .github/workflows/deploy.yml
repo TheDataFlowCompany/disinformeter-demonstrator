@@ -25,6 +25,10 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - name: Test (site scoring/helpers, then the vendored choice-task engine)
+        run: |
+          npm test
+          npm test --prefix docs/choice-dv
       - name: Build (regenerates public/ via prebuild sync, then astro build)
         run: npm run build
       - uses: actions/upload-pages-artifact@v3

@@ -1,5 +1,13 @@
 # DisInforMeter Demonstrator — DE-CONSPIRATOR Deliverable D5.2
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22936441.svg)](https://doi.org/10.5281/zenodo.22936441)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![Release](https://img.shields.io/github/v/release/TheDataFlowCompany/disinformeter-demonstrator?label=release)](https://github.com/TheDataFlowCompany/disinformeter-demonstrator/releases)
+[![Deploy](https://github.com/TheDataFlowCompany/disinformeter-demonstrator/actions/workflows/deploy.yml/badge.svg)](https://github.com/TheDataFlowCompany/disinformeter-demonstrator/actions/workflows/deploy.yml)
+[![Live demonstrator](https://img.shields.io/badge/live-disinformeter.deconspirator.eu-0A66C2)](https://disinformeter.deconspirator.eu)
+[![Built with Astro](https://img.shields.io/badge/Astro-BC52EE?logo=astro&logoColor=fff)](https://astro.build)
+[![Funded by the European Union](https://img.shields.io/badge/Funded%20by-the%20European%20Union-003399)](https://cordis.europa.eu/project/id/101132671)
+
 A self-contained, interactive web demonstrator of the **DisInforMeter Toolkit**: a
 validated population indicator for receptivity to, and detection of, **Foreign
 Information Manipulation and Interference (FIMI)**, developed across five studies
