@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "DisInforMeter Demonstrator (DE-CONSPIRATOR Deliverable D5.2)"
+abstract: >-
+  An interactive, public demonstrator of the DisInforMeter Toolkit: a validated
+  population indicator for receptivity to, and detection of, Foreign Information
+  Manipulation and Interference (FIMI), developed across five studies and more
+  than 10,000 respondents. Visitors can run the complete guided experience
+  (19-item receptivity questionnaire, personalised educational feedback,
+  behavioural headline-choice task) or inspect the toolkit as a reference
+  resource. Receptivity and detection are separate readouts and are never
+  combined into a single susceptibility score.
+type: software
+authors:
+  - family-names: "Baršytė"
+    given-names: "Justina"
+    affiliation: "AdCogito"
+  - family-names: "Kaminskienė"
+    given-names: "Živilė"
+    affiliation: "AdCogito"
+  - family-names: "Zakarevičiūtė"
+    given-names: "Agnė"
+    affiliation: "AdCogito"
+  - family-names: "Kreienkamp"
+    given-names: "Jannis"
+    affiliation: "AdCogito"
+version: "1.0.0"
+date-released: "2026-09-24"
+license: CC-BY-4.0
+repository-code: "https://github.com/TheDataFlowCompany/disinformeter-demonstrator"
+url: "https://disinformeter.deconspirator.eu"
+keywords:
+  - FIMI
+  - foreign information manipulation and interference
+  - disinformation
+  - survey instrument
+  - psychometrics
+  - media literacy
+  - democratic resilience
+  - Horizon Europe
