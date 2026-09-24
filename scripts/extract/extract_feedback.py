@@ -129,11 +129,7 @@ EN = {
 INTRO = {
     "en": (
         "Thank you for completing the DisInforMeter questionnaire.\n\n"
-        "This questionnaire examines four ways in which emotionally engaging or "
-        "strategically framed manipulative information may influence people. Based "
-        "on your responses, the feedback below reflects your actual performance, "
-        "highlighting areas where you may be more or less affected by different "
-        "types of messages."),
+        "This questionnaire looks at four ways emotionally charged or strategically framed manipulated information can influence people. Your results compare these four areas only within your own answers - they do not compare you to others and are not a diagnosis or label. Higher areas suggest messages might have more influence in certain situations, while lower areas show stronger protection against certain forms of manipulated information, while lower areas show where such messages might have more influence in certain situations.\n\nYour responses suggest that:"),
     "lt": (
         "Ačiū, kad užpildėte DisInforMeter klausimyną.\n\n"
         "Šis klausimynas nagrinėja keturis būdus, kaip emociškai įtraukianti arba "
