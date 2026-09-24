@@ -1,0 +1,33 @@
+{
+  "title": "DisInforMeter Demonstrator (DE-CONSPIRATOR Deliverable D5.2)",
+  "description": "<p>An interactive, public demonstrator of the DisInforMeter Toolkit: a validated population indicator for receptivity to, and detection of, Foreign Information Manipulation and Interference (FIMI), developed across five studies and more than 10,000 respondents.</p><p>Visitors can run the complete guided experience (19-item receptivity questionnaire, personalised educational feedback, behavioural headline-choice task) or inspect the toolkit as a reference resource: three instrument versions, a 151-item bank, a 27-item short module in 19 languages, the feedback logic, the choice task, the five-study evidence chain, and downloadable survey, scoring, translation and implementation files.</p><p>Responses are processed only in the visitor's browser and are never transmitted or stored. Receptivity and detection are separate readouts and are never combined into a single susceptibility score.</p><p>Published at https://disinformeter.deconspirator.eu</p>",
+  "upload_type": "software",
+  "license": "cc-by-4.0",
+  "access_right": "open",
+  "language": "eng",
+  "creators": [
+    { "name": "Baršytė, Justina", "affiliation": "AdCogito" },
+    { "name": "Kaminskienė, Živilė", "affiliation": "AdCogito" },
+    { "name": "Zakarevičiūtė, Agnė", "affiliation": "AdCogito" },
+    { "name": "Kreienkamp, Jannis", "affiliation": "AdCogito" }
+  ],
+  "keywords": [
+    "FIMI",
+    "foreign information manipulation and interference",
+    "disinformation",
+    "survey instrument",
+    "psychometrics",
+    "media literacy",
+    "democratic resilience",
+    "Horizon Europe"
+  ],
+  "grants": [{ "id": "10.13039/501100000780::101132671" }],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/TheDataFlowCompany/disinformeter-demonstrator",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ],
+  "notes": "Deliverable D5.2 of the DE-CONSPIRATOR project (Detecting and Countering Information Suppression from A Transnational Perspective), funded by the European Union under Horizon Europe Grant Agreement No. 101132671, topic HORIZON-CL2-2023-DEMOCRACY-01-02. Views and opinions expressed are those of the authors only and do not necessarily reflect those of the European Union."
+}

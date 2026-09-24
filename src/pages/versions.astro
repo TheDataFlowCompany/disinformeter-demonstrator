@@ -1,0 +1,140 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { url } from '../lib/paths';
+import { bank, countByVersion } from '../lib/data';
+
+const nLong = countByVersion('long');
+const nShort = countByVersion('short');
+const nUltra = countByVersion('ultra_brief');
+const nFimi = bank.items.filter((i) => i.section === 'FIMI news items').length;
+
+const versions = [
+  {
+    key: 'long', name: 'Long', items: `${nLong} items`,
+    purpose: 'Diagnostic precision',
+    waves: 'S2 · S3 · S5',
+    body: 'The full validated item pool: first-order belief blocks and the higher-order affective composites. Field this when a study needs domain-level modelling, intervention evaluation, or maximum measurement precision.',
+    accent: 'var(--navy)',
+  },
+  {
+    key: 'short', name: 'Short', items: '27 items',
+    purpose: 'Recurring monitoring',
+    waves: 'S4',
+    body: 'The recommended module for standing monitoring: 19 receptivity items across the four pathways plus the General Anchor, and the 8-item FIMI recognition battery. Multinationally fielded and already translated into 19 languages, so it is deployment-ready.',
+    accent: 'var(--azure-600)', featured: true,
+  },
+  {
+    key: 'ultra_brief', name: 'Ultra-brief', items: `${nUltra} items`,
+    purpose: 'Single-number screen',
+    waves: 'S4 (final)',
+    body: 'The standalone General Anchor: five cross-cutting questions that double as a single overall index, tracking the full instrument closely (r = .73; length-corrected .93). For when survey space is at its tightest.',
+    accent: 'var(--d-general)',
+  },
+];
+
+const matrix = [
+  ['Receptivity coverage', 'Four pathways, in depth', 'Four pathways + anchor', 'General Anchor only'],
+  ['Approx. respondent burden', 'High', 'Low', 'Minimal'],
+  ['Translated & deployment-ready', '3 languages', '19 languages', '19 languages'],
+  ['Recommended reading', 'Belief-theme diagnosis', 'Four-pathway profile', 'Overall index only'],
+];
+---
+<Base title="Scale versions" description="The three versions of the DisInforMeter (long, short, and ultra-brief) and when to use each.">
+  <PageHeader title="Three versions, one architecture">
+    <p>The DisInforMeter comes in three lengths. They share the same architecture and scoring;
+       they differ in <strong>burden and resolution</strong>. The short module is the one we recommend for
+       recurring monitoring.</p>
+  </PageHeader>
+
+  <section class="section wrap">
+    <div class="ver-grid">
+      {versions.map((v) => (
+        <article class:list={["ver panel", { featured: v.featured }]} style={`--c:${v.accent}`}>
+          {v.featured && <span class="ver-flag mono">Recommended</span>}
+          <div class="ver-top">
+            <h2 class="ver-name">{v.name}</h2>
+            <span class="ver-items mono">{v.items}</span>
+          </div>
+          <dl class="ver-facts">
+            <div><dt class="mono">Purpose</dt><dd>{v.purpose}</dd></div>
+            <div><dt class="mono">Fielded in</dt><dd class="mono">{v.waves}</dd></div>
+          </dl>
+          <p class="ver-body">{v.body}</p>
+          {v.key === 'short'
+            ? <a class="btn btn-primary" href={url('/explorer?version=short')}>Browse the short module →</a>
+            : <a class="btn btn-ghost" href={url(`/explorer?version=${v.key}`)}>Browse items →</a>}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <h2>How they compare</h2>
+    <div class="matrix-scroll">
+      <table class="matrix">
+        <thead>
+          <tr><th scope="col"></th><th scope="col">Long</th><th scope="col" class="hl">Short</th><th scope="col">Ultra-brief</th></tr>
+        </thead>
+        <tbody>
+          {matrix.map((row) => (
+            <tr>
+              <th scope="row">{row[0]}</th>
+              <td>{row[1]}</td><td class="hl">{row[2]}</td><td>{row[3]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <aside class="caveat panel">
+      <span class="caveat-mark mono">i</span>
+      <p>The five-question General Anchor doubles as an ultra-brief overall index. In the
+         deployment wave (Study 4, N&nbsp;=&nbsp;8,040) it tracked the full four-dimension index closely
+         (r&nbsp;=&nbsp;.73; corrected for its short length, r&nbsp;=&nbsp;.93) and ranked the 13 countries
+         in nearly the same order (Spearman ρ&nbsp;=&nbsp;.85). Use it as a single-number screen where survey
+         space is at its tightest, but it is measured less precisely (α&nbsp;=&nbsp;.63) and returns no
+         domain profile, so <strong>wherever the detail matters, field the short module</strong> and read
+         the four-pathway profile.</p>
+    </aside>
+  </section>
+</Base>
+
+<style>
+  .ver-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); align-items: stretch; }
+  .ver { padding: var(--sp-6); position: relative; display: flex; flex-direction: column; gap: var(--sp-4);
+    transition: box-shadow 0.15s var(--ease), transform 0.15s var(--ease); }
+  .ver:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+  .ver.featured { box-shadow: var(--shadow-lg); border: 1px solid var(--c); }
+  .ver-flag { position: absolute; top: -1px; right: var(--sp-5); transform: translateY(-50%);
+    background: var(--azure-600); color: #fff; font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.32em 0.75em; border-radius: 999px; font-weight: 700; box-shadow: var(--shadow); }
+  .ver-top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3); }
+  .ver-name { font-size: var(--step-2); color: var(--c); }
+  .ver-items { font-size: 0.82rem; color: var(--text-faint); font-family: var(--font-mono); }
+  .ver-facts { display: flex; gap: var(--sp-5); }
+  .ver-facts dt { font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); }
+  .ver-facts dd { font-weight: 600; margin-top: 2px; }
+  .ver-body { color: var(--text-muted); font-size: 0.95rem; flex: 1; }
+
+  .matrix-scroll { overflow-x: auto; margin-top: var(--sp-5); border: 1px solid var(--hairline); border-radius: var(--radius-lg); }
+  .matrix { width: 100%; border-collapse: collapse; min-width: 640px; }
+  .matrix th, .matrix td { text-align: left; padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--hairline);
+    font-family: var(--font-body); font-size: 0.94rem; }
+  .matrix tbody tr:last-child th, .matrix tbody tr:last-child td { border-bottom: 0; }
+  .matrix thead th { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #fff; background: var(--navy); border-bottom: 0; }
+  .matrix thead th:first-child { background: var(--navy); }
+  .matrix th[scope="row"] { color: var(--text-muted); font-weight: 600; background: var(--surface-2); }
+  .matrix .hl { background: var(--azure-soft); }
+  .matrix thead th.hl { color: var(--navy); background: var(--azure); }
+
+  .caveat { display: flex; gap: var(--sp-4); align-items: flex-start; padding: var(--sp-5); margin-top: var(--sp-6);
+    border-radius: var(--radius-lg); background: var(--azure-soft); border-color: color-mix(in srgb, var(--azure) 30%, var(--hairline)); }
+  .caveat-mark { flex: none; width: 1.8rem; height: 1.8rem; display: grid; place-items: center; border-radius: 999px;
+    background: var(--azure-700); color: #fff; font-weight: 700; font-family: var(--font-display); }
+  .caveat p { color: var(--text); }
+  .caveat strong { color: var(--navy); }
+
+  @media (max-width: 820px) { .ver-grid { grid-template-columns: 1fr; } }
+</style>

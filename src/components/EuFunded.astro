@@ -1,0 +1,36 @@
+---
+/* "Funded by the European Union" — the official emblem (12 gold stars on EU blue)
+   plus the required wording. SVG flag so it stays crisp and offline. */
+interface Props { tone?: 'light' | 'dark'; class?: string; }
+const { tone = 'dark', class: klass = '' } = Astro.props;
+
+// 12 five-pointed stars arranged in a circle on the flag.
+const cx = 30, cy = 20, ringR = 12.5, outer = 3, inner = 1.18;
+function star(angDeg: number): string {
+  const ax = cx + ringR * Math.cos((angDeg - 90) * Math.PI / 180);
+  const ay = cy + ringR * Math.sin((angDeg - 90) * Math.PI / 180);
+  const pts: string[] = [];
+  for (let i = 0; i < 10; i++) {
+    const r = i % 2 === 0 ? outer : inner;
+    const a = (i * 36 - 90) * Math.PI / 180; // point up
+    pts.push(`${(ax + r * Math.cos(a)).toFixed(2)},${(ay + r * Math.sin(a)).toFixed(2)}`);
+  }
+  return pts.join(' ');
+}
+const stars = Array.from({ length: 12 }, (_, i) => star(i * 30));
+---
+<div class:list={['eu-funded', `tone-${tone}`, klass]}>
+  <svg class="eu-flag" viewBox="0 0 60 40" role="img" aria-label="European Union flag">
+    <rect width="60" height="40" rx="2" fill="#003399" />
+    {stars.map((p) => <polygon points={p} fill="#FFCC00" />)}
+  </svg>
+  <span class="eu-text">Funded by<br />the European Union</span>
+</div>
+
+<style>
+  .eu-funded { display: inline-flex; align-items: center; gap: var(--sp-3); }
+  .eu-flag { width: 60px; height: 40px; flex: none; border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,0.06); }
+  .eu-text { font-family: var(--font-display); font-weight: 700; font-size: 0.82rem; line-height: 1.2; letter-spacing: -0.01em; }
+  .tone-dark .eu-text { color: #fff; }
+  .tone-light .eu-text { color: var(--navy); }
+</style>

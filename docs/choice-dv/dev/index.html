@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deconspirator — local dev harness</title>
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const release = params.get('release') || '';
+      const safeRelease = /^[A-Za-z0-9._-]+$/.test(release) ? release : '';
+      if (release && !safeRelease) {
+        console.warn('[harness] ignoring invalid release parameter:', release);
+      }
+      window.__DECONSPIRATOR_RELEASE = safeRelease;
+      window.__DECONSPIRATOR_ASSET_BASE = safeRelease ? '../releases/' + safeRelease : '..';
+      document.write(
+        '<link rel="stylesheet" href="' +
+        window.__DECONSPIRATOR_ASSET_BASE +
+        '/css/deconspirator-task.css">'
+      );
+    }());
+  </script>
+  <noscript><link rel="stylesheet" href="../css/deconspirator-task.css"></noscript>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px;
+      color: #222;
+    }
+    h1 { font-size: 1.25rem; margin: 0 0 4px; }
+    h2 { font-size: 0.95rem; margin: 24px 0 8px; }
+    .lede { color: #555; margin: 0 0 16px; font-size: 0.88rem; line-height: 1.5; }
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      margin: 12px 0 20px;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 10px 12px;
+      background: #f7f7f7;
+      border-radius: 4px;
+    }
+    .toolbar button {
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: 1px solid #bbb;
+      background: white;
+      border-radius: 3px;
+    }
+    .toolbar button:hover { background: #eee; }
+    .toolbar label { font-size: 0.85rem; user-select: none; }
+    .toolbar code { font-size: 0.78rem; color: #16697A; }
+    #qualtrics-log {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 12px;
+      background: #fafafa;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.78rem;
+      max-height: 320px;
+      overflow: auto;
+    }
+    #qualtrics-log:empty::before {
+      content: "(no embedded data writes yet — start playing through the task)";
+      color: #999;
+    }
+    .log-entry {
+      padding: 6px 0;
+      border-bottom: 1px dashed #eee;
+      word-break: break-all;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-field { font-weight: 600; color: #16697A; }
+    .log-value { color: #444; }
+    .doc-link {
+      display: inline-block;
+      margin: 0 0 16px;
+      font-size: 0.85rem;
+    }
+    .stress-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin: 0 0 12px;
+      padding: 10px 12px;
+      background: #fff7e6;
+      border: 1px solid #f0c060;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+    .stress-bar strong { color: #8a4f00; }
+    .stress-bar button {
+      padding: 5px 9px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      border: 1px solid #d49b3a;
+      background: white;
+      border-radius: 3px;
+    }
+    .stress-bar button.active { background: #f0c060; color: #5b3500; }
+    .stress-bar button:hover { background: #ffe9b8; }
+    .telemetry-ribbon {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin: 0 0 12px;
+      padding: 10px 14px;
+      background: #e8f4f7;
+      border: 1px solid #94c5d2;
+      border-radius: 4px;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.82rem;
+    }
+    .telemetry-ribbon .label { color: #555; font-family: system-ui, sans-serif; font-size: 0.78rem; }
+    .telemetry-ribbon .state {
+      font-weight: 600;
+      color: #16697A;
+      padding: 2px 8px;
+      background: white;
+      border-radius: 3px;
+      border: 1px solid #94c5d2;
+    }
+    .telemetry-ribbon .state.crashed,
+    .telemetry-ribbon .state.engine_missing { background: #f8d7da; border-color: #b85c66; color: #842029; }
+    .telemetry-ribbon .state.complete { background: #d4edda; border-color: #5cb877; color: #155724; }
+    .telemetry-ribbon .progress { color: #444; }
+    .telemetry-ribbon .errors { color: #842029; }
+    .telemetry-ribbon .exit { color: #8a4f00; }
+  </style>
+</head>
+<body>
+  <h1>Deconspirator — local dev harness</h1>
+  <p class="lede">
+    Loads the task with a fake <code>Qualtrics.SurveyEngine</code> that captures
+    embedded-data writes to the panel below. Plain <code>dev/</code> uses the
+    editable working files; add <code>?release=2026.05.20</code> to verify a
+    frozen release. Edit <code>dev/dev-config.js</code> to tweak per-study
+    settings. Reload the page to restart a session.
+  </p>
+  <a class="doc-link" href="components/callout/callouts.html">Open callout documentation</a>
+
+  <div class="toolbar">
+    <button id="reset" type="button">Reload &amp; restart</button>
+    <button id="dump" type="button">Log captured data to console</button>
+    <button id="copy" type="button">Copy <code>taskData</code> JSON</button>
+    <label>
+      <input type="checkbox" id="force-touch">
+      Force touch mode
+    </label>
+    <label>
+      Language
+      <select id="mock-language">
+        <option value="en">en</option>
+        <option value="de">de</option>
+        <option value="pl">pl</option>
+        <option value="lt">lt</option>
+        <option value="fr">unknown fallback</option>
+      </select>
+    </label>
+    <span style="margin-left:auto; color:#888; font-size:0.78rem;">
+      assets: <code id="asset-mode">…</code>
+      engine: <code id="engine-version">…</code>
+    </span>
+  </div>
+
+  <!-- Stress-test bar. Each button injects a failure mode so we can verify the
+       telemetry classifies it correctly. State persists across reloads via
+       sessionStorage; "Clear" wipes it. -->
+  <div class="stress-bar">
+    <strong>Stress test:</strong>
+    <button type="button" data-stress="none">Clear</button>
+    <button type="button" data-stress="bad-stimuli-url" title="Point STIMULI_URL at a non-existent host to trigger asset onerror">Broken asset URL</button>
+    <button type="button" data-stress="slow-assets" title="Wrap Image so onload fires after 30s — exceeds the stress-mode asset-load timeout">Slow assets (30s)</button>
+    <button type="button" data-stress="crash-on-trial-2" title="Throw from buildTrial on trial 2 → exercises startTask try/catch and taskStatus_state=crashed">Crash on trial 2</button>
+    <button type="button" data-stress="late-error" title="Throw an uncaught error from a setTimeout — exercises window.error handler">Uncaught error after 3s</button>
+    <button type="button" data-stress="reject" title="Trigger an unhandled promise rejection — exercises unhandledrejection handler">Unhandled rejection</button>
+    <button type="button" data-stress="short-timeout" title="STIMULUS_TIMEOUT=1500ms — fast TIMEOUT events to test mid-task flow">Fast timeout (1.5s)</button>
+    <button type="button" data-stress="auto-timeout" title="Disable tutorial + 300ms timeout — unattended happy-path completion (~5s)">Auto-finish (no UI)</button>
+    <button type="button" data-stress="crash-on-init" title="Throw synchronously from startTask before any UI — fastest crash test">Crash on init</button>
+    <button type="button" data-stress="quit-mid-task" title="Dispatch beforeunload after 1.5s — simulates intentional quit while task is mid-flight">Simulate quit (1.5s)</button>
+    <span style="color:#666; font-size:0.78rem;">active: <code id="active-stress">none</code></span>
+  </div>
+
+  <!-- Telemetry ribbon. Mirrors taskStatus_* embedded fields, prominent so a
+       stress-test result is visible without scrolling to the log panel. -->
+  <div class="telemetry-ribbon">
+    <span class="label">state:</span><span id="t-state" class="state">…</span>
+    <span class="label">progress:</span><span id="t-progress" class="progress">—</span>
+    <span class="label">assets:</span><span id="t-assets" class="progress">—</span>
+    <span class="label">errors:</span><span id="t-errors" class="errors">0</span>
+    <span class="label">exit:</span><span id="t-exit" class="exit">—</span>
+    <span class="label">last hb:</span><span id="t-hb" class="progress">—</span>
+  </div>
+
+  <!-- Mirrors the HTML pasted into the Qualtrics intervention question (see js/task-item.js header).
+       The .intervention-intro class is the hook used by the inter-question collapse rules
+       in css/deconspirator-task.css; the task question hosts <div id="task"> below. -->
+  <div class="intervention-intro" style="text-align: center;">Hovering to the left or right will show two news headlines. Click on the news you think is manipulated by a foreign actor. Make your decision within 30 seconds:</div>
+  <aside class="callout-warning" role="note">
+    <span class="callout__icon" aria-hidden="true">
+      <svg viewBox="0 -0.5 24 24">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.7744 1.41218L23.4802 20.0771C23.9898 21.0571 23.6085 22.2646 22.6285 22.7742C22.3435 22.9224 22.027 22.9998 21.7058 22.9998H2.29425C1.18968 22.9998 0.29425 22.1044 0.29425 20.9998C0.29425 20.6786 0.371621 20.3621 0.519817 20.0771L10.2256 1.41218C10.7352 0.432187 11.9427 0.0508554 12.9227 0.560452C13.2874 0.75009 13.5848 1.04749 13.7744 1.41218ZM10.5 9.49981V13.9998C10.5 14.8282 11.1716 15.4998 12 15.4998C12.8284 15.4998 13.5 14.8282 13.5 13.9998V9.49981C13.5 8.67138 12.8284 7.99981 12 7.99981C11.1716 7.99981 10.5 8.67138 10.5 9.49981ZM12 19.9998C12.8284 19.9998 13.5 19.3282 13.5 18.4998C13.5 17.6714 12.8284 16.9998 12 16.9998C11.1716 16.9998 10.5 17.6714 10.5 18.4998C10.5 19.3282 11.1716 19.9998 12 19.9998Z"></path>
+      </svg>
+    </span>
+    <div class="callout__body">
+      <span class="callout__label">Important</span>
+      <p class="callout__text">More and more people are not relying on online information unless they pause to consider whether it may be part of coordinated efforts by foreign actors to mislead — and others should not do so either.</p>
+    </div>
+  </aside>
+  <div id="task"></div>
+
+  <h2>Captured embedded data writes</h2>
+  <div id="qualtrics-log"></div>
+
+  <script>
+    // Restore force-touch toggle from sessionStorage so reloads preserve it.
+    const _forceTouchEl = document.getElementById('force-touch');
+    _forceTouchEl.checked = sessionStorage.getItem('decon.forceTouch') === '1';
+    window.__DECONSPIRATOR_FORCE_TOUCH = _forceTouchEl.checked;
+    _forceTouchEl.addEventListener('change', (e) => {
+      sessionStorage.setItem('decon.forceTouch', e.target.checked ? '1' : '0');
+      location.reload();
+    });
+    const _mockLanguageEl = document.getElementById('mock-language');
+    _mockLanguageEl.value = sessionStorage.getItem('decon.mockLanguage') || 'en';
+    window.__DECONSPIRATOR_Q_LANGUAGE = _mockLanguageEl.value;
+    _mockLanguageEl.addEventListener('change', (e) => {
+      sessionStorage.setItem('decon.mockLanguage', e.target.value);
+      location.reload();
+    });
+
+    // Stress-test mode resolution order (highest precedence first):
+    //   1. ?stress=<mode> URL query — used by the Playwright stress suite
+    //   2. sessionStorage 'decon.stress' — set by toolbar buttons, persists across reloads
+    //   3. 'none' (default)
+    // The URL form lets automated tests drive scenarios via plain navigation
+    // without juggling storage state.
+    const _urlStress = new URLSearchParams(location.search).get('stress');
+    const _stress = _urlStress || sessionStorage.getItem('decon.stress') || 'none';
+    window.__DECONSPIRATOR_STRESS = _stress;
+    document.getElementById('active-stress').textContent = _stress;
+    for (const btn of document.querySelectorAll('[data-stress]')) {
+      if (btn.dataset.stress === _stress) btn.classList.add('active');
+      btn.addEventListener('click', () => {
+        sessionStorage.setItem('decon.stress', btn.dataset.stress);
+        // Strip the URL stress param so manual toolbar clicks override it.
+        const u = new URL(location.href);
+        u.searchParams.delete('stress');
+        location.replace(u.toString());
+      });
+    }
+
+    // Apply stress modes that need to be installed BEFORE the engine runs.
+    if (_stress === 'slow-assets') {
+      // Wrap the Image constructor so onload fires after 30s (longer than the
+      // stress-mode asset-load timeout). Exercises the timeout-fallback path
+      // in preloadImagesTracked → taskStatus_state="assets_preload_slow".
+      const OrigImage = window.Image;
+      window.Image = function () {
+        const img = new OrigImage();
+        Object.defineProperty(img, 'src', {
+          set(v) {
+            setTimeout(() => {
+              try { OrigImage.prototype.__lookupSetter__('src').call(img, v); } catch (_) {
+                // Older browsers: just set _src; we don't care, the timeout
+                // path in the engine fires first either way.
+              }
+            }, 30000);
+          },
+          get() { return ''; },
+        });
+        return img;
+      };
+    }
+    if (_stress === 'late-error') {
+      setTimeout(() => { throw new Error('stress-test: late uncaught error'); }, 3000);
+    }
+    if (_stress === 'reject') {
+      setTimeout(() => { Promise.reject(new Error('stress-test: unhandled rejection')); }, 1500);
+    }
+    if (_stress === 'quit-mid-task') {
+      // Simulate the participant closing the tab while a trial is on screen.
+      // The engine's beforeunload listener should set taskStatus_exitReason.
+      // We don't actually unload the page — we just synthesize the event so the
+      // automated test can inspect the resulting embedded data.
+      setTimeout(() => {
+        window.dispatchEvent(new Event('beforeunload'));
+        window.dispatchEvent(new PageTransitionEvent('pagehide', { persisted: false }));
+      }, 1500);
+    }
+
+    // Telemetry ribbon — pulled from captured taskStatus_* writes.
+    const _ribbon = {
+      state: document.getElementById('t-state'),
+      progress: document.getElementById('t-progress'),
+      assets: document.getElementById('t-assets'),
+      errors: document.getElementById('t-errors'),
+      exit: document.getElementById('t-exit'),
+      hb: document.getElementById('t-hb'),
+    };
+    function _updateRibbon(captured) {
+      const state = captured.taskStatus_state || '…';
+      _ribbon.state.textContent = state;
+      _ribbon.state.className = 'state ' + state;
+      _ribbon.progress.textContent = captured.taskStatus_progress || '—';
+      _ribbon.assets.textContent = captured.taskStatus_assets || '—';
+      const errs = captured.taskStatus_errors;
+      let errCount = 0;
+      if (errs) { try { errCount = JSON.parse(errs).length; } catch (_) { errCount = 1; } }
+      _ribbon.errors.textContent = String(errCount);
+      _ribbon.errors.style.fontWeight = errCount ? '700' : '400';
+      _ribbon.exit.textContent = captured.taskStatus_exitReason || '—';
+      _ribbon.hb.textContent = captured.taskStatus_heartbeatMs || '—';
+    }
+
+    // Capture embedded-data writes for the log panel. Exposed on window so the
+    // Playwright stress-test suite (stress-tests/) can read the captured state
+    // without having to scrape the DOM.
+    const _qLog = document.getElementById('qualtrics-log');
+    const _captured = {};
+    window.__capturedEmbedded = _captured;
+    function _renderLog() {
+      _updateRibbon(_captured);
+      _qLog.replaceChildren();
+      for (const [k, v] of Object.entries(_captured)) {
+        const row = document.createElement('div');
+        row.className = 'log-entry';
+        const label = document.createElement('span');
+        label.className = 'log-field';
+        label.textContent = k + ': ';
+        const val = document.createElement('span');
+        val.className = 'log-value';
+        const str = String(v);
+        val.textContent = str.length > 240 ? str.slice(0, 240) + ' …(' + str.length + ' chars)' : str;
+        row.appendChild(label);
+        row.appendChild(val);
+        _qLog.appendChild(row);
+      }
+    }
+
+    // Fake question-data with the methods the engine touches.
+    const fakeQuestionData = {
+      disableNextButton() {},
+      enableNextButton() { console.log('[harness] task complete — Next button would be enabled.'); },
+    };
+
+    // Fake SurveyEngine. Critical: addOnload must run our handler even if
+    // DOMContentLoaded already fired, since this script is at end-of-body.
+    function _runWhenReady(fn) {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fn, { once: true });
+      } else {
+        queueMicrotask(fn);
+      }
+    }
+    window.Qualtrics = {
+      SurveyEngine: {
+        addOnload(fn) { _runWhenReady(() => fn.call(fakeQuestionData)); },
+        addOnReady(_) {},
+        addOnUnload(_) {},
+        setEmbeddedData(field, value) {
+          _captured[field] = value;
+          _renderLog();
+        },
+        getEmbeddedData() { return null; },
+      },
+    };
+
+    // Toolbar wiring
+    document.getElementById('reset').addEventListener('click', () => location.reload());
+    document.getElementById('dump').addEventListener('click', () => {
+      const parsed = {};
+      for (const [k, v] of Object.entries(_captured)) {
+        try { parsed[k] = JSON.parse(v); } catch { parsed[k] = v; }
+      }
+      console.log('[harness] captured embedded data:', parsed);
+    });
+    document.getElementById('copy').addEventListener('click', async () => {
+      const v = _captured.taskData || '';
+      try {
+        await navigator.clipboard.writeText(v);
+        console.log('[harness] taskData copied to clipboard (' + v.length + ' chars).');
+      } catch (e) {
+        console.warn('[harness] clipboard write failed:', e);
+      }
+    });
+  </script>
+
+  <!-- Per-study config helpers without auto-running the Qualtrics hook. -->
+  <script>
+    window.DECONSPIRATOR_TASK_ITEM_AUTORUN = false;
+    (function () {
+      const base = window.__DECONSPIRATOR_ASSET_BASE || '..';
+      const release = window.__DECONSPIRATOR_RELEASE || '';
+      const assetModeEl = document.getElementById('asset-mode');
+      const engineVersionEl = document.getElementById('engine-version');
+
+      assetModeEl.textContent = release ? 'release ' + release : 'working files';
+      engineVersionEl.textContent = 'loading';
+
+      function loadScript(src) {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = src;
+          script.onload = resolve;
+          script.onerror = () => reject(new Error('failed to load ' + src));
+          document.body.appendChild(script);
+        });
+      }
+
+      loadScript(base + '/js/deconspirator-task.js')
+        .catch((err) => {
+          // Keep loading task-item + dev-config so the harness can reproduce
+          // the Qualtrics "engine_missing" recovery path.
+          console.error('[harness]', err);
+        })
+        .then(() => loadScript(base + '/js/task-item.js'))
+        .then(() => loadScript('dev-config.js'))
+        .then(() => {
+          engineVersionEl.textContent =
+            (typeof window.startTask === 'function') ? 'loaded' : 'NOT loaded';
+        })
+        .catch((err) => {
+          engineVersionEl.textContent = 'NOT loaded';
+          console.error('[harness]', err);
+        });
+    }());
+  </script>
+</body>
+</html>

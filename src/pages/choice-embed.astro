@@ -1,0 +1,389 @@
+---
+// Standalone host document for the FIMI choice task — the target of the <iframe>
+// on /choice-task. It is deliberately NOT wrapped in Base.astro: the task engine
+// owns the whole document (it ships a Bootstrap reset, rewrites the viewport meta,
+// toggles body classes and installs global error handlers), so it must live in an
+// isolated frame rather than inside the styled site.
+//
+// Behaviour is driven entirely by URL query params set by the parent page:
+//   lang=en|de|pl|lt     stimulus + follow-up language (default en)
+//   timer=1              show the 30s countdown AND enforce the 30s limit (default off)
+//   followup=0           disable the per-choice confidence/report/verify ratings (default on)
+//   feedback=0           disable the post-task performance feedback screen (default on)
+//
+// No participant data is persisted — this is a demonstrator. The engine writes to
+// a fake Qualtrics.SurveyEngine captured in-memory and discarded on reload.
+import { url } from '../lib/paths';
+
+const cfg = {
+  engineJs: url('/choice-dv/js/deconspirator-task.js'),
+  taskItemJs: url('/choice-dv/js/task-item.js'),
+  taskCss: url('/choice-dv/css/deconspirator-task.css'),
+  // Locally-hosted stimuli (all four languages present under public/choice-dv/stimuli/).
+  // English lives at the root; de/pl/lt in same-named subfolders.
+  stimuliBase: url('/choice-dv/stimuli/'),
+};
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>FIMI choice task</title>
+  <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+  <link rel="stylesheet" href={cfg.taskCss} />
+  <style is:inline>
+    /* ---- frame shell + feedback screen. Scoped under #dm-root / .dm-* so it
+       overrides the task's Bootstrap reset without leaking into the engine UI. */
+    :root {
+      --dm-navy: #162259; --dm-azure: #00A8EF; --dm-azure-700: #0A6CA8;
+      --dm-crimson: #E1202A; --dm-crimson-700: #C2121B; --dm-ok: #157F54;
+      --dm-amber: #B26A00; --dm-ground: #F4F6FB; --dm-surface: #fff;
+      --dm-text: #11173A; --dm-muted: #4C5478; --dm-faint: #8389A6;
+      --dm-line: #E1E5F0; --dm-line-strong: #C7CDDE;
+    }
+    html, body { background: var(--dm-ground); }
+    body { margin: 0; }
+    /* Real breathing room inside the frame (the timer ring sits at the top of #task). */
+    #task { max-width: 900px; margin: 0 auto;
+      padding: 1.25rem clamp(0.5rem, 2vw, 1.25rem) 1.75rem; box-sizing: border-box; }
+    /* Cap the square clipping tiles so they don't balloon to ~520px on a wide frame. */
+    #stimuli-wrapper { max-width: 680px; margin-inline: auto; }
+
+    /* ---- conceal-until-hover repaint fix (Chromium, incl. Arc/Edge). The engine
+       hides tiles by parking the background image at -9999px; Chromium then never
+       loads/decodes it, and the repaint after the first :hover races the late
+       decode — the tile stays blank until something forces a full repaint (tab
+       switch, context menu). Keep the image painted at center and conceal with an
+       opaque cover instead; every engine reveal trigger is mirrored on the cover. */
+    .stimulus.conceal-until-hover { background-position: center !important; }
+    .stimulus.conceal-until-hover::after {
+      content: ""; position: absolute; inset: 0; z-index: 1;
+      background: var(--dm-ground); border-radius: 10px; pointer-events: none;
+    }
+    .stimulus-reveal-hint, .stimulus-loading-overlay { z-index: 2; }
+    .stimulus.conceal-until-hover:hover::after,
+    .stimulus.conceal-until-hover:focus-visible::after,
+    .stimulus.conceal-until-hover.touch-revealed::after { opacity: 0; }
+    /* touch mode: tap-to-reveal stays the sole mechanism (mirrors engine CSS) */
+    body.decon-touch-mode .stimulus.conceal-until-hover:hover:not(.touch-revealed)::after,
+    body.decon-touch-mode .stimulus.conceal-until-hover:focus-visible:not(.touch-revealed)::after { opacity: 1; }
+    @media (hover: none) and (pointer: coarse) {
+      .stimulus.conceal-until-hover:hover:not(.touch-revealed)::after,
+      .stimulus.conceal-until-hover:focus-visible:not(.touch-revealed)::after { opacity: 1; }
+    }
+
+    .dm-fb { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: var(--dm-text); padding: 0.25rem 0 1.5rem; }
+    .dm-fb * { box-sizing: border-box; }
+
+    .dm-fb-head { text-align: center; max-width: 46rem; margin: 0 auto 1.75rem; }
+    .dm-fb-eyebrow { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--dm-azure-700); font-weight: 700; margin: 0 0 0.5rem; }
+    .dm-score { display: inline-flex; align-items: baseline; gap: 0.15em;
+      font-weight: 800; line-height: 1; letter-spacing: -0.02em; }
+    .dm-score-num { font-size: clamp(3rem, 9vw, 4.6rem); color: var(--dm-navy); }
+    .dm-score-of { font-size: clamp(1.4rem, 4vw, 2rem); color: var(--dm-faint); font-weight: 700; }
+    .dm-fb-lead { font-size: 1.05rem; color: var(--dm-text); margin: 0.5rem 0 0; font-weight: 600; }
+    .dm-fb-sub { font-size: 0.9rem; color: var(--dm-muted); margin: 0.6rem 0 0; }
+    .dm-fb-meter { height: 8px; border-radius: 999px; background: #E5E9F4; overflow: hidden;
+      max-width: 22rem; margin: 1rem auto 0; }
+    .dm-fb-meter > i { display: block; height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, #1C3A75, #00A8EF); }
+
+    .dm-fb-actions { text-align: center; margin: 1.4rem 0 0; }
+    .dm-btn { font: inherit; font-weight: 700; font-size: 0.92rem; cursor: pointer;
+      border-radius: 7px; padding: 0.7em 1.3em; border: 1px solid transparent;
+      background: var(--dm-navy); color: #fff; }
+    .dm-btn:hover { background: #2A357A; }
+
+    .dm-fb-gallery { display: grid; gap: 1rem; max-width: 60rem; margin: 1rem auto 0; }
+    .dm-fb-galhead { font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--dm-faint); font-weight: 700; text-align: center;
+      margin: 2.75rem auto 0; padding-top: 1.75rem; border-top: 1px solid var(--dm-line); max-width: 60rem; }
+    .dm-pair { background: var(--dm-surface); border: 1px solid var(--dm-line);
+      border-radius: 14px; padding: 1rem 1rem 1.15rem; box-shadow: 0 10px 28px -20px rgba(22,34,89,0.35); }
+    .dm-pair-bar { display: flex; align-items: center; justify-content: space-between;
+      gap: 0.75rem; margin: 0 0 0.85rem; }
+    .dm-pair-id { font-size: 0.82rem; font-weight: 700; color: var(--dm-muted);
+      letter-spacing: 0.04em; }
+    .dm-badge { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.04em;
+      padding: 0.3em 0.7em; border-radius: 999px; display: inline-flex; align-items: center; gap: 0.35em; }
+    .dm-badge.ok { background: #E2F3EC; color: var(--dm-ok); }
+    .dm-badge.no { background: #FBE0E1; color: var(--dm-crimson-700); }
+    .dm-badge.skip { background: #ECEEF6; color: var(--dm-muted); }
+    .dm-badge.time { background: #FBEFD9; color: var(--dm-amber); }
+
+    .dm-clips { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+    .dm-clip { position: relative; border: 2px solid var(--dm-line); border-radius: 10px;
+      overflow: hidden; background: #fff; display: flex; flex-direction: column; }
+    .dm-clip.chosen { border-color: var(--dm-navy); box-shadow: 0 0 0 3px rgba(22,34,89,0.12); }
+    .dm-clip.is-fimi.chosen { border-color: var(--dm-ok); box-shadow: 0 0 0 3px rgba(21,127,84,0.18); }
+    .dm-clip.is-non.chosen { border-color: var(--dm-crimson); box-shadow: 0 0 0 3px rgba(225,32,42,0.16); }
+    .dm-clip img { width: 100%; height: auto; display: block; }
+    .dm-clip-foot { display: flex; align-items: center; justify-content: space-between;
+      gap: 0.5rem; padding: 0.55rem 0.7rem; border-top: 1px solid var(--dm-line); margin-top: auto; }
+    .dm-tag { font-size: 0.74rem; font-weight: 800; letter-spacing: 0.03em; display: inline-flex;
+      align-items: center; gap: 0.35em; }
+    .dm-tag.fimi { color: var(--dm-crimson-700); }
+    .dm-tag.non { color: var(--dm-azure-700); }
+    .dm-dot { width: 0.6em; height: 0.6em; border-radius: 999px; display: inline-block; }
+    .dm-dot.fimi { background: var(--dm-crimson); }
+    .dm-dot.non { background: var(--dm-azure); }
+    .dm-pick { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase;
+      color: #fff; background: var(--dm-navy); border-radius: 999px; padding: 0.25em 0.6em; }
+    .dm-mark { position: absolute; top: 0.5rem; right: 0.5rem; width: 1.7rem; height: 1.7rem;
+      border-radius: 999px; display: grid; place-items: center; font-weight: 900; font-size: 1rem;
+      color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    .dm-mark.ok { background: var(--dm-ok); }
+    .dm-mark.no { background: var(--dm-crimson); }
+    .dm-miss { position: absolute; top: 0.5rem; left: 0.5rem; font-size: 0.64rem; font-weight: 800;
+      letter-spacing: 0.03em; text-transform: uppercase; color: #fff; background: rgba(225,32,42,0.92);
+      border-radius: 999px; padding: 0.25em 0.6em; }
+
+    @media (max-width: 540px) {
+      .dm-clips { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- The engine renders the task UI inside #task and, on completion, our script
+       replaces it with the feedback screen (when feedback is enabled). -->
+  <div id="task">&nbsp;</div>
+
+  <script type="application/json" id="dm-cfg" set:html={JSON.stringify(cfg)}></script>
+
+  <script>
+    import { summarizeTaskData } from '../lib/choice-feedback.mjs';
+
+    const cfg = JSON.parse(document.getElementById('dm-cfg').textContent);
+    const params = new URLSearchParams(location.search);
+    const langParam = params.get('lang') || 'en';
+    const timerOn = params.get('timer') === '1';
+    const followUpOn = params.get('followup') !== '0';
+    const feedbackOn = params.get('feedback') !== '0';
+
+    // In-memory capture of the engine's embedded-data writes (no persistence).
+    const captured = {};
+    let completed = false;
+
+    window.Qualtrics = {
+      SurveyEngine: {
+        addOnload(fn) { _whenReady(() => fn.call(fakeQuestionData)); },
+        addOnReady() {},
+        addOnUnload() {},
+        setEmbeddedData(field, value) { captured[field] = value; },
+        getEmbeddedData() { return null; },
+      },
+    };
+    // Stop task-item.js auto-wiring its own addOnload; we call startTask ourselves.
+    window.DECONSPIRATOR_TASK_ITEM_AUTORUN = false;
+    window.DECONSPIRATOR_AUTORUN = false;
+
+    const fakeQuestionData = {
+      disableNextButton() {},
+      enableNextButton() { onComplete(); },
+    };
+
+    function _whenReady(fn) {
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn, { once: true });
+      else fn();
+    }
+
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = () => reject(new Error('failed to load ' + src));
+        document.head.appendChild(s);
+      });
+    }
+
+    let resolvedSettings = null;
+
+    function start() {
+      const language = window.resolveTaskLanguage(langParam);
+      const shared = Object.assign({}, window.DECON_SHARED_STUDY_SETTINGS, {
+        // Locked-in demonstrator settings (per D5.2 brief).
+        SHOW_LABEL_OVERLAY: false,
+        CONCEAL_UNTIL_HOVER: true,
+        SHOW_REVEAL_HINT: true,
+        TUTORIAL_ENABLED: true,
+        SHOW_SKIP_STIMULUS: true,
+        INTER_TRIAL_TIMEOUT: 800,
+        INTER_TRIAL_LOADER: true,
+        // Toggled by the parent controls.
+        FOLLOW_UP_QUESTION_ENABLED: followUpOn,
+        SHOW_TIMER: timerOn,
+        STIMULUS_TIMEOUT: timerOn ? 30000 : 0,
+        // We render our own completion / feedback surface.
+        END_OF_TASK_TITLE: '',
+        END_OF_TASK_MSG: feedbackOn ? '' : 'You have completed the task. Use the controls above to restart or change a setting.',
+      });
+
+      const settings = window.buildTaskSettingsForLanguage(
+        language.resolved, shared, window.DECON_LANGUAGE_CONFIGS, window.DECON_STIMULI_PAIRS,
+      );
+      // Point the engine at the locally-bundled stimuli rather than the CDN.
+      settings.STIMULI_URL = cfg.stimuliBase + (language.resolved === 'en' ? '' : language.resolved + '/');
+      resolvedSettings = settings;
+
+      window.startTask(window.Qualtrics.SurveyEngine, fakeQuestionData, settings);
+    }
+
+    function onComplete() {
+      if (completed || !feedbackOn) return;
+      completed = true;
+      let trials = [];
+      try { trials = JSON.parse(captured.taskData || '[]'); } catch (_) { trials = []; }
+      renderFeedback(summarizeTaskData(trials));
+    }
+
+    function el(tag, cls, text) {
+      const n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text != null) n.textContent = text;
+      return n;
+    }
+
+    function stimUrl(filename) {
+      return (resolvedSettings && resolvedSettings.STIMULI_URL ? resolvedSettings.STIMULI_URL : cfg.stimuliBase) + filename;
+    }
+
+    function renderFeedback(s) {
+      const task = document.getElementById('task');
+      if (!task) return;
+      task.classList.remove('decon-recovery-active');
+      task.innerHTML = '';
+
+      const root = el('div', 'dm-fb');
+
+      // ---- score header ----
+      const head = el('div', 'dm-fb-head');
+      head.appendChild(el('p', 'dm-fb-eyebrow', 'Your performance'));
+      const score = el('div', 'dm-score');
+      score.appendChild(el('span', 'dm-score-num', String(s.correct)));
+      score.appendChild(el('span', 'dm-score-of', '/ ' + s.total));
+      head.appendChild(score);
+      head.appendChild(el('p', 'dm-fb-lead', s.total === 1
+        ? 'manipulated headline correctly identified'
+        : 'manipulated headlines correctly identified'));
+
+      const pct = s.accuracy == null ? 0 : Math.round(s.accuracy * 100);
+      const subBits = [pct + '% accuracy'];
+      if (s.skipped) subBits.push(s.skipped + ' skipped');
+      if (s.timedOut) subBits.push(s.timedOut + ' timed out');
+      head.appendChild(el('p', 'dm-fb-sub', subBits.join(' · ')));
+
+      const meter = el('div', 'dm-fb-meter');
+      const fill = el('i'); fill.style.width = pct + '%';
+      meter.appendChild(fill);
+      head.appendChild(meter);
+      root.appendChild(head);
+
+      // ---- actions ----
+      const actions = el('div', 'dm-fb-actions');
+      const again = el('button', 'dm-btn', 'Play again');
+      again.type = 'button';
+      again.addEventListener('click', () => location.reload());
+      actions.appendChild(again);
+      root.appendChild(actions);
+
+      // ---- inspection gallery ----
+      if (s.pairs.length) {
+        root.appendChild(el('p', 'dm-fb-galhead', 'Review every pair — which clipping was foreign-manipulated'));
+        const gallery = el('div', 'dm-fb-gallery');
+        s.pairs.forEach((p, i) => gallery.appendChild(renderPair(p, i)));
+        root.appendChild(gallery);
+      }
+
+      task.appendChild(root);
+      // Bring the feedback into view inside the frame.
+      try { task.scrollIntoView({ block: 'start' }); } catch (_) {}
+    }
+
+    function renderPair(p, i) {
+      const wrap = el('div', 'dm-pair');
+      const bar = el('div', 'dm-pair-bar');
+      bar.appendChild(el('span', 'dm-pair-id', 'Pair ' + (i + 1)));
+
+      let badgeCls = 'skip', badgeText = 'Skipped';
+      if (p.isCorrect) { badgeCls = 'ok'; badgeText = '✓ Correct'; }
+      else if (p.event === 'CLICK') { badgeCls = 'no'; badgeText = '✗ Incorrect'; }
+      else if (p.event === 'TIMEOUT') { badgeCls = 'time'; badgeText = 'Timed out'; }
+      bar.appendChild(el('span', 'dm-badge ' + badgeCls, badgeText));
+      wrap.appendChild(bar);
+
+      // Show the two clippings in the order the participant saw them (by side).
+      const cards = [p.fimi, p.non].filter(Boolean);
+      cards.sort((a, b) => (a.side === 'left' ? 0 : 1) - (b.side === 'left' ? 0 : 1));
+
+      const clips = el('div', 'dm-clips');
+      cards.forEach((c) => clips.appendChild(renderClip(c, p)));
+      wrap.appendChild(clips);
+      return wrap;
+    }
+
+    function renderClip(c, p) {
+      const isFimi = c.type === 'fimi';
+      const chosen = p.chosenId && p.chosenId === c.id;
+      const card = el('div', 'dm-clip ' + (isFimi ? 'is-fimi' : 'is-non') + (chosen ? ' chosen' : ''));
+
+      const img = el('img');
+      img.src = stimUrl(c.filename);
+      img.alt = isFimi ? 'Foreign-manipulated clipping' : 'Authentic clipping';
+      card.appendChild(img);
+
+      // Correctness mark on the chosen card; "was manipulated" hint on the FIMI
+      // card when the participant did not pick it.
+      if (chosen) {
+        const mark = el('div', 'dm-mark ' + (isFimi ? 'ok' : 'no'), isFimi ? '✓' : '✗');
+        card.appendChild(mark);
+      } else if (isFimi && !p.isCorrect) {
+        card.appendChild(el('div', 'dm-miss', 'Was manipulated'));
+      }
+
+      const foot = el('div', 'dm-clip-foot');
+      const tag = el('span', 'dm-tag ' + (isFimi ? 'fimi' : 'non'));
+      tag.appendChild(el('span', 'dm-dot ' + (isFimi ? 'fimi' : 'non')));
+      tag.appendChild(el('span', null, isFimi ? 'Manipulated · FIMI' : 'Authentic'));
+      foot.appendChild(tag);
+      if (chosen) foot.appendChild(el('span', 'dm-pick', 'Your choice'));
+      card.appendChild(foot);
+      return card;
+    }
+
+    // ---- report content height so the parent can size the frame to fit (no
+    //      wasted space for the task, no nested scrollbar for the feedback). ----
+    function postHeight() {
+      const h = Math.ceil(document.body.getBoundingClientRect().height);
+      try { parent.postMessage({ type: 'decon-embed-height', height: h }, location.origin); } catch (_) {}
+    }
+    if (typeof ResizeObserver === 'function') new ResizeObserver(postHeight).observe(document.body);
+    window.addEventListener('load', postHeight);
+
+    // ---- boot: load the engine + per-study config, then start ----
+    loadScript(cfg.engineJs)
+      .then(() => loadScript(cfg.taskItemJs))
+      .then(() => {
+        if (typeof window.startTask !== 'function') throw new Error('engine did not load');
+        start();
+      })
+      .catch((err) => {
+        console.error('[choice-embed]', err);
+        const task = document.getElementById('task');
+        if (task) {
+          task.innerHTML = '';
+          const e = el('div', 'dm-fb');
+          const h = el('div', 'dm-fb-head');
+          h.appendChild(el('p', 'dm-fb-eyebrow', 'Could not load'));
+          h.appendChild(el('p', 'dm-fb-lead', 'The task could not be loaded. Please reload the page.'));
+          e.appendChild(h);
+          task.appendChild(e);
+        }
+      });
+  </script>
+</body>
+</html>

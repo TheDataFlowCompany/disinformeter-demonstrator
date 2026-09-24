@@ -1,0 +1,401 @@
+{
+  "EN": {
+    "language": "English",
+    "likert_agreement": {
+      "1": "1 - Strongly disagree",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Strongly agree"
+    },
+    "fimi_detection": {
+      "1": "1 - This headline is certainly NOT manipulated",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - This headline is certainly manipulated"
+    }
+  },
+  "AR": {
+    "language": "Arabic",
+    "likert_agreement": {
+      "1": "1- أختلف بشدة",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - أوافق بشدة"
+    },
+    "fimi_detection": {
+      "1": "1 - هذا العنوان ليس مُتلاعبًا به بالتأكيد",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - هذا العنوان تم التلاعب به بالتأكيد"
+    }
+  },
+  "BG": {
+    "language": "Bulgarian",
+    "likert_agreement": {
+      "1": "1 - Категорично несъгласен/а",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Напълно съгласен/а"
+    },
+    "fimi_detection": {
+      "1": "1 - Това заглавие със сигурност НЕ е манипулирано",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Това заглавие със сигурност е манипулирано"
+    }
+  },
+  "ZH-S": {
+    "language": "Chinese (Simplified)",
+    "likert_agreement": {
+      "1": "1 - 强烈反对",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - 非常同意"
+    },
+    "fimi_detection": {
+      "1": "1 - 此标题肯定没有被操纵过",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - 此标题肯定被操纵过"
+    }
+  },
+  "NL": {
+    "language": "Dutch",
+    "likert_agreement": {
+      "1": "1 - Helemaal mee oneens",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Helemaal mee eens"
+    },
+    "fimi_detection": {
+      "1": "1 - Deze kop is zeker NIET gemanipuleerd",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Deze kop is zeker gemanipuleerd"
+    }
+  },
+  "ET": {
+    "language": "Estonian",
+    "likert_agreement": {
+      "1": "1 - Ei nõustu üldse ja",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Tugevalt nõustun"
+    },
+    "fimi_detection": {
+      "1": "1 - See pealkiri ei ole kindlasti manipuleeritud",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - See pealkiri on kindlasti manipuleeritud"
+    }
+  },
+  "FR": {
+    "language": "French",
+    "likert_agreement": {
+      "1": "1 - Pas du tout d'accord",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Tout à fait d'accord"
+    },
+    "fimi_detection": {
+      "1": "1 - Ce titre n'est certainement pas manipulé",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Ce titre est certainement manipulé"
+    }
+  },
+  "KAT": {
+    "language": "Georgian",
+    "likert_agreement": {
+      "1": "1 - კატეგორიულად არ ვეთანხმები",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - სრულიად ვეთანხმები"
+    },
+    "fimi_detection": {
+      "1": "1 - ეს სათაური ნამდვილად არ არის მანიპულირებული",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - ეს სათაური ნამდვილად მანიპულირებულია"
+    }
+  },
+  "DE": {
+    "language": "German",
+    "likert_agreement": {
+      "1": "1 – Stimme überhaupt nicht zu",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 – Stimme voll und ganz zu"
+    },
+    "fimi_detection": {
+      "1": "1 – Diese Schlagzeile ist mit Sicherheit NICHT manipuliert",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 – Diese Schlagzeile ist mit Sicherheit manipuliert"
+    }
+  },
+  "HU": {
+    "language": "Hungarian",
+    "likert_agreement": {
+      "1": "1 - Határozottan nem értek egyet",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Teljesen egyetértek"
+    },
+    "fimi_detection": {
+      "1": "1 – Ez a cím biztosan NEM manipulált",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 – Ez a címsor biztosan manipulált"
+    }
+  },
+  "IT": {
+    "language": "Italian",
+    "likert_agreement": {
+      "1": "1 - Fortemente in disaccordo",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Fortemente d'accordo"
+    },
+    "fimi_detection": {
+      "1": "1 - Questo titolo NON è certamente manipolato",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Questo titolo è certamente manipolato"
+    }
+  },
+  "LV": {
+    "language": "Latvian",
+    "likert_agreement": {
+      "1": "1 — Pilnībā nepiekrītu",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 — Pilnībā piekrītu"
+    },
+    "fimi_detection": {
+      "1": "1. Šis virsraksts noteikti nav manipulēts",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7. Šis virsraksts noteikti ir manipulēts"
+    }
+  },
+  "LT": {
+    "language": "Lithuanian",
+    "likert_agreement": {
+      "1": "1 - Visiškai nesutinku",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 – Visiškai sutinku"
+    },
+    "fimi_detection": {
+      "1": "1 – Šia antrašte tikrai NĖRA manipuliuojama",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 – Šia antrašte tikrai YRA manipuliuojama"
+    }
+  },
+  "FA": {
+    "language": "Persian (Farsi)",
+    "likert_agreement": {
+      "1": "۱- کاملاً مخالفم",
+      "2": "۲",
+      "3": "۳",
+      "4": "۴",
+      "5": "۵",
+      "6": "۶",
+      "7": "۷ - کاملاً موافقم"
+    },
+    "fimi_detection": {
+      "1": "۱ - این تیتر قطعاً دستکاری نشده است",
+      "2": "۲",
+      "3": "۳",
+      "4": "۴",
+      "5": "۵",
+      "6": "۶",
+      "7": "۷ - این تیتر قطعاً دستکاری شده است"
+    }
+  },
+  "PL": {
+    "language": "Polish",
+    "likert_agreement": {
+      "1": "1 - Zdecydowanie się nie zgadzam",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Zdecydowanie się zgadzam"
+    },
+    "fimi_detection": {
+      "1": "1 - Ten nagłówek z pewnością NIE jest zmanipulowany",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Ten nagłówek jest z pewnością zmanipulowany"
+    }
+  },
+  "RU": {
+    "language": "Russian",
+    "likert_agreement": {
+      "1": "1 — Категорически не согласен",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 — Полностью согласен"
+    },
+    "fimi_detection": {
+      "1": "1 - Этот заголовок точно НЕ сфальсифицирован.",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Этот заголовок точно сфальсифицирован."
+    }
+  },
+  "SR": {
+    "language": "Serbian",
+    "likert_agreement": {
+      "1": "1 - Уопште се не слажем",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - У потпуности се слажем"
+    },
+    "fimi_detection": {
+      "1": "1 - Овај наслов ниjе изобличен",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Овај наслов је дефинитивно изобличен"
+    }
+  },
+  "TR": {
+    "language": "Turkish",
+    "likert_agreement": {
+      "1": "1 - Kesinlikle katılmıyorum",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Kesinlikle katılıyorum"
+    },
+    "fimi_detection": {
+      "1": "1 - Bu başlık kesinlikle manipüle edilmemiştir",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Bu başlık kesinlikle manipüle edilmiştir"
+    }
+  },
+  "UK": {
+    "language": "Ukrainian",
+    "likert_agreement": {
+      "1": "1 - Категорично не згоден",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Повністю згоден"
+    },
+    "fimi_detection": {
+      "1": "1 - Цей заголовок точно НЕ маніпульований",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7 - Цей заголовок точно маніпульований"
+    }
+  }
+}

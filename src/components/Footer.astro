@@ -1,0 +1,85 @@
+---
+import { url, NAV } from '../lib/paths';
+import EuFunded from './EuFunded.astro';
+---
+<footer class="site-foot">
+  <div class="gradient-rule"></div>
+  <div class="wrap foot-grid">
+    <div class="foot-brand">
+      <div class="brand-name">DisInfor<span class="meter">Meter</span></div>
+      <p class="foot-tag">A validated population indicator for receptivity to, and detection of,
+        Foreign Information Manipulation and Interference (FIMI).</p>
+      <p class="foot-cite mono">DE-CONSPIRATOR · Deliverable D5.2 · WP5 · PU</p>
+    </div>
+
+    <nav class="foot-nav" aria-label="Footer">
+      <h2 class="foot-h">Explore</h2>
+      {NAV.map((i) => <a href={url(i.href)}>{i.label}</a>)}
+    </nav>
+
+    <div class="foot-meta">
+      <h2 class="foot-h">Use &amp; attribution</h2>
+      <p>Content under <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC-BY 4.0</a>.
+        A population-monitoring and research instrument, <strong>not</strong> a tool for
+        individual risk-profiling, content moderation, or enforcement.</p>
+      <p class="foot-links">
+        <a href="https://deconspirator.eu/" target="_blank" rel="noopener">The DE-CONSPIRATOR project ↗</a>
+      </p>
+      <p class="mono foot-grant">Horizon Europe · Grant Agreement No. 101132671</p>
+    </div>
+  </div>
+
+  <div class="wrap foot-eu">
+    <a class="foot-logo-plate" href="https://deconspirator.eu/" target="_blank" rel="noopener" aria-label="DE-CONSPIRATOR project website">
+      <img src={url('/brand/logo-header.png')} alt="DE-CONSPIRATOR" width="190" height="48" />
+    </a>
+    <EuFunded tone="dark" />
+    <p class="foot-disclaimer">Funded by the European Union. Views and opinions expressed are those of the authors only
+      and do not necessarily reflect those of the European Union or the granting authority. Neither can be held responsible for them.</p>
+  </div>
+
+  <div class="wrap foot-dedication">
+    <p>This deliverable is dedicated to the memory of Justina Baršytė, a dear friend and a valued colleague,
+      whose inspiration and vision made this work possible.</p>
+  </div>
+</footer>
+
+<style>
+  .site-foot { background: var(--navy); color: #C7CBDE; margin-top: var(--sp-9); }
+  .site-foot .gradient-rule { border-radius: 0; height: 5px; }
+  .foot-grid {
+    display: grid; grid-template-columns: 1.6fr 1fr 1.5fr; gap: var(--sp-6);
+    padding-block: var(--sp-8) var(--sp-6);
+  }
+  .brand-name { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; color: #fff; letter-spacing: -0.02em; }
+  .brand-name .meter { color: var(--azure); }
+  .foot-tag { margin-top: var(--sp-3); max-width: 38ch; color: #AEB5D8; }
+  .foot-cite { margin-top: var(--sp-4); font-size: 0.68rem; letter-spacing: 0.12em; color: var(--peri); text-transform: uppercase; }
+
+  .foot-h { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--azure); margin-bottom: var(--sp-3); font-weight: 600; }
+  .foot-nav { display: flex; flex-direction: column; gap: 0.4em; align-items: flex-start; }
+  .foot-nav a, .foot-meta a { color: #C7CBDE; text-decoration-color: color-mix(in srgb, var(--azure) 50%, transparent); }
+  .foot-nav a:hover, .foot-meta a:hover { color: #fff; text-decoration-color: var(--azure); }
+  .foot-meta p + p { margin-top: var(--sp-3); }
+  .foot-meta strong { color: #fff; }
+  .foot-links { font-weight: 600; }
+  .foot-grant { font-size: 0.7rem; color: var(--peri); }
+
+  .foot-eu {
+    display: flex; align-items: center; gap: var(--sp-5); flex-wrap: wrap;
+    padding-block: var(--sp-5); border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  .foot-logo-plate {
+    flex: none; display: inline-flex; align-items: center; background: #fff;
+    padding: 0.4em 0.7em; border-radius: var(--radius); box-shadow: var(--shadow);
+  }
+  .foot-logo-plate img { height: 30px; width: auto; }
+  .foot-disclaimer { flex: 1; min-width: 16rem; font-size: var(--step--1); color: #97A0CC; line-height: 1.5; }
+
+  .foot-dedication {
+    padding-block: var(--sp-5); border-top: 1px solid rgba(255,255,255,0.12);
+    font-style: italic; color: #8088B6; font-size: var(--step--1);
+  }
+  @media (max-width: 760px) { .foot-grid { grid-template-columns: 1fr; gap: var(--sp-6); } }
+</style>

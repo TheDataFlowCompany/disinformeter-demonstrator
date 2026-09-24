@@ -1,0 +1,6 @@
+# Playwright artefacts. These live alongside specs by default; we explicitly
+# keep them out of the static-asset tree since everything in public/ would
+# otherwise be served at thedataflowcompany.com.
+test-results/
+playwright-report/
+playwright/.cache/

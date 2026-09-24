@@ -1,0 +1,9 @@
+{
+  "name": "deconspirator-choice-task",
+  "private": true,
+  "type": "commonjs",
+  "description": "Self-contained FIMI choice-task bundle (vanilla JS/CSS + stimuli). CommonJS so its node:test suites run independently of the parent Astro (ESM) project.",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}

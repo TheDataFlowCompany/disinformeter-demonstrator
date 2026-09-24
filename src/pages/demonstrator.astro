@@ -1,0 +1,677 @@
+---
+// The Demonstrator (D5.2): one simulated, authentic-feeling survey that runs the
+// DisInforMeter toolkit end-to-end — short questionnaire → personalized feedback
+// → FIMI choice task. The questionnaire collects the 19 receptivity items; FIMI
+// detection is covered behaviourally by the choice task rather than the rating
+// items. EN + LT (the two languages with full parity). Nothing is persisted;
+// domain scoring for the feedback happens in the browser.
+import Survey from '../layouts/Survey.astro';
+import { SURVEY, fb } from '../lib/data';
+import { url } from '../lib/paths';
+
+// ---- bilingual UI chrome (grounded in the fielded S4/S5 Qualtrics wording) ----
+const UI = {
+  // header / footer (data-i18n hooks live in the layout)
+  chip: { EN: 'Demonstrator · simulation', LT: 'Demonstracija · imitacija' },
+  exit: { EN: 'Leave', LT: 'Išeiti' },
+  footnote: {
+    EN: 'This is a simulation for demonstration. No responses are stored or transmitted: everything runs in your browser and is discarded when you leave or reload.',
+    LT: 'Tai demonstracinė imitacija. Atsakymai nesaugomi ir neperduodami — viskas vyksta jūsų naršyklėje ir dingsta išėjus ar perkrovus puslapį.',
+  },
+
+  // progress stage labels
+  stepQuestionnaire: { EN: 'Questionnaire', LT: 'Klausimynas' },
+  stepResults: { EN: 'Your feedback', LT: 'Grįžtamasis ryšys' },
+  stepTask: { EN: 'Headline task', LT: 'Antraščių užduotis' },
+  stepDone: { EN: 'Complete', LT: 'Baigta' },
+
+  // welcome
+  welcomeTitle: { EN: 'Experience the DisInforMeter', LT: 'Išbandykite „DisInforMeter“' },
+  welcomeLede: {
+    EN: 'Answer a short questionnaire, get personalized feedback tailored to your answers, then try the headline task, the instrument end to end, exactly as a respondent experiences it.',
+    LT: 'Užpildykite trumpą klausimyną, gaukite asmeninį, pagal jūsų atsakymus pritaikytą grįžtamąjį ryšį ir išbandykite antraščių užduotį — priemonė nuo pradžios iki pabaigos, lygiai taip, kaip ją patiria respondentas.',
+  },
+  stepCardQ: { EN: '19 short statements', LT: '19 trumpų teiginių' },
+  stepCardR: { EN: 'Personalized, tailored to your answers', LT: 'Asmeninis, pritaikytas pagal jūsų atsakymus' },
+  stepCardT: { EN: 'A behavioural detection task', LT: 'Elgsenos atpažinimo užduotis' },
+  minutes: { EN: 'About 5 minutes', LT: 'Apie 5 minutes' },
+  simNote: {
+    EN: 'A simulation. Your answers are scored in your browser to reproduce the experience: they are never stored or sent anywhere.',
+    LT: 'Imitacija. Jūsų atsakymai vertinami tik jūsų naršyklėje, kad atkurtų patirtį — jie niekur nesaugomi ir neperduodami.',
+  },
+  startBtn: { EN: 'Begin', LT: 'Pradėti' },
+
+  // questionnaire — agreement battery
+  agreeInstr: {
+    EN: 'Please indicate how much you agree or disagree with each of the following statements.',
+    LT: 'Prašome nurodyti, kiek sutinkate ar nesutinkate su kiekvienu iš šių teiginių.',
+  },
+
+  // nav + validation
+  back: { EN: 'Back', LT: 'Atgal' },
+  continue: { EN: 'Continue', LT: 'Tęsti' },
+  answerAll: {
+    EN: 'Please answer every statement on this page to continue.',
+    LT: 'Kad galėtumėte tęsti, atsakykite į visus šios dalies teiginius.',
+  },
+  fillRandom: { EN: 'Fill this page at random', LT: 'Užpildyti atsitiktinai' },
+  demoTag: { EN: 'demo', LT: 'demonstracijai' },
+
+  // personalized feedback
+  scoring: { EN: 'Preparing your feedback…', LT: 'Ruošiamas grįžtamasis ryšys…' },
+  resultsTitle: { EN: 'Your personalized feedback', LT: 'Jūsų asmeninis grįžtamasis ryšys' },
+  resultsLede: {
+    EN: 'Based on your answers, this is the feedback a respondent receives, highlighting where emotionally engaging or manipulative messages may resonate with you more, or less. It reflects your own responses; it is not a verdict or a risk score.',
+    LT: 'Remiantis jūsų atsakymais, tai grįžtamasis ryšys, kurį gauna respondentas — jis parodo, kur emociškai įtraukiančios ar manipuliatyvios žinutės gali jus paveikti labiau, o kur mažiau. Jis atspindi jūsų pačių atsakymus; tai nėra nei nuosprendis, nei rizikos rodiklis.',
+  },
+  sharedTag: { EN: 'Shown to everyone', LT: 'Rodoma visiems' },
+  resonateMore: { EN: 'Where messages may resonate more', LT: 'Kur žinutės gali paveikti labiau' },
+  resonateLess: { EN: 'Where messages may resonate less', LT: 'Kur žinutės gali paveikti mažiau' },
+  resonateMoreMech: { EN: 'your two highest domains', LT: 'dvi aukščiausios jūsų sritys' },
+  resonateLessMech: { EN: 'your two lowest domains', LT: 'dvi žemiausios jūsų sritys' },
+  toTaskBtn: { EN: 'Continue to the headline task', LT: 'Tęsti į antraščių užduotį' },
+
+  // choice task
+  taskTitle: { EN: 'Spot the manipulated headline', LT: 'Atpažinkite manipuliuotą antraštę' },
+  taskInstr: {
+    EN: 'Two news clippings are hidden behind tiles. Reveal them, then pick the one you believe is foreign-manipulated. A short practice round comes first.',
+    LT: 'Dvi naujienų iškarpos paslėptos po langeliais. Atidenkite jas ir pasirinkite tą, kuri, jūsų manymu, yra manipuliuota užsienio šalies. Iš pradžių bus trumpas bandomasis raundas.',
+  },
+  taskLiveTag: { EN: 'Live task · all data discarded', LT: 'Tiesioginė užduotis · duomenys neišsaugomi' },
+  taskFinishedNote: {
+    EN: 'When you have finished the task above, or seen enough, continue.',
+    LT: 'Kai baigsite užduotį viršuje arba pamatysite pakankamai, tęskite.',
+  },
+  finishBtn: { EN: 'Finish', LT: 'Baigti' },
+
+  // completion
+  doneTitle: { EN: 'You have seen the whole toolkit', LT: 'Pamatėte visą priemonę' },
+  doneLede: {
+    EN: 'You completed the DisInforMeter questionnaire, received personalized feedback tailored to your answers, and tried the FIMI choice task — the same components survey authorities and researchers deploy in the field.',
+    LT: 'Užbaigėte „DisInforMeter“ klausimyną, gavote pagal jūsų atsakymus pritaikytą asmeninį grįžtamąjį ryšį ir išbandėte FIMI pasirinkimo užduotį — tuos pačius komponentus, kuriuos lauko sąlygomis naudoja apklausų institucijos ir tyrėjai.',
+  },
+  doneSimReminder: {
+    EN: 'Nothing you entered was stored. Reload for a fresh run.',
+    LT: 'Jokie jūsų įvesti duomenys nebuvo išsaugoti. Perkraukite, kad pradėtumėte iš naujo.',
+  },
+  restartBtn: { EN: 'Start over', LT: 'Pradėti iš naujo' },
+  debriefLink: { EN: 'How the headlines were manipulated (PDF)', LT: 'Kaip antraštės buvo manipuliuotos (PDF)' },
+  exploreLink: { EN: 'Explore the full toolkit', LT: 'Susipažinkite su visa priemone' },
+};
+
+// feedback-domain metadata: key → bilingual label + identity hue. The four
+// feedback domains drive the personalized feedback; the General Anchor is
+// computed for completeness but not surfaced (it is the ultra-brief signal).
+const DOMAIN_META = {
+  threat: { EN: 'Threat', LT: 'Grėsmė', hue: '--d-threat' },
+  aband: { EN: 'Betrayal / Abandonment', LT: 'Išdavystė / palikimas', hue: '--d-aband' },
+  fear: { EN: 'Fear / Pragmatism', LT: 'Baimė / pragmatizmas', hue: '--d-fear' },
+  super: { EN: 'Foreign-Power Admiration', LT: 'Susižavėjimas užsienio galiomis', hue: '--d-admire' },
+  general: { EN: 'General Anchor', LT: 'Bendrasis indeksas', hue: '--d-general' },
+};
+
+// Everything the client script needs, embedded as JSON (a processed <script>
+// can't use Astro's define:vars, so it reads this — same pattern as choice-embed).
+const DATA = {
+  UI,
+  domainMeta: DOMAIN_META,
+  // only the feedback fields the client renders
+  fb: {
+    intro: fb.intro,
+    closing: fb.closing,
+    domains: fb.domains.map((d) => ({ key: d.key, messages: d.messages })),
+  },
+  scales: SURVEY.scales,
+  embedBase: url('/choice-embed'),
+  debriefHref: url('/downloads/DeConspirator_ChoiceTask_Debrief.pdf'),
+  exploreHref: url('/explorer'),
+};
+
+// helper: render the 1–7 radio scale for one item
+const SCALE = [1, 2, 3, 4, 5, 6, 7];
+
+const agreePages = SURVEY.agreementPages;
+---
+<Survey>
+  <!-- ─────────────────────── WELCOME ─────────────────────── -->
+  <section class="step step-welcome" id="step-welcome" data-step="welcome">
+    <h1 class="sv-title" data-i18n="welcomeTitle">Experience the DisInforMeter</h1>
+    <p class="sv-lede prose" data-i18n="welcomeLede" set:html={UI.welcomeLede.EN}></p>
+
+    <ol class="sv-steps">
+      <li class="sv-stepcard"><span class="sv-stepcard-no mono">1</span>
+        <strong data-i18n="stepQuestionnaire">Questionnaire</strong>
+        <span data-i18n="stepCardQ">27-item short module</span></li>
+      <li class="sv-stepcard"><span class="sv-stepcard-no mono">2</span>
+        <strong data-i18n="stepResults">Your results</strong>
+        <span data-i18n="stepCardR">Your domain scores + feedback</span></li>
+      <li class="sv-stepcard"><span class="sv-stepcard-no mono">3</span>
+        <strong data-i18n="stepTask">Headline task</strong>
+        <span data-i18n="stepCardT">A behavioural detection task</span></li>
+    </ol>
+
+    <p class="sv-sim" data-i18n="simNote">{UI.simNote.EN}</p>
+    <div class="sv-welcome-cta">
+      <button type="button" class="btn btn-primary lg" data-go="next">
+        <span data-i18n="startBtn">Begin</span> <span aria-hidden="true">→</span>
+      </button>
+      <span class="sv-minutes mono" data-i18n="minutes">About 5 minutes</span>
+    </div>
+  </section>
+
+  <!-- ─────────────────────── AGREEMENT BATTERY ─────────────────────── -->
+  {agreePages.map((page, pi) => (
+    <section class="step step-q" id={`step-agree-${pi}`} data-step="question" hidden>
+      <p class="q-instr" data-i18n="agreeInstr">{UI.agreeInstr.EN}</p>
+      <div class="q-list">
+        {page.map((it) => (
+          <div class="q" data-code={it.code}>
+            <p class="q-text" id={`lab-${it.code}`} data-en={it.text.EN} data-lt={it.text.LT}>{it.text.EN}</p>
+            <div class="q-scale" data-scale="agreement" role="radiogroup" aria-labelledby={`lab-${it.code}`}>
+              <span class="q-anchor lo" data-anchor="lo"></span>
+              <div class="q-radios">
+                {SCALE.map((n) => (
+                  <label class="q-opt">
+                    <input type="radio" name={it.code} value={n} aria-label={String(n)} />
+                    <span class="q-opt-n">{n}</span>
+                  </label>
+                ))}
+              </div>
+              <span class="q-anchor hi" data-anchor="hi"></span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p class="q-warn" role="alert" data-i18n="answerAll" hidden>{UI.answerAll.EN}</p>
+      <div class="sv-nav">
+        <button type="button" class="btn btn-ghost" data-go="prev"><span aria-hidden="true">←</span> <span data-i18n="back">Back</span></button>
+        <button type="button" class="sv-fill mono" data-fill>
+          <span data-i18n="fillRandom">Fill this page at random</span>
+          <span class="sv-fill-tag" data-i18n="demoTag">demo</span>
+        </button>
+        <button type="button" class="btn btn-primary" data-go="next" data-validate><span data-i18n="continue">Continue</span> <span aria-hidden="true">→</span></button>
+      </div>
+    </section>
+  ))}
+
+  <!-- ─────────────────────── PERSONALIZED FEEDBACK ─────────────────────── -->
+  <section class="step step-results" id="step-results" data-step="results" hidden>
+    <div class="sv-scoring" id="sv-scoring">
+      <div class="sv-scoring-spin" aria-hidden="true"></div>
+      <p class="mono" data-i18n="scoring">Preparing your feedback…</p>
+    </div>
+
+    <div class="sv-results" id="sv-results" hidden>
+      <h1 class="sv-title" data-i18n="resultsTitle">Your personalized feedback</h1>
+      <p class="sv-lede prose" data-i18n="resultsLede">{UI.resultsLede.EN}</p>
+
+      <div class="sv-feedback">
+        <article class="fb-shared" id="fb-intro">
+          <p class="shared-tag mono" data-i18n="sharedTag">Shown to everyone</p>
+          <div class="fb-msg" id="fb-intro-body"></div>
+        </article>
+
+        <section class="fb-group" data-tone="more">
+          <header class="grp-head">
+            <h3 data-i18n="resonateMore">Where messages may resonate more</h3>
+            <span class="grp-mech mono" data-i18n="resonateMoreMech">your two highest domains</span>
+          </header>
+          <div class="cards" id="cards-more"></div>
+        </section>
+        <section class="fb-group" data-tone="less">
+          <header class="grp-head">
+            <h3 data-i18n="resonateLess">Where messages may resonate less</h3>
+            <span class="grp-mech mono" data-i18n="resonateLessMech">your two lowest domains</span>
+          </header>
+          <div class="cards" id="cards-less"></div>
+        </section>
+
+        <article class="fb-shared" id="fb-closing">
+          <p class="shared-tag mono" data-i18n="sharedTag">Shown to everyone</p>
+          <div class="fb-msg" id="fb-closing-body"></div>
+        </article>
+      </div>
+
+      <div class="sv-nav end">
+        <button type="button" class="btn btn-primary lg" data-go="next">
+          <span data-i18n="toTaskBtn">Continue to the headline task</span> <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────── CHOICE TASK ─────────────────────── -->
+  <section class="step step-task" id="step-task" data-step="task" hidden>
+    <h1 class="sv-title" data-i18n="taskTitle">Spot the manipulated headline</h1>
+    <p class="sv-lede prose" data-i18n="taskInstr">{UI.taskInstr.EN}</p>
+
+    <div class="ct-frame-wrap">
+      <div class="ct-frame-bar">
+        <span class="mono" data-i18n="taskLiveTag">Live task · all data discarded</span>
+      </div>
+      <iframe class="ct-frame" id="ct-frame" title="FIMI choice task" loading="lazy"></iframe>
+    </div>
+
+    <p class="sv-task-note" data-i18n="taskFinishedNote">{UI.taskFinishedNote.EN}</p>
+    <div class="sv-nav end">
+      <button type="button" class="btn btn-primary lg" data-go="next">
+        <span data-i18n="finishBtn">Finish</span> <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ─────────────────────── DONE ─────────────────────── -->
+  <section class="step step-done" id="step-done" data-step="done" hidden>
+    <div class="sv-done-mark" aria-hidden="true">✓</div>
+    <h1 class="sv-title" data-i18n="doneTitle">You have seen the whole toolkit</h1>
+    <p class="sv-lede prose" data-i18n="doneLede">{UI.doneLede.EN}</p>
+    <p class="sv-sim" data-i18n="doneSimReminder">{UI.doneSimReminder.EN}</p>
+
+    <div class="sv-done-links">
+      <a class="sv-done-link" id="done-debrief" href={DATA.debriefHref} download>
+        <span aria-hidden="true">↓</span> <span data-i18n="debriefLink">How the headlines were manipulated (PDF)</span>
+      </a>
+      <a class="sv-done-link" id="done-explore" href={DATA.exploreHref}>
+        <span data-i18n="exploreLink">Explore the full toolkit</span> <span aria-hidden="true">→</span>
+      </a>
+    </div>
+    <div class="sv-nav end">
+      <button type="button" class="btn btn-primary lg" data-restart>
+        <span aria-hidden="true">↻</span> <span data-i18n="restartBtn">Start over</span>
+      </button>
+    </div>
+  </section>
+
+  <div id="sv-data" hidden data-json={JSON.stringify(DATA)}></div>
+</Survey>
+
+<script>
+  import { scoreShortModule } from '../lib/disinformeter-score.mjs';
+
+  const DATA = JSON.parse(document.getElementById('sv-data').dataset.json);
+  const { UI, domainMeta, fb, scales, embedBase, exploreHref } = DATA;
+
+  let lang = 'EN'; // 'EN' | 'LT'
+  const responses = {}; // item code → 1..7
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---- step machine ----
+  // progress: questionnaire steps share the "Questionnaire · n/2" label; the
+  // later stages get their own. Welcome shows no progress bar.
+  const STEPS = [
+    { id: 'step-welcome', progress: null },
+    { id: 'step-agree-0', stage: 'q', n: 1, pct: 20 },
+    { id: 'step-agree-1', stage: 'q', n: 2, pct: 45 },
+    { id: 'step-results', stage: 'results', pct: 72 },
+    { id: 'step-task', stage: 'task', pct: 92 },
+    { id: 'step-done', stage: 'done', pct: 100 },
+  ];
+  const Q_TOTAL = STEPS.filter((s) => s.stage === 'q').length;
+  let idx = 0;
+
+  const sections = new Map(STEPS.map((s) => [s.id, document.getElementById(s.id)]));
+  const progress = document.getElementById('sv-progress');
+  const progressFill = document.getElementById('sv-progress-fill');
+  const progressLabel = document.getElementById('sv-progress-label');
+
+  function t(key) {
+    const v = UI[key];
+    return v ? v[lang] : '';
+  }
+
+  function showStep(i) {
+    idx = Math.max(0, Math.min(STEPS.length - 1, i));
+    const step = STEPS[idx];
+    for (const [id, el] of sections) el.hidden = id !== step.id;
+
+    if (step.progress === null) {
+      progress.hidden = true;
+    } else {
+      progress.hidden = false;
+      progressFill.style.width = step.pct + '%';
+      progressLabel.textContent =
+        step.stage === 'q' ? `${t('stepQuestionnaire')} · ${step.n}/${Q_TOTAL}`
+        : step.stage === 'results' ? t('stepResults')
+        : step.stage === 'task' ? t('stepTask')
+        : t('stepDone');
+    }
+
+    if (step.stage === 'results') enterResults();
+    if (step.stage === 'task') enterTask();
+
+    // focus the step heading / scroll to top for an authentic page-turn
+    const focusTarget = sections.get(step.id).querySelector('h1, .q-instr');
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    if (focusTarget) { focusTarget.setAttribute('tabindex', '-1'); focusTarget.focus({ preventScroll: true }); }
+  }
+
+  // ---- validation (forced response on questionnaire pages) ----
+  function validateStep(el) {
+    let ok = true;
+    el.querySelectorAll('.q').forEach((q) => {
+      const code = q.dataset.code;
+      const answered = responses[code] != null;
+      q.classList.toggle('unanswered', !answered);
+      if (!answered) ok = false;
+    });
+    const warn = el.querySelector('.q-warn');
+    if (warn) warn.hidden = ok;
+    if (!ok) {
+      const first = el.querySelector('.q.unanswered');
+      if (first) first.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+    }
+    return ok;
+  }
+
+  // ---- navigation wiring ----
+  document.addEventListener('click', (e) => {
+    const goBtn = e.target.closest('[data-go]');
+    if (goBtn) {
+      const dir = goBtn.dataset.go;
+      const cur = sections.get(STEPS[idx].id);
+      if (dir === 'next' && goBtn.hasAttribute('data-validate') && !validateStep(cur)) return;
+      showStep(idx + (dir === 'next' ? 1 : -1));
+      return;
+    }
+    const fillBtn = e.target.closest('[data-fill]');
+    if (fillBtn) { fillRandom(sections.get(STEPS[idx].id)); return; }
+    const restartBtn = e.target.closest('[data-restart]');
+    if (restartBtn) { location.reload(); return; }
+  });
+
+  // capture every radio change into `responses`
+  document.addEventListener('change', (e) => {
+    const r = e.target;
+    if (r && r.type === 'radio' && r.name) {
+      responses[r.name] = Number(r.value);
+      const q = r.closest('.q');
+      if (q) q.classList.remove('unanswered');
+    }
+  });
+
+  function fillRandom(el) {
+    el.querySelectorAll('.q-scale').forEach((scale) => {
+      const name = scale.closest('.q').dataset.code;
+      const v = 1 + Math.floor(Math.random() * 7);
+      const input = scale.querySelector(`input[value="${v}"]`);
+      if (input) { input.checked = true; responses[name] = v; }
+      scale.closest('.q').classList.remove('unanswered');
+    });
+    const warn = el.querySelector('.q-warn');
+    if (warn) warn.hidden = true;
+  }
+
+  // ---- language ----
+  function strip(s) { return (s || '').replace(/^\s*\d+\s*[-–]\s*/, '').trim(); }
+
+  function applyAnchors() {
+    const set = scales[lang].likert_agreement;
+    document.querySelectorAll('.q-scale').forEach((scale) => {
+      scale.querySelector('[data-anchor="lo"]').textContent = strip(set['1']);
+      scale.querySelector('[data-anchor="hi"]').textContent = strip(set['7']);
+    });
+  }
+
+  function applyLang() {
+    document.documentElement.lang = lang === 'LT' ? 'lt' : 'en';
+    // chrome strings
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const key = el.dataset.i18n;
+      if (UI[key]) {
+        // welcomeLede carries inline emphasis markup
+        if (key === 'welcomeLede') el.innerHTML = UI[key][lang];
+        else el.textContent = UI[key][lang];
+      }
+    });
+    // item text (statements + headlines)
+    document.querySelectorAll('[data-en][data-lt]').forEach((el) => {
+      el.textContent = lang === 'LT' ? el.dataset.lt : el.dataset.en;
+    });
+    applyAnchors();
+    // language buttons
+    document.querySelectorAll('.sv-lang-btn').forEach((b) => {
+      const on = b.dataset.lang === lang;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+    // re-render any already-built dynamic surfaces
+    if (lastScore) renderFeedback(lastScore);
+    if (taskLoaded) loadTask();
+    // refresh the progress label in the new language
+    if (!progress.hidden) showStepLabelRefresh();
+  }
+  function showStepLabelRefresh() {
+    const step = STEPS[idx];
+    progressLabel.textContent =
+      step.stage === 'q' ? `${t('stepQuestionnaire')} · ${step.n}/${Q_TOTAL}`
+      : step.stage === 'results' ? t('stepResults')
+      : step.stage === 'task' ? t('stepTask') : t('stepDone');
+  }
+
+  document.querySelectorAll('.sv-lang-btn').forEach((b) =>
+    b.addEventListener('click', () => { lang = b.dataset.lang; applyLang(); }));
+
+  // ---- results: personalized feedback ----
+  let lastScore = null;
+  function enterResults() {
+    const scoring = document.getElementById('sv-scoring');
+    const out = document.getElementById('sv-results');
+    // domain means + top-2/bottom-2 ranking drive the feedback (the FIMI sets the
+    // scorer also returns are unused here — FIMI detection lives in the choice task).
+    lastScore = scoreShortModule(responses);
+    renderFeedback(lastScore);
+    if (reduce) { scoring.hidden = true; out.hidden = false; }
+    else {
+      scoring.hidden = false; out.hidden = true;
+      setTimeout(() => { scoring.hidden = true; out.hidden = false; }, 950);
+    }
+  }
+
+  // ---- personalized feedback (mirrors src/pages/feedback.astro rendering) ----
+  const flang = () => (lang === 'LT' ? 'lt' : 'en');
+
+  function renderFeedback(s) {
+    const fbByKey = {};
+    fb.domains.forEach((d) => (fbByKey[d.key] = d));
+    document.getElementById('fb-intro-body').innerHTML = formatBlock(fb.intro[flang()]);
+    document.getElementById('fb-closing-body').innerHTML = formatBlock(fb.closing[flang()]);
+
+    const level = s.ranking || {};
+    const byScoreDesc = (a, b) => (s.domains[b] - s.domains[a]);
+    const more = Object.keys(level).filter((k) => level[k] === 'high').sort(byScoreDesc);
+    const less = Object.keys(level).filter((k) => level[k] === 'low').sort(byScoreDesc);
+    document.getElementById('cards-more').innerHTML = more.map((k) => cardHtml(k, 'high', s)).join('');
+    document.getElementById('cards-less').innerHTML = less.map((k) => cardHtml(k, 'low', s)).join('');
+  }
+
+  function cardHtml(key, level, s) {
+    const meta = domainMeta[key];
+    const fbDom = fb.domains.find((d) => d.key === key);
+    const score = s.domains[key];
+    const pct = score == null ? 0 : Math.round((score / 7) * 100);
+    const msg = fbDom.messages[level][flang()].replace(/^\s*[-•–]\s*/, '');
+    return `<article class="fb-card" style="--c: var(${meta.hue})">
+      <div class="fb-card-head">
+        <span class="fb-dot" aria-hidden="true"></span>
+        <span class="fb-domain">${escapeHtml(meta[lang])}</span>
+        <span class="fb-score mono">${score == null ? '–' : score.toFixed(1)}<span class="fb-score-max">/7</span></span>
+      </div>
+      <div class="fb-meter" aria-hidden="true"><i style="width:${pct}%"></i></div>
+      <div class="fb-msg">${formatBlock(msg)}</div>
+    </article>`;
+  }
+
+  function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+  // plain-text → safe HTML (blank-line paragraphs; "•"/"-" lines → list)
+  function formatBlock(text) {
+    return (text || '').split(/\n\s*\n/).map((s) => s.trim()).filter(Boolean).map((seg) => {
+      const lines = seg.split('\n').map((l) => l.trim()).filter(Boolean);
+      let html = '', para = [], list = [];
+      const flushP = () => { if (para.length) { html += `<p>${para.map(escapeHtml).join('<br>')}</p>`; para = []; } };
+      const flushUl = () => { if (list.length) { html += `<ul>${list.map((l) => `<li>${escapeHtml(l)}</li>`).join('')}</ul>`; list = []; } };
+      for (const l of lines) {
+        const m = l.match(/^[•\-]\s?(.*)$/);
+        if (m) { flushP(); list.push(m[1]); } else { flushUl(); para.push(l); }
+      }
+      flushP(); flushUl();
+      return html;
+    }).join('');
+  }
+
+  // ---- choice task ----
+  const frame = document.getElementById('ct-frame');
+  let taskLoaded = false;
+  const MIN_H = 540;
+  function loadTask() {
+    const src = `${embedBase}?lang=${lang.toLowerCase()}&followup=1&feedback=1`;
+    frame.style.height = MIN_H + 'px';
+    frame.src = src;
+    taskLoaded = true;
+  }
+  function enterTask() { loadTask(); }
+
+  // size the frame to its content (the embed posts its height; grow-only per load)
+  let maxH = MIN_H;
+  frame.addEventListener('load', () => { maxH = MIN_H; frame.style.height = MIN_H + 'px'; });
+  window.addEventListener('message', (e) => {
+    if (e.source !== frame.contentWindow) return;
+    const d = e.data;
+    if (d && d.type === 'decon-embed-height' && typeof d.height === 'number') {
+      const v = Math.max(MIN_H, Math.ceil(d.height));
+      if (v !== maxH) { maxH = v; frame.style.height = v + 'px'; }
+    }
+  });
+
+  // ---- boot ----
+  applyLang();
+  showStep(0);
+</script>
+
+<style>
+  .step { animation: sv-in 0.4s var(--ease) both; }
+  @keyframes sv-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .step { animation: none; } }
+
+  .sv-title { font-size: var(--step-4); font-weight: 800; margin-top: var(--sp-3); outline: none; }
+  .sv-lede { margin-top: var(--sp-4); font-size: var(--step-1); color: var(--text-muted); }
+  .sv-lede :global(strong) { color: var(--text); }
+
+  /* ---- welcome ---- */
+  .sv-steps { list-style: none; padding: 0; margin: var(--sp-6) 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); }
+  .sv-stepcard { display: flex; flex-direction: column; gap: 2px; padding: var(--sp-4) var(--sp-5);
+    background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius-lg); }
+  .sv-stepcard-no { width: 1.7rem; height: 1.7rem; display: grid; place-items: center; border-radius: 999px;
+    background: var(--navy); color: #fff; font-weight: 700; font-size: 0.8rem; margin-bottom: var(--sp-2); }
+  .sv-stepcard strong { font-family: var(--font-display); color: var(--navy); }
+  .sv-stepcard span:last-child { color: var(--text-muted); font-size: 0.9rem; }
+  .sv-sim { margin-top: var(--sp-6); padding: var(--sp-4) var(--sp-5); background: var(--azure-soft);
+    border-radius: var(--radius); color: var(--azure-700); font-size: 0.9rem; max-width: var(--maxw-prose); }
+  .sv-welcome-cta { display: flex; align-items: center; gap: var(--sp-5); margin-top: var(--sp-6); flex-wrap: wrap; }
+  .btn.lg { font-size: var(--step-0); padding: 0.85em 1.6em; }
+  .sv-minutes { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); }
+
+  /* ---- questionnaire ---- */
+  .q-instr { font-size: var(--step-1); font-weight: 600; color: var(--navy); max-width: var(--maxw-prose);
+    padding-bottom: var(--sp-4); border-bottom: 2px solid var(--azure-soft); }
+  .q-list { display: grid; gap: var(--sp-4); margin-top: var(--sp-5); }
+  .q { padding: var(--sp-5); background: var(--surface); border: 1px solid var(--hairline);
+    border-radius: var(--radius-lg); transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease); }
+  .q.unanswered { border-color: var(--crimson); box-shadow: 0 0 0 3px var(--crimson-soft); }
+  .q-text { font-size: 1.06rem; line-height: 1.45; color: var(--text); }
+
+  /* 1–7 radio scale */
+  .q-scale { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--sp-3) var(--sp-4); margin-top: var(--sp-4); }
+  .q-anchor { font-size: 0.72rem; color: var(--text-faint); max-width: 9rem; line-height: 1.25; }
+  .q-anchor.lo { text-align: right; }
+  .q-radios { display: flex; justify-content: space-between; gap: 0.4rem; }
+  .q-opt { flex: 1; display: grid; justify-items: center; gap: 0.3em; cursor: pointer; }
+  .q-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .q-opt-n { width: 2.4rem; max-width: 100%; aspect-ratio: 1; display: grid; place-items: center; border-radius: 999px;
+    border: 1.5px solid var(--hairline-strong); background: var(--surface); color: var(--text-muted);
+    font-family: var(--font-mono); font-weight: 500; font-size: 0.92rem;
+    transition: border-color 0.12s var(--ease), background 0.12s var(--ease), color 0.12s var(--ease), transform 0.1s var(--ease); }
+  .q-opt:hover .q-opt-n { border-color: var(--navy-300); }
+  .q-opt input:checked + .q-opt-n { background: var(--navy); border-color: var(--navy); color: #fff; transform: scale(1.06); }
+  .q-opt input:focus-visible + .q-opt-n { outline: 2px solid var(--azure-600); outline-offset: 2px; }
+
+  .q-warn { margin-top: var(--sp-4); color: var(--crimson-700); font-weight: 600; font-size: 0.92rem; }
+
+  /* ---- nav ---- */
+  .sv-nav { display: flex; align-items: center; gap: var(--sp-4); margin-top: var(--sp-6); flex-wrap: wrap; }
+  .sv-nav.end { justify-content: flex-end; }
+  .sv-fill { margin-left: auto; background: none; border: 0; cursor: pointer; color: var(--text-faint);
+    font-size: 0.72rem; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 0.5em; text-decoration: underline;
+    text-underline-offset: 2px; text-decoration-color: var(--hairline-strong); }
+  .sv-fill:hover { color: var(--azure-700); }
+  .sv-fill-tag { font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15em 0.5em;
+    border-radius: 999px; background: var(--surface-2); border: 1px solid var(--hairline-strong); text-decoration: none; }
+
+  /* ---- scoring transition ---- */
+  .sv-scoring { display: grid; place-items: center; gap: var(--sp-4); padding: var(--sp-9) 0; color: var(--text-faint); }
+  .sv-scoring-spin { width: 2.6rem; height: 2.6rem; border-radius: 999px; border: 3px solid var(--hairline);
+    border-top-color: var(--azure); animation: sv-spin 0.8s linear infinite; }
+  @keyframes sv-spin { to { transform: rotate(360deg); } }
+
+  /* ---- feedback (shared look with /feedback) ---- */
+  .sv-feedback { margin-top: var(--sp-6); display: grid; gap: var(--sp-6); }
+  .fb-shared { padding: var(--sp-5); background: var(--surface-2); border-radius: var(--radius); }
+  .shared-tag { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--azure-700); margin-bottom: var(--sp-3); }
+  .fb-group { --g: var(--azure-600); --g-soft: var(--azure-soft); --g-tint: color-mix(in srgb, var(--azure) 6%, var(--surface)); }
+  .fb-group[data-tone="less"] { --g: var(--slate); --g-soft: var(--peri-100); --g-tint: color-mix(in srgb, var(--slate) 6%, var(--surface)); }
+  .grp-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3);
+    margin-bottom: var(--sp-3); padding-bottom: var(--sp-2); border-bottom: 2px solid var(--g-soft); }
+  .grp-head h3 { font-size: var(--step-1); color: var(--navy); font-weight: 700; }
+  .grp-mech { font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); flex: none; }
+  .cards { display: grid; gap: var(--sp-4); }
+
+  /* ---- choice-task frame ---- */
+  .ct-frame-wrap { margin-top: var(--sp-6); border: 1px solid var(--hairline-strong); border-radius: var(--radius-lg);
+    overflow: hidden; box-shadow: var(--shadow); background: var(--surface); }
+  .ct-frame-bar { padding: 0.55em var(--sp-4); background: var(--navy); color: #C7CBDE; font-size: 0.7rem; letter-spacing: 0.08em; }
+  .ct-frame-bar .mono { text-transform: uppercase; }
+  .ct-frame { width: 100%; height: 540px; border: 0; display: block; background: var(--ground); }
+  .sv-task-note { margin-top: var(--sp-4); color: var(--text-faint); font-size: 0.88rem; }
+
+  /* ---- done ---- */
+  .step-done { text-align: center; padding-top: var(--sp-6); }
+  .sv-done-mark { width: 3.4rem; height: 3.4rem; margin: 0 auto var(--sp-4); display: grid; place-items: center;
+    border-radius: 999px; background: var(--azure-soft); color: var(--azure-700); font-size: 1.6rem; font-weight: 800; }
+  .step-done .sv-lede { justify-content: center; margin-inline: auto; }
+  .step-done .sv-lede { text-align: center; }
+  .step-done .sv-sim { margin-inline: auto; }
+  .sv-done-links { display: flex; flex-direction: column; gap: var(--sp-3); align-items: center; margin-top: var(--sp-6); }
+  .sv-done-link { display: inline-flex; align-items: center; gap: 0.5em; font-family: var(--font-display); font-weight: 600; }
+  .step-done .sv-nav.end { justify-content: center; }
+
+  @media (max-width: 640px) {
+    .sv-steps { grid-template-columns: 1fr; }
+    .q-scale { grid-template-columns: 1fr; gap: var(--sp-3); }
+    .q-anchor { max-width: none; }
+    .q-anchor.lo { text-align: left; }
+    .q-anchor.lo::before { content: "↓ "; }
+    .q-anchor.hi { text-align: right; }
+    .q-radios { order: 1; }
+    .q-opt-n { width: 100%; aspect-ratio: auto; padding: 0.6em 0; }
+  }
+</style>
+
+<!-- Feedback cards/messages are injected at runtime, so they carry no scope hash;
+     these global rules target that injected content, kept under the page sections. -->
+<style is:global>
+  .sv-feedback .fb-msg { color: var(--text-muted); font-size: 0.95rem; }
+  .sv-feedback .fb-msg p + p { margin-top: var(--sp-3); }
+  .sv-feedback .fb-msg ul { list-style: none; margin: var(--sp-3) 0 0; padding: 0; display: grid; gap: 0.45em; }
+  .sv-feedback .fb-msg li { position: relative; padding-left: 1.3em; }
+  .sv-feedback .fb-msg li::before { content: ""; position: absolute; left: 0.1em; top: 0.62em; width: 0.45em; height: 0.45em;
+    border-radius: 999px; background: var(--azure-600); }
+  .sv-feedback .fb-card { padding: var(--sp-4) var(--sp-5); background: var(--g-tint);
+    border: 1px solid var(--hairline); border-radius: var(--radius-lg); }
+  .sv-feedback .fb-card-head { display: flex; align-items: center; gap: 0.6em; }
+  .sv-feedback .fb-dot { width: 10px; height: 10px; border-radius: 999px; background: var(--c); flex: none; }
+  .sv-feedback .fb-domain { font-family: var(--font-display); font-weight: 700; color: var(--navy); }
+  .sv-feedback .fb-score { margin-left: auto; color: var(--text-muted); font-weight: 600; }
+  .sv-feedback .fb-score-max { color: var(--text-faint); font-weight: 400; }
+  .sv-feedback .fb-meter { height: 5px; border-radius: 999px; background: var(--hairline); overflow: hidden; margin: var(--sp-3) 0 var(--sp-4); }
+  .sv-feedback .fb-meter i { display: block; height: 100%; border-radius: 999px; background: var(--g); }
+</style>

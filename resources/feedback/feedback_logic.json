@@ -1,0 +1,101 @@
+{
+  "_meta": {
+    "title": "DisInforMeter personalized-feedback intervention",
+    "study": "S5 (Lithuania, Mar–Apr 2026)",
+    "source": "docs/Personalized_Feedback_Qualtrics.qsf",
+    "generated_by": "scripts/extract/extract_feedback.py",
+    "deployed_language": "Lithuanian (lt) is the verbatim deployed text. English (en) is the project's official English wording (docs/DisInforMeter_feedback_intervention.docx); the study was fielded in Lithuanian.",
+    "n_domains": 4
+  },
+  "algorithm": {
+    "summary": "Each participant's four domain mean scores are ranked. The two highest-scoring domains are framed with the 'high'-resonance message and the two lowest with the 'low'-resonance message, so feedback targets the participant's relatively strongest and weakest domains rather than absolute cut-offs.",
+    "steps": [
+      "Read the four domain mean scores (meanscore_threat/aband/fear/super) from embedded data; abort gracefully (ranking_valid=0) if any is non-numeric.",
+      "Sort the four domains ascending by score.",
+      "Assign competition ranks (ties share a rank, eps = 1e-9).",
+      "Partition into a 'bottom' group (two lowest) and a 'top' group (two highest); ties are shuffled randomly so no domain is systematically favoured when scores are equal.",
+      "For each domain set show_<domain>_high = 1 if it is in the top group, else 0. Survey flow then displays the domain's 'high' block when the flag is 1 and its 'low' block when 0.",
+      "Advance automatically (3s safety-net timeout reveals the Next button if the script fails)."
+    ],
+    "groups": {
+      "top": "two highest-scoring domains -> 'high' message",
+      "bottom": "two lowest-scoring domains -> 'low' message"
+    },
+    "note": "The four feedback domains are Threat, Betrayal/Abandonment, Fear/Pragmatism and Foreign-Power Admiration. The General Anchor is not used for feedback. Foreign-Power Admiration ('super') combines the Russia and China admiration items."
+  },
+  "ranking_js": "Qualtrics.SurveyEngine.addOnload(function()\n{\n\t/*Place your JavaScript here to run when the page loads*/\n\n});\n\nQualtrics.SurveyEngine.addOnReady(function () {\n  this.hideNextButton();\n  var self = this;\n  var done = false;\n  var debugLog = [];\n\n  function log(msg) {\n    debugLog.push(msg);\n    Qualtrics.SurveyEngine.setEmbeddedData(\"ranking_debug\",\n      debugLog.join(\" | \"));\n  }\n\n  function parseNum(raw) {\n    if (raw === null || raw === undefined) return NaN;\n    raw = String(raw).trim().replace(\",\", \".\");\n    var v = parseFloat(raw);\n    return Number.isFinite(v) ? v : NaN;\n  }\n\n  function nearlyEqual(a, b, eps) {\n    return Math.abs(a - b) <= eps;\n  }\n\n  function shuffle(arr) {\n    for (var i = arr.length - 1; i > 0; i--) {\n      var j = Math.floor(Math.random() * (i + 1));\n      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;\n    }\n    return arr;\n  }\n\n  try {\n    var eps = 1e-9;\n\n    var rawThreat = \"${e://Field/meanscore_threat}\";\n    var rawAband  = \"${e://Field/meanscore_aband}\";\n    var rawFear   = \"${e://Field/meanscore_fear}\";\n    var rawSuper  = \"${e://Field/meanscore_super}\";\n    log(\"RAW: t=\" + rawThreat + \" a=\" + rawAband +\n        \" f=\" + rawFear + \" s=\" + rawSuper);\n\n    var scores = {\n      threat: parseNum(rawThreat),\n      aband:  parseNum(rawAband),\n      fear:   parseNum(rawFear),\n      super:  parseNum(rawSuper)\n    };\n\n    log(\"PARSED: t=\" + scores.threat + \" a=\" + scores.aband +\n        \" f=\" + scores.fear + \" s=\" + scores.super);\n\n    var keys = Object.keys(scores);\n\n    var allValid = keys.every(function (k) {\n      return Number.isFinite(scores[k]);\n    });\n    Qualtrics.SurveyEngine.setEmbeddedData(\"ranking_valid\",\n      allValid ? \"1\" : \"0\");\n\n    if (!allValid) {\n      log(\"ABORT: invalid scores\");\n      self.showNextButton();\n      return;\n    }\n\n    var sorted = keys.slice().sort(function (a, b) {\n      return scores[a] - scores[b];\n    });\n    log(\"SORTED: \" + sorted.join(\",\"));\n\n    var compRanks = {};\n    for (var i = 0; i < sorted.length; i++) {\n      var rank = i + 1;\n      for (var j = 0; j < i; j++) {\n        if (nearlyEqual(scores[sorted[j]], scores[sorted[i]], eps)) {\n          rank = compRanks[sorted[j]];\n          break;\n        }\n      }\n      compRanks[sorted[i]] = rank;\n    }\n\n    var groups = [];\n    var currentGroup = [sorted[0]];\n    for (var i = 1; i < sorted.length; i++) {\n      if (nearlyEqual(scores[sorted[i]], scores[sorted[i - 1]], eps)) {\n        currentGroup.push(sorted[i]);\n      } else {\n        groups.push(shuffle(currentGroup));\n        currentGroup = [sorted[i]];\n      }\n    }\n    groups.push(shuffle(currentGroup));\n\n    var finalOrder = [];\n    for (var g = 0; g < groups.length; g++) {\n      for (var k = 0; k < groups[g].length; k++) {\n        finalOrder.push(groups[g][k]);\n      }\n    }\n\n    var forcedRanks = {};\n    var groupLabels = {};\n    for (var i = 0; i < finalOrder.length; i++) {\n      forcedRanks[finalOrder[i]] = i + 1;\n      groupLabels[finalOrder[i]] = (i < 2) ? \"bottom\" : \"top\";\n    }\n\n    // ── NEW: Map subscale keys to show_ field names ──\n    var showMap = {\n      threat: \"show_threat_high\",\n      aband:  \"show_aband_high\",\n      fear:   \"show_fear_high\",\n      super:  \"show_superior_high\"\n    };\n\n    keys.forEach(function (s) {\n      Qualtrics.SurveyEngine.setEmbeddedData(\"rank_\" + s,\n        String(compRanks[s]));\n      Qualtrics.SurveyEngine.setEmbeddedData(\"forced_rank_\" + s,\n        String(forcedRanks[s]));\n      Qualtrics.SurveyEngine.setEmbeddedData(\"group_\" + s,\n        groupLabels[s]);\n      // ── NEW: Set show_ flags (1 for top, 0 for bottom) ──\n      Qualtrics.SurveyEngine.setEmbeddedData(showMap[s],\n        groupLabels[s] === \"top\" ? \"1\" : \"0\");\n    });\n\n    log(\"DONE: comp=\" + JSON.stringify(compRanks) +\n        \" forced=\" + JSON.stringify(forcedRanks) +\n        \" groups=\" + JSON.stringify(groupLabels));\n\n    done = true;\n    setTimeout(function () { self.clickNextButton(); }, 0);\n\n  } catch (e) {\n    log(\"ERROR: \" + e.message);\n    Qualtrics.SurveyEngine.setEmbeddedData(\"ranking_valid\", \"0\");\n    self.showNextButton();\n  }\n\n  setTimeout(function () {\n    if (!done) {\n      log(\"TIMEOUT: safety net triggered\");\n      self.showNextButton();\n    }\n  }, 3000);\n});\n\nQualtrics.SurveyEngine.addOnUnload(function()\n{\n\t/*Place your JavaScript here to run when the page is unloaded*/\n\n});",
+  "intro": {
+    "en": "Thank you for completing the DisInforMeter questionnaire.\n\nThis questionnaire examines four ways in which emotionally engaging or strategically framed manipulative information may influence people. Based on your responses, the feedback below reflects your actual performance, highlighting areas where you may be more or less affected by different types of messages.",
+    "lt": "Ačiū, kad užpildėte DisInforMeter klausimyną.\n\nŠis klausimynas nagrinėja keturis būdus, kaip emociškai įtraukianti arba strategiškai suformuluota manipuliatyvi informacija gali paveikti žmones. Remiantis jūsų atsakymais, žemiau pateikiamas grįžtamasis ryšys atspindi jūsų faktinius rezultatus, išryškindamas sritis, kuriose galite būti labiau arba mažiau paveikūs skirtingų tipų žinutėms."
+  },
+  "domains": [
+    {
+      "key": "threat",
+      "disinformeter_domain": "Threat",
+      "subscale_field": "meanscore_threat",
+      "show_flag": "show_threat_high",
+      "messages": {
+        "low": {
+          "lt": "- žinutės, kurios kalba apie grėsmes mūsų kultūrai, tapatybei ar šalies išlikimui, paprastai jums nesukelia stiprių emocijų.\n\n \n\nTokios emocinės reakcijos paprastai siejamos su gebėjimu atskirti tikras visuomenės problemas nuo pasakojimų, kurie dirbtinai išpučia grėsmes, siekiant sukelti baimę ar pyktį. Toks reagavimo pobūdis dažniausiai siejamas su didesniu atsparumu klaidinančiai informacijai, kuria priešiškos užsienio šalys perdėtai išryškina grėsmes.",
+          "en": "Messages emphasizing existential threats to culture, identity, or national survival tend to have a limited emotional impact on you.\n\nSuch emotional reactions are often linked to a greater ability to distinguish between legitimate societal challenges and narratives that exaggerate threats to provoke fear or anger. This response pattern is generally associated with greater resilience to information manipulation strategies employed by hostile foreign countries that rely on threat amplification."
+        },
+        "high": {
+          "lt": "- žinutės, pabrėžiančios grėsmes nacionalinei tapatybei, kultūrai ar socialinei tvarkai, gali turėti stiprų emocinį poveikį.\n\n \n\nTokios emocinės reakcijos yra dažnos ir suprantamos. Informacinės kampanijos, kurias vykdo priešiškos užsienio šalys, dažnai sąmoningai išryškina šias temas, nes jos veiksmingai patraukia dėmesį ir daro įtaką žmonių požiūriui. Šios taktikos atpažinimas gali padėti sumažinti jos poveikį.",
+          "en": "Messages emphasizing threats to national identity, culture, or social order may have a strong emotional impact.\n\nSuch emotional reactions are common and understandable. Information campaigns employed by hostile foreign countries often deliberately amplify these themes because they are effective at capturing attention and influencing people's views. Becoming aware of this tactic can help reduce its influence."
+        }
+      }
+    },
+    {
+      "key": "aband",
+      "disinformeter_domain": "Betrayal / Abandonment",
+      "subscale_field": "meanscore_aband",
+      "show_flag": "show_aband_high",
+      "messages": {
+        "low": {
+          "lt": "- įprastai pasitikite institucijomis ir pagrindinėmis žiniasklaidos priemonėmis, net ir tada, kai nesutinkate su jų sprendimais.\n\n \n\nŠi tendencija siejama su didesniu atsparumu pasakojimams, kurie valstybes, sąjungininkus ar žiniasklaidą vaizduoja kaip iš esmės priešiškus ar klaidinančius – tai informacinės manipuliacijos būdas, kurį dažnai naudoja priešiškos užsienio šalys.",
+          "en": "You generally maintain trust in institutions and mainstream media, even when you disagree with their decisions.\n\nThis tendency is associated with greater resistance to narratives that frame states, allies, or media as fundamentally hostile or deceptive — a method of information manipulation frequently used by hostile foreign countries."
+        },
+        "high": {
+          "lt": "- žinutės apie nepasitikėjimą institucijomis, sąjungininkais ar žiniasklaida arba apie jų abejingumą gali sukelti stiprias emocijas.\n\nTokie jausmai dažnai išnaudojami priešiškų užsienio šalių informacinėse kampanijose, kuriomis siekiama silpninti pasitikėjimą ir didinti visuomenės susiskaldymą. Supratus šią taktiką, lengviau atpažinti, kada nepasitikėjimas yra tyčia stiprinamas.",
+          "en": "Messages emphasizing distrust of, or abandonment by, institutions, allies, or media may have a strong emotional impact.\n\nSuch feelings are widely exploited in information campaigns by hostile foreign countries, which often aim to weaken trust and foster social fragmentation. Awareness of this strategy can help better recognize when distrust is being intentionally amplified."
+        }
+      }
+    },
+    {
+      "key": "fear",
+      "disinformeter_domain": "Fear / Pragmatism",
+      "subscale_field": "meanscore_fear",
+      "show_flag": "show_fear_high",
+      "messages": {
+        "low": {
+          "lt": "- baimę keliančios žinutės, pabrėžiančios neišvengiamą konfliktą arba poreikį siekti taikos „bet kokia kaina“, paprastai turi ribotą poveikį.\n\n \n\nTai didina atsparumą manipuliavimo strategijoms, kurios remiasi nerimo ir rizikos perdėjimu siekiant pateisinti nuolaidžiavimą ar pasyvumą.",
+          "en": "Fear-based messages emphasizing unavoidable conflict or the need for peace 'at any cost' generally have limited influence.\n\nThis increases resilience to manipulation strategies that rely on anxiety and risk exaggeration to justify appeasement or passivity."
+        },
+        "high": {
+          "lt": "- konflikto ir jo pasekmių baimė gali turėti įtakos kaip tam tikrose situacijose vertinama informacija.\n\n \n\nPriešiškų užsienio šalių informacinės kampanijos dažnai išnaudoja tokias baimes, vaizduodamos konfrontaciją kaip neracionalią ar katastrofišką. Šios taktikos supratimas padeda suprasti, kada kalbama apie realią riziką, o kada tiesiog siekiama įbauginti.",
+          "en": "Fear of conflict and its consequences may influence how information is evaluated in certain contexts.\n\nInformation campaigns by hostile foreign countries often exploit such fears by framing confrontation as irrational or catastrophic. Understanding this tactic can help distinguish genuine risk assessment from fear-based persuasion."
+        }
+      }
+    },
+    {
+      "key": "super",
+      "disinformeter_domain": "Foreign-Power Admiration",
+      "subscale_field": "meanscore_super",
+      "show_flag": "show_superior_high",
+      "messages": {
+        "low": {
+          "lt": "- žinutės, vaizduojančios priešiškas užsienio šalis kaip galingas ar pranašesnes, įprastai neturi įtakos jūsų emocijoms.\n\nTai didina atsparumą pasakojimams, kurie perdėtai išryškina priešiškų užsienio šalių galią, moralinį pranašumą ar neišvengiamą išaugimą, siekdami paveikti politines nuostatas.",
+          "en": "Messages portraying hostile foreign countries as powerful or superior usually do not have an influence on your emotions.\n\nThis increases resilience against narratives that exaggerate the strength, morality, or inevitable rise of hostile foreign countries in order to influence political attitudes."
+        },
+        "high": {
+          "lt": "- žinutės, vaizduojančios priešiškas užsienio šalis kaip galingas ar pranašesnes, gali sužadinti pernelyg palankias reakcijas.\n\nTokie pasakojimai dažnai naudojami priešiškų užsienio šalių informacinėse kampanijose siekiant sukurti įspūdį, kad jų veiksmai yra teisingi ir pagrįsti, bei kurti emocinį ryšį. Tokio pobūdžio naratyvo atpažinimas nepaneigia nuoširdaus susižavėjimo. Tai tiesiog padeda atskirti asmeninį vertinimą nuo informacinių atakų.",
+          "en": "Messages portraying hostile foreign countries as powerful or superior may evoke overly sympathetic reactions.\n\nSuch narratives are commonly used by hostile foreign countries in their information campaigns to build legitimacy and foster emotional attachment. Recognizing this pattern does not invalidate genuine admiration — it simply helps distinguish personal evaluation from information attacks."
+        }
+      }
+    }
+  ],
+  "closing": {
+    "lt": "Keletas paprastų įpročių, padedančių stiprinti atsparumą:\n- jei antraštė sukelia stiprią emociją, trumpam stabtelėkite.\n- patikrinkite, ar tuos pačius faktus praneša ir kitas nepriklausomas šaltinis.\n- nukopijuokite vieną pagrindinę frazę iš antraštės į paiešką ir pažiūrėkite, ar apie tai rašo ir kiti šaltiniai.\n\nInformacinė manipuliacija remiasi ne nežinojimu, o emocijomis, kurias patiria daugelis žmonių. Supratimas, kaip skirtingos žinutės veikia vertinimą, yra vienas veiksmingiausių būdų sumažinti jų poveikį.",
+    "en": "Summary of quick habits that improve resilience:\n• Pause briefly when a headline triggers strong emotion.\n• Check if another independent outlet reports the same facts.\n• Search one key phrase from the headline to confirm accuracy.\n\nInformation manipulation does not rely on ignorance — it relies on emotions that are shared by many people. Becoming aware of how different messages affect you is one of the most effective ways to reduce their influence."
+  }
+}

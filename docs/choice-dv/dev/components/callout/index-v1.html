@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deconspirator — local dev harness</title>
+  <link rel="stylesheet" href="../css/deconspirator-task.css">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px;
+      color: #222;
+    }
+    h1 { font-size: 1.25rem; margin: 0 0 4px; }
+    h2 { font-size: 0.95rem; margin: 24px 0 8px; }
+    .lede { color: #555; margin: 0 0 16px; font-size: 0.88rem; line-height: 1.5; }
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      margin: 12px 0 20px;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 10px 12px;
+      background: #f7f7f7;
+      border-radius: 4px;
+    }
+    .toolbar button {
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: 1px solid #bbb;
+      background: white;
+      border-radius: 3px;
+    }
+    .toolbar button:hover { background: #eee; }
+    .toolbar label { font-size: 0.85rem; user-select: none; }
+    .toolbar code { font-size: 0.78rem; color: #16697A; }
+    #qualtrics-log {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 12px;
+      background: #fafafa;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.78rem;
+      max-height: 320px;
+      overflow: auto;
+    }
+    #qualtrics-log:empty::before {
+      content: "(no embedded data writes yet — start playing through the task)";
+      color: #999;
+    }
+    .log-entry {
+      padding: 6px 0;
+      border-bottom: 1px dashed #eee;
+      word-break: break-all;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-field { font-weight: 600; color: #16697A; }
+    .log-value { color: #444; }
+
+    /* ------------------------------------------------------------------
+       Callouts — editorial intervention system
+
+       Tone: strong, sober, research-grade. Calibrated for the deconspirator
+       task palette (warm darks, amber warnings, sage tips). Each callout is
+       a typographic unit: eyebrow label → title → body. A 4px accent bar
+       on the leading edge gives presence without shouting.
+
+       Variants (escalating gravity):
+         .callout-note        calm, factual
+         .callout-tip         encouraging, helpful
+         .callout-warning     amber, attention
+         .callout-important   dark, hero intervention
+         .callout-quote       editorial pullquote (serif)
+       ------------------------------------------------------------------ */
+
+    .callout {
+      --c-bg: #f4f7fb;
+      --c-tint: #e2ecf8;
+      --c-line: #d7e2f0;
+      --c-accent: #2b5fa3;
+      --c-ink: #14315c;
+      --c-body: #374151;
+
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: start;
+      gap: 0.05rem 1rem;
+      margin: 1.5rem 0;
+      padding: 1.1rem 1.4rem 1.15rem 1.6rem;
+      background: var(--c-bg);
+      border: 1px solid var(--c-line);
+      border-radius: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                   "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--c-body);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.7),
+        0 1px 2px rgba(15, 37, 69, 0.04);
+      overflow: hidden;
+    }
+
+    /* Leading accent bar */
+    .callout::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: var(--c-accent);
+    }
+
+    .callout__icon {
+      grid-row: 1 / span 3;
+      align-self: start;
+      display: grid;
+      place-items: center;
+      width: 2rem;
+      height: 2rem;
+      margin-top: 0.15rem;
+      border-radius: 8px;
+      background: var(--c-tint);
+      color: var(--c-accent);
+    }
+
+    .callout__icon svg {
+      width: 1.05rem;
+      height: 1.05rem;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .callout__label {
+      display: inline-block;
+      margin-bottom: 0.15rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--c-accent);
+    }
+
+    .callout__title {
+      display: block;
+      margin: 0 0 0.25rem;
+      font-size: 1.02rem;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+      color: var(--c-ink);
+    }
+
+    .callout__text {
+      margin: 0;
+      font-size: 0.93rem;
+      color: var(--c-body);
+    }
+
+    .callout__text + .callout__text {
+      margin-top: 0.4rem;
+    }
+
+    .callout kbd {
+      display: inline-block;
+      padding: 0.05rem 0.35rem;
+      border: 1px solid var(--c-line);
+      border-bottom-width: 2px;
+      border-radius: 4px;
+      background: #fff;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.78em;
+      color: var(--c-ink);
+    }
+
+    /* Note — calm, informational, slate-blue */
+    .callout-note {
+      --c-bg: #f4f7fb;
+      --c-tint: #e2ecf8;
+      --c-line: #d7e2f0;
+      --c-accent: #2b5fa3;
+      --c-ink: #14315c;
+    }
+
+    /* Tip — encouraging, sage green */
+    .callout-tip {
+      --c-bg: #f1f7f2;
+      --c-tint: #dbecde;
+      --c-line: #cee0d2;
+      --c-accent: #2f7a45;
+      --c-ink: #143b1f;
+    }
+
+    /* Warning — warm amber, brand-aligned */
+    .callout-warning {
+      --c-bg: #fdf3e6;
+      --c-tint: #f7e0bf;
+      --c-line: #f1d29a;
+      --c-accent: #b25c0c;
+      --c-ink: #5a2b00;
+    }
+
+    /* Important — hero intervention. Dark, brand-aligned, commands gravity. */
+    .callout-important {
+      --c-line: #2a221e;
+      --c-accent: #fe9c5d;
+      --c-ink: #ffffff;
+      --c-body: rgba(255, 255, 255, 0.78);
+      --c-tint: rgba(254, 156, 93, 0.18);
+
+      background: linear-gradient(180deg, #2c241f 0%, #1d1714 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 10px 24px -14px rgba(28, 22, 18, 0.5);
+    }
+
+    .callout-important .callout__label {
+      color: #fe9c5d;
+    }
+
+    .callout-important kbd {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+
+    /* Quote — editorial pullquote. Serif, oversized opening mark. */
+    .callout-quote {
+      position: relative;
+      display: block;
+      margin: 1.75rem 0;
+      padding: 1.6rem 1.75rem 1.5rem 3.75rem;
+      background: #faf7f1;
+      border: 1px solid #ece5d6;
+      border-radius: 12px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia,
+                   "Times New Roman", serif;
+      color: #2a2018;
+    }
+
+    .callout-quote::before {
+      content: "\201C";
+      position: absolute;
+      top: -0.35rem;
+      left: 1rem;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 5.25rem;
+      line-height: 1;
+      color: #41302b;
+      opacity: 0.32;
+      pointer-events: none;
+    }
+
+    .callout-quote p {
+      margin: 0;
+      font-size: 1.1rem;
+      line-height: 1.55;
+      font-style: italic;
+      color: #1f1813;
+    }
+
+    .callout-quote cite {
+      display: block;
+      margin-top: 0.7rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.78rem;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #7a6a5e;
+    }
+  </style>
+</head>
+<body>
+  <h1>Deconspirator — local dev harness</h1>
+
+  <aside class="callout callout-note" role="note">
+    <span class="callout__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+    </span>
+    <span class="callout__label">Important</span>
+    <!-- <strong class="callout__title">Read each pair carefully before you choose.</strong> -->
+    <p class="callout__text">More and more people are not relying on online information unless they pause to consider whether it may be part of coordinated efforts by foreign actors to mislead - and others should not do so either.</p>
+  </aside>
+
+  <aside class="callout callout-tip" role="note">
+    <span class="callout__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.7.7 1.2 1.5 1.5 2.5h5c.3-1 .8-1.8 1.5-2.5A6 6 0 0 0 12 3Z"/></svg>
+    </span>
+    <span class="callout__label">Important</span>
+    <!-- <strong class="callout__title">Look for tells that go beyond the headline.</strong> -->
+    <p class="callout__text">More and more people are not relying on online information unless they pause to consider whether it may be part of coordinated efforts by foreign actors to mislead - and others should not do so either.</p>
+  </aside>
+
+  <aside class="callout callout-warning" role="note">
+    <span class="callout__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.7 3.86a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+    </span>
+    <span class="callout__label">Important</span>
+    <!-- <strong class="callout__title">You have 30 seconds per pair.</strong> -->
+    <p class="callout__text">More and more people are not relying on online information unless they pause to consider whether it may be part of coordinated efforts by foreign actors to mislead - and others should not do so either.</p>
+  </aside>
+
+  <aside class="callout callout-important" role="note">
+    <span class="callout__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M13 2 4.5 13.5h7L11 22l8.5-11.5h-7Z"/></svg>
+    </span>
+    <span class="callout__label">Important</span>
+    <!-- <strong class="callout__title">Your honest judgement is what matters.</strong> -->
+    <p class="callout__text">More and more people are not relying on online information unless they pause to consider whether it may be part of coordinated efforts by foreign actors to mislead - and others should not do so either.</p>
+  </aside>
+
+  <blockquote class="callout-quote">
+    <p>More and more people are not relying on online information unless they pause to consider whether it may be part of coordinated efforts by foreign actors to mislead - and others should not do so either.</p>
+    <cite>— Important</cite>
+  </blockquote>
+
+  <p class="lede">
+    Loads <code>js/deconspirator-task.js</code> with a fake <code>Qualtrics.SurveyEngine</code>
+    that captures embedded-data writes to the panel below. Edit
+    <code>dev/dev-config.js</code> to tweak per-study settings.
+    Reload the page to restart a session.
+  </p>
+
+  <div class="toolbar">
+    <button id="reset" type="button">Reload &amp; restart</button>
+    <button id="dump" type="button">Log captured data to console</button>
+    <button id="copy" type="button">Copy <code>taskData</code> JSON</button>
+    <label>
+      <input type="checkbox" id="force-touch">
+      Force touch mode
+    </label>
+    <span style="margin-left:auto; color:#888; font-size:0.78rem;">
+      engine: <code id="engine-version">…</code>
+    </span>
+  </div>
+
+  <div id="task"></div>
+
+  <h2>Captured embedded data writes</h2>
+  <div id="qualtrics-log"></div>
+
+  <script>
+    // Restore force-touch toggle from sessionStorage so reloads preserve it.
+    const _forceTouchEl = document.getElementById('force-touch');
+    _forceTouchEl.checked = sessionStorage.getItem('decon.forceTouch') === '1';
+    window.__DECONSPIRATOR_FORCE_TOUCH = _forceTouchEl.checked;
+    _forceTouchEl.addEventListener('change', (e) => {
+      sessionStorage.setItem('decon.forceTouch', e.target.checked ? '1' : '0');
+      location.reload();
+    });
+
+    // Capture embedded-data writes for the log panel.
+    const _qLog = document.getElementById('qualtrics-log');
+    const _captured = {};
+    function _renderLog() {
+      _qLog.replaceChildren();
+      for (const [k, v] of Object.entries(_captured)) {
+        const row = document.createElement('div');
+        row.className = 'log-entry';
+        const label = document.createElement('span');
+        label.className = 'log-field';
+        label.textContent = k + ': ';
+        const val = document.createElement('span');
+        val.className = 'log-value';
+        const str = String(v);
+        val.textContent = str.length > 240 ? str.slice(0, 240) + ' …(' + str.length + ' chars)' : str;
+        row.appendChild(label);
+        row.appendChild(val);
+        _qLog.appendChild(row);
+      }
+    }
+
+    // Fake question-data with the methods the engine touches.
+    const fakeQuestionData = {
+      disableNextButton() {},
+      enableNextButton() { console.log('[harness] task complete — Next button would be enabled.'); },
+    };
+
+    // Fake SurveyEngine. Critical: addOnload must run our handler even if
+    // DOMContentLoaded already fired, since this script is at end-of-body.
+    function _runWhenReady(fn) {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fn, { once: true });
+      } else {
+        queueMicrotask(fn);
+      }
+    }
+    window.Qualtrics = {
+      SurveyEngine: {
+        addOnload(fn) { _runWhenReady(() => fn.call(fakeQuestionData)); },
+        addOnReady(_) {},
+        addOnUnload(_) {},
+        setEmbeddedData(field, value) {
+          _captured[field] = value;
+          _renderLog();
+        },
+        getEmbeddedData() { return null; },
+      },
+    };
+
+    // Toolbar wiring
+    document.getElementById('reset').addEventListener('click', () => location.reload());
+    document.getElementById('dump').addEventListener('click', () => {
+      const parsed = {};
+      for (const [k, v] of Object.entries(_captured)) {
+        try { parsed[k] = JSON.parse(v); } catch { parsed[k] = v; }
+      }
+      console.log('[harness] captured embedded data:', parsed);
+    });
+    document.getElementById('copy').addEventListener('click', async () => {
+      const v = _captured.taskData || '';
+      try {
+        await navigator.clipboard.writeText(v);
+        console.log('[harness] taskData copied to clipboard (' + v.length + ' chars).');
+      } catch (e) {
+        console.warn('[harness] clipboard write failed:', e);
+      }
+    });
+  </script>
+
+  <!-- Engine -->
+  <script src="../js/deconspirator-task.js"></script>
+
+  <!-- Per-study config (edit me) -->
+  <script src="dev-config.js"></script>
+
+  <!-- Stamp engine version into toolbar after engine loads -->
+  <script>
+    document.getElementById('engine-version').textContent =
+      (typeof window.startTask === 'function') ? 'loaded' : 'NOT loaded';
+  </script>
+</body>
+</html>

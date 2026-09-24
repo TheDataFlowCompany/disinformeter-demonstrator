@@ -1,0 +1,133 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { url } from '../lib/paths';
+import { statSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+const ROOT = fileURLToPath(new URL('../../', import.meta.url));
+function size(srcRelative: string): string {
+  try {
+    const b = statSync(ROOT + srcRelative).size;
+    if (b >= 1024 * 1024) return `${(b / 1024 / 1024).toFixed(1)} MB`;
+    if (b >= 1024) return `${Math.round(b / 1024)} KB`;
+    return `${b} B`;
+  } catch { return '—'; }
+}
+
+interface Dl { name: string; file: string; src: string; fmt: string; desc: string; }
+const groups: { title: string; note: string; items: Dl[] }[] = [
+  {
+    title: 'Survey files', note: 'Qualtrics .qsf exports. Import directly into Qualtrics.',
+    items: [
+      { name: 'Multilingual short version', file: 'Multilingual_short_version.qsf', src: 'docs/Multilingual_short_version.qsf', fmt: 'QSF',
+        desc: 'The S4 deployment carrying the 27-item short module in 19 languages.' },
+      { name: 'Personalized feedback survey', file: 'Personalized_Feedback_Qualtrics.qsf', src: 'docs/Personalized_Feedback_Qualtrics.qsf', fmt: 'QSF',
+        desc: 'The S5 intervention: DisInforMeter + the tailored-feedback logic.' },
+    ],
+  },
+  {
+    title: 'Item bank & translations', note: 'The instrument as machine-readable data.',
+    items: [
+      { name: 'Consolidated item bank', file: 'item_bank.json', src: 'resources/item-bank/item_bank.json', fmt: 'JSON',
+        desc: 'Every item with version, domain, per-wave variable names, and FIMI metadata.' },
+      { name: 'Item bank (flat)', file: 'item_bank.csv', src: 'resources/item-bank/item_bank.csv', fmt: 'CSV',
+        desc: 'The same bank as a spreadsheet-friendly table.' },
+      { name: 'Short-module translations', file: 'short_module_translations.json', src: 'resources/translations/short_module_translations.json', fmt: 'JSON',
+        desc: '27 items × 19 languages, nested with English (deployed + harmonised) and metadata.' },
+      { name: 'Translations (long table)', file: 'short_module_translations_long.csv', src: 'resources/translations/short_module_translations_long.csv', fmt: 'CSV',
+        desc: 'One row per item × language, for analysis or spreadsheets.' },
+      { name: 'Annex-B language matrix', file: 'short_disinformeter_languages_filled.csv', src: 'resources/translations/short_disinformeter_languages_filled.csv', fmt: 'CSV',
+        desc: 'Drop-in fill of the policy-report supplement’s Annex-B stub (14 primary languages).' },
+      { name: 'Response-scale anchors', file: 'response_scales.json', src: 'resources/translations/response_scales.json', fmt: 'JSON',
+        desc: '1–7 agreement and FIMI-detection anchor wording, per language.' },
+      { name: 'Cross-wave item map', file: 'item_mapping_overview.csv', src: 'resources/item-bank/item_mapping_overview.csv', fmt: 'CSV',
+        desc: 'The authoritative harmonised map: full wording × every wave.' },
+      { name: 'Cross-wave item map', file: 'item_mapping.xlsx', src: 'resources/item-bank/item_mapping.xlsx', fmt: 'XLSX',
+        desc: 'The master item map as an Excel workbook.' },
+    ],
+  },
+  {
+    title: 'Feedback & scoring', note: 'Run the intervention and score correctly.',
+    items: [
+      { name: 'Feedback logic', file: 'feedback_logic.json', src: 'resources/feedback/feedback_logic.json', fmt: 'JSON',
+        desc: 'Ranking algorithm, the verbatim Qualtrics JS, and every message (Lithuanian + English).' },
+      { name: 'Scoring guide', file: 'scoring_guide.md', src: 'resources/scoring/scoring_guide.md', fmt: 'MD',
+        desc: 'Domains, FIMI variants, the three versions, and the scoring-direction rule.' },
+    ],
+  },
+  {
+    title: 'Policy report', note: 'The deliverable this demonstrator accompanies.',
+    items: [
+      { name: 'DisInforMeter Policy Report (D5.3)', file: 'd5-3_DisInforMeter_PolicyReport.pdf', src: 'resources/policy-report/d5-3_DisInforMeter_PolicyReport.pdf', fmt: 'PDF',
+        desc: 'The full D5.3 policy report.' },
+    ],
+  },
+];
+---
+<Base title="Downloads" description="Download every DisInforMeter resource: survey files, item bank, 19-language translations, feedback logic, scoring guide, and the policy report.">
+  <PageHeader title="Downloads">
+    <p>Everything you need to field, score, and reuse the DisInforMeter. All content is released under
+       <strong>CC-BY 4.0</strong>; cite the deliverable and keep the interpretation caveats.</p>
+  </PageHeader>
+
+  <section class="section wrap dl">
+    {groups.map((g) => (
+      <div class="dl-group">
+        <div class="dl-group-head">
+          <h2>{g.title}</h2>
+          <p class="mono dl-note">{g.note}</p>
+        </div>
+        <ul class="dl-list">
+          {g.items.map((it) => (
+            <li class="dl-item">
+              <a class="dl-link" href={url(`/downloads/${it.file}`)} download>
+                <span class="dl-fmt mono">{it.fmt}</span>
+                <span class="dl-body">
+                  <span class="dl-name">{it.name}</span>
+                  <span class="dl-desc">{it.desc}</span>
+                </span>
+                <span class="dl-meta mono"><span class="dl-size">{size(it.src)}</span><span class="dl-arrow" aria-hidden="true">↓</span></span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+
+    <aside class="dl-repro panel">
+      <h2 class="repro-h">How these files are made</h2>
+      <p>The data files above are generated from the survey files by documented
+         scripts (<span class="mono">scripts/extract/</span>), and rebuilt with one command. The choice-task
+         bundle ships separately as build-free vanilla JS, CSS, and stimuli.</p>
+    </aside>
+  </section>
+</Base>
+
+<style>
+  .dl { display: grid; gap: var(--sp-7); }
+  .dl-group-head { display: flex; align-items: baseline; gap: var(--sp-4); border-bottom: 2px solid var(--hairline-strong); padding-bottom: var(--sp-2); }
+  .dl-group-head h2 { font-size: var(--step-2); }
+  .dl-note { color: var(--text-faint); font-size: 0.74rem; }
+  .dl-list { list-style: none; padding: 0; margin: var(--sp-4) 0 0; display: grid; gap: var(--sp-2); }
+  .dl-link { display: grid; grid-template-columns: 3.5rem 1fr auto; align-items: center; gap: var(--sp-4);
+    padding: var(--sp-4); background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius-lg);
+    text-decoration: none; color: var(--text); transition: border-color 0.15s var(--ease), transform 0.12s var(--ease); }
+  .dl-link:hover { border-color: var(--navy-300); transform: translateX(2px); box-shadow: var(--shadow); }
+  .dl-fmt { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; color: #fff; background: var(--navy);
+    border-radius: var(--radius); padding: 0.55em 0; text-align: center; }
+  .dl-name { font-family: var(--font-display); font-weight: 700; display: block; color: var(--navy); }
+  .dl-desc { color: var(--text-muted); font-size: 0.9rem; }
+  .dl-meta { display: flex; align-items: center; gap: var(--sp-3); color: var(--text-faint); font-size: 0.8rem; }
+  .dl-arrow { width: 1.8rem; height: 1.8rem; display: grid; place-items: center; border-radius: 999px; background: var(--azure-soft); color: var(--azure-700); transition: background 0.15s var(--ease), color 0.15s var(--ease); }
+  .dl-link:hover .dl-arrow { background: var(--azure); color: #fff; }
+
+  .dl-repro { padding: var(--sp-5); }
+  .repro-h { font-size: var(--step-1); margin-bottom: var(--sp-2); }
+  .dl-repro p:last-child { color: var(--text-muted); margin-top: var(--sp-2); }
+
+  @media (max-width: 620px) {
+    .dl-link { grid-template-columns: 3rem 1fr; }
+    .dl-meta { grid-column: 2; justify-content: flex-start; }
+  }
+</style>

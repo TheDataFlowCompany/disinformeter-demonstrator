@@ -1,0 +1,130 @@
+---
+import { url, NAV } from '../lib/paths';
+const here = Astro.url.pathname.replace(/\/$/, '') || '/';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+function isActive(href: string) {
+  const full = (base + (href === '/' ? '' : href)) || '/';
+  return here === (full || '/');
+}
+---
+<div class="gradient-rule head-rule"></div>
+<header class="site-head">
+  <div class="wrap head-inner">
+    <a href={url('/')} class="brand" aria-label="DisInforMeter, a DE-CONSPIRATOR toolkit: home">
+      <img class="brand-logo" src={url('/brand/logo-header.png')} alt="DE-CONSPIRATOR" width="190" height="48" />
+      <span class="brand-divider" aria-hidden="true"></span>
+      <span class="brand-product">
+        <span class="brand-name">DisInfor<span class="meter">Meter</span></span>
+        <span class="brand-sub mono">D5.2 · Toolkit</span>
+      </span>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">
+      <span class="visually-hidden">Menu</span>
+      <span class="bars" aria-hidden="true"></span>
+    </button>
+    <nav id="site-nav" class="site-nav" aria-label="Primary">
+      {NAV.map((item) => (
+        <a href={url(item.href)} class:list={["nav-link", { active: isActive(item.href) }]}
+           aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .head-rule { position: sticky; top: 0; z-index: 51; }
+  .site-head {
+    position: sticky; top: 5px; z-index: 50;
+    background: color-mix(in srgb, var(--surface) 76%, transparent);
+    backdrop-filter: blur(16px) saturate(1.6);
+    -webkit-backdrop-filter: blur(16px) saturate(1.6);
+    border-bottom: 1px solid color-mix(in srgb, var(--hairline) 70%, transparent);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.65), 0 8px 24px -18px rgba(22,34,89,0.25);
+  }
+  .head-inner { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-4); min-height: 62px; }
+
+  .brand { display: inline-flex; align-items: center; gap: var(--sp-3); text-decoration: none; color: var(--text); }
+  .brand-logo { height: 30px; width: auto; }
+  .brand-divider { width: 1px; height: 26px; background: var(--hairline-strong); }
+  .brand-product { display: inline-flex; flex-direction: column; gap: 1px; line-height: 1; }
+  .brand-name { font-family: var(--font-display); font-weight: 800; font-size: 1.04rem; letter-spacing: -0.02em; color: var(--navy); }
+  .brand-name .meter { color: var(--azure-600); }
+  .brand-sub { font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-faint); }
+
+  .site-nav { margin-left: auto; display: flex; gap: 2px; flex-wrap: wrap; }
+  .nav-link {
+    position: relative;
+    font-family: var(--font-display); font-weight: 600; font-size: 0.86rem;
+    color: var(--text-muted); text-decoration: none; padding: 0.45em 0.72em; border-radius: var(--radius);
+    transition: color 0.15s var(--ease), background 0.15s var(--ease);
+  }
+  .nav-link:hover { color: var(--navy); background: var(--surface-2); }
+  .nav-link.active { color: var(--navy); }
+  .nav-link.active::after {
+    content: ""; position: absolute; left: 0.72em; right: 0.72em; bottom: 0.1em; height: 2.5px;
+    border-radius: 999px; background: var(--brand-gradient);
+  }
+  .nav-toggle { display: none; }
+
+  @media (max-width: 900px) {
+    .brand-sub { display: none; }
+    /* the wrapped nav row is a second flex line, and with a row gap plus the
+       default align-content it pushed the brand row above centre */
+    .head-inner { row-gap: 0; align-content: center; }
+
+    .nav-toggle {
+      display: inline-grid; place-items: center; margin-left: auto;
+      width: 44px; height: 44px; padding: 0;
+      background: var(--surface); border: 1px solid var(--hairline-strong);
+      border-radius: var(--radius); cursor: pointer;
+      transition: background 0.15s var(--ease), border-color 0.15s var(--ease);
+    }
+    .nav-toggle:hover { border-color: var(--navy-300); }
+    .bars, .bars::before, .bars::after {
+      display: block; width: 18px; height: 2px; border-radius: 2px; background: var(--navy);
+    }
+    .bars { position: relative; transition: background 0.14s var(--ease); }
+    .bars::before, .bars::after { content: ""; position: absolute; left: 0;
+      transition: top 0.18s var(--ease), rotate 0.18s var(--ease); }
+    .bars::before { top: -6px; }
+    .bars::after { top: 6px; }
+    /* open: the bars fold into a close mark */
+    .nav-toggle[aria-expanded="true"] { background: var(--surface-2); border-color: var(--navy-300); }
+    .nav-toggle[aria-expanded="true"] .bars { background: transparent; }
+    .nav-toggle[aria-expanded="true"] .bars::before,
+    .nav-toggle[aria-expanded="true"] .bars::after { top: 0; }
+    .nav-toggle[aria-expanded="true"] .bars::before { rotate: 45deg; }
+    .nav-toggle[aria-expanded="true"] .bars::after { rotate: -45deg; }
+
+    /* full-bleed rows, so the labels line up with the page gutter and the
+       hover band reaches both edges */
+    .site-nav {
+      flex-basis: 100%; flex-direction: column; gap: 0; margin-inline: calc(var(--sp-5) * -1);
+      max-height: 0; overflow: hidden; transition: max-height 0.22s var(--ease);
+    }
+    .site-nav.open { max-height: 70vh; padding-block: var(--sp-2) var(--sp-3);
+      border-top: 1px solid var(--hairline); }
+    .nav-link { padding: 0.72em var(--sp-5); font-size: 0.92rem; border-radius: 0; }
+    .nav-link.active::after { left: var(--sp-5); right: auto; width: 1.5rem; bottom: 0.45em; }
+  }
+  /* keep the product name: without it the small header is a partner logo and a
+     button with a hole in the middle. Tighten instead of hiding. */
+  @media (max-width: 460px) {
+    .brand { gap: var(--sp-2); }
+    .brand-logo { height: 27px; }
+    .brand-divider { height: 22px; }
+    .brand-name { font-size: 0.98rem; }
+  }
+  @media (max-width: 340px) {
+    .brand-divider, .brand-product { display: none; }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector('.nav-toggle');
+  const nav = document.getElementById('site-nav');
+  toggle?.addEventListener('click', () => {
+    const open = nav?.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(!!open));
+  });
+</script>

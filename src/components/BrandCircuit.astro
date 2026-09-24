@@ -1,0 +1,34 @@
+---
+/* The DE-CONSPIRATOR circuit-node motif — open rings tied to horizontal
+   connector lines (navy + crimson), echoing the deliverable cover. Decorative. */
+interface Props {
+  tone?: 'light' | 'dark';
+  class?: string;
+}
+const { tone = 'light', class: klass = '' } = Astro.props;
+
+const ring = tone === 'dark' ? '#A9B2DA' : '#162259';
+const line = tone === 'dark' ? '#7E88BE' : '#2A357A';
+const accent = '#E1202A'; // crimson stays constant — it is the brand pop
+
+// y, line-length-fraction, isAccent
+const ROWS: [number, number, boolean][] = [
+  [26, 1.0, false],
+  [70, 0.86, true],
+  [114, 0.72, false],
+];
+const W = 280;
+const X0 = 18; // ring centre x
+---
+<svg class:list={['brand-circuit', klass]} viewBox="0 0 280 140" aria-hidden="true" focusable="false" preserveAspectRatio="xMinYMid meet">
+  {ROWS.map(([y, frac, acc]) => (
+    <g>
+      <line x1={X0 + 9} y1={y} x2={W * frac} y2={y} stroke={acc ? accent : line} stroke-width="2.4" stroke-linecap="round" />
+      <circle cx={X0} cy={y} r="8" fill="none" stroke={acc ? accent : ring} stroke-width="2.6" />
+    </g>
+  ))}
+</svg>
+
+<style>
+  .brand-circuit { display: block; width: 100%; height: 100%; pointer-events: none; }
+</style>

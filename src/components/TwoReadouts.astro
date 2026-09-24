@@ -1,0 +1,144 @@
+---
+// The duality diagram: receptivity and resilience as two readouts of one
+// instrument, each with its own response format and scoring direction. Wide
+// version, used as the centrepiece of the "Two readouts" section, where the
+// panel's two halves carry the explanation that used to sit in separate cards.
+// A single-needle gauge would collapse exactly the distinction this states.
+// Values are illustrative, not a data reading.
+import { url } from '../lib/paths';
+
+const pathways = [
+  { label: 'Threat', hue: '--d-threat', v: 5.3 },
+  { label: 'Betrayal / abandonment', hue: '--d-aband', v: 4.2 },
+  { label: 'Fear / accommodation', hue: '--d-fear', v: 2.6 },
+  { label: 'Foreign-power admiration', hue: '--d-admire', v: 1.8 },
+];
+const general = { label: 'General Anchor', hue: '--d-general', v: 3.4 };
+const pct = (v: number) => `${((v - 1) / 6) * 100}%`;
+
+const layers = [
+  { name: 'Understanding', note: 'awareness, calibrated trust' },
+  { name: 'Detection', note: 'recognition, and accuracy in the choice task' },
+  { name: 'Resistance', note: 'verifying, not amplifying' },
+];
+---
+
+<div class="readouts">
+  <!-- receptivity: a profile over four pathways, self-reported -->
+  <section class="side recept">
+    <header class="side-head">
+      <h3 class="side-name mono">Receptivity</h3>
+      <p class="side-sub">Why a foreign-origin narrative may resonate.</p>
+    </header>
+
+    <ul class="bars">
+      {pathways.map((p, i) => (
+        <li class="bar-row" style={`--c: var(${p.hue}); --w: ${pct(p.v)}; --i: ${i}`}>
+          <span class="bar-label">{p.label}</span>
+          <span class="bar" aria-hidden="true"><i class="bar-fill"></i></span>
+        </li>
+      ))}
+      <li class="bar-row sep" style={`--c: var(${general.hue}); --w: ${pct(general.v)}; --i: 4`}>
+        <span class="bar-label">{general.label}</span>
+        <span class="bar" aria-hidden="true"><i class="bar-fill"></i></span>
+      </li>
+    </ul>
+
+    <p class="scale mono" aria-hidden="true"><span>1 disagree</span><span>7 agree</span></p>
+    <p class="dir">Higher means more receptivity-relevant endorsement. Read it as a
+      <a href={url('/explorer')}>profile</a>, not a level, and never as a detection score.</p>
+  </section>
+
+  <!-- resilience: layered outcomes, one of them measured behaviourally -->
+  <section class="side resil">
+    <header class="side-head">
+      <h3 class="side-name mono">Resilience</h3>
+      <p class="side-sub">What people understand and do when they meet one.</p>
+    </header>
+
+    <ol class="layers">
+      {layers.map((l, i) => (
+        <li class="layer" style={`--i: ${i}`}>
+          <span class="layer-name">{l.name}</span>
+          <span class="layer-note">{l.note}</span>
+        </li>
+      ))}
+    </ol>
+
+    <p class="scale mono" aria-hidden="true"><span>1 not manipulated</span><span>7 manipulated</span></p>
+    <p class="dir">Higher means the manipulation was caught more readily, lower means a blind spot.
+      The rating battery carries no authentic foils, so the
+      <a href={url('/choice-task')}>choice task</a> is what measures accuracy.</p>
+  </section>
+</div>
+
+<style>
+  .readouts {
+    display: grid; grid-template-columns: 1fr 1fr;
+    background: var(--surface-2);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    overflow: clip;
+  }
+  .side { padding: var(--sp-6); display: flex; flex-direction: column; min-width: 0; }
+  .recept { --accent: var(--axis-receptivity); }
+  .resil { --accent: var(--axis-detection); border-left: 1px solid var(--hairline); }
+
+  .side-name { font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700;
+    color: var(--accent); line-height: 1.2; display: flex; align-items: center; gap: 0.5em; }
+  .side-name::before { content: ""; width: 0.45rem; height: 0.45rem; border-radius: 999px;
+    background: var(--accent); flex: none; }
+  .side-sub { font-size: var(--step-0); line-height: 1.45; color: var(--text); margin-top: var(--sp-2); }
+
+  /* receptivity: four pathway bars, the anchor set apart below a dashed rule */
+  .bars { list-style: none; padding: 0; margin: var(--sp-5) 0 0; display: grid; gap: 0.7rem; }
+  .bar-row { display: grid; gap: 5px; }
+  .bar-row.sep { margin-top: 0.4rem; padding-top: 0.7rem; border-top: 1px dashed var(--hairline-strong); }
+  .bar-label { font-size: 0.8rem; line-height: 1.2; color: var(--text-muted); }
+  .bar {
+    position: relative; display: block; height: 9px; border-radius: 999px;
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1px var(--hairline);
+    background-image: repeating-linear-gradient(to right,
+      var(--hairline-strong) 0 1px, transparent 1px calc(100% / 6));
+    background-size: calc(100% - 1px) 100%;
+  }
+  .bar-fill {
+    position: absolute; inset: 0 auto 0 0; width: var(--w);
+    border-radius: 999px; background: var(--c);
+    transform-origin: left center;
+    animation: sweep 780ms var(--ease) both;
+    animation-delay: calc(120ms + var(--i) * 90ms);
+  }
+  @keyframes sweep { from { transform: scaleX(0); } }
+
+  /* resilience: three layers, stepped so they do not read as one scale */
+  .layers { list-style: none; padding: 0; margin: var(--sp-5) 0 0; display: grid; gap: 0.5rem; }
+  .layer {
+    display: grid; gap: 1px;
+    padding: 0.6rem 0.75rem; border-radius: var(--radius);
+    border: 1px solid var(--hairline); background: var(--surface);
+    margin-left: calc(var(--i) * 0.9rem);
+    animation: rise 520ms var(--ease) both;
+    animation-delay: calc(300ms + var(--i) * 110ms);
+  }
+  .layer:nth-child(2) { border-color: color-mix(in srgb, var(--accent) 42%, var(--hairline));
+    background: var(--axis-detection-soft); }
+  .layer-name { font-size: 0.85rem; font-weight: 700; color: var(--navy); line-height: 1.2; }
+  .layer:nth-child(2) .layer-name { color: var(--axis-detection); }
+  .layer-note { font-size: 0.74rem; color: var(--text-muted); line-height: 1.35; }
+  @keyframes rise { from { transform: translateY(4px); opacity: 0; } }
+
+  /* the response scale each side actually uses, then its direction rule */
+  .scale { display: flex; justify-content: space-between; gap: var(--sp-3);
+    margin-top: auto; padding-top: var(--sp-5); border-top: 1px solid var(--hairline);
+    font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
+  .dir { font-size: 0.86rem; line-height: 1.5; color: var(--text-muted); margin-top: var(--sp-2); }
+
+  @media (max-width: 820px) {
+    .readouts { grid-template-columns: 1fr; }
+    .resil { border-left: 0; border-top: 1px solid var(--hairline); }
+    .side { padding: var(--sp-5); }
+  }
+</style>

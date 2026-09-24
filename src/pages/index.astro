@@ -1,0 +1,258 @@
+---
+import Base from '../layouts/Base.astro';
+import HeroField from '../components/HeroField.astro';
+import ToolkitCards from '../components/ToolkitCards.astro';
+import TwoReadouts from '../components/TwoReadouts.astro';
+import BrandTriangles from '../components/BrandTriangles.astro';
+import { url } from '../lib/paths';
+import { PATHWAYS, GENERAL, STUDIES, trans, bank, countByVersion } from '../lib/data';
+
+const nLang = trans._meta.languages.length;
+const nShort = countByVersion('short');
+const nItems = bank.items.length;
+const totalN = STUDIES.reduce((s, x) => s + x.n, 0);
+
+---
+<Base>
+  <!-- ───────────────────── HERO ───────────────────── -->
+  <section class="hero">
+    <div class="hero-tri" aria-hidden="true"><BrandTriangles tone="light" /></div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">DE-CONSPIRATOR · Deliverable D5.2 · Technical demonstrator</p>
+        <h1 class="hero-title">
+          A validated measure of<br /><span class="hl">susceptibility to FIMI</span>.
+        </h1>
+        <p class="hero-lede prose">
+          European monitoring tracks the <em>supply</em> of foreign information manipulation and
+          interference: narratives, incidents, coordinated campaigns. The <strong>DisInforMeter</strong>
+          is a validated psychometric scale for the audience side: <span class="claim">publics’
+          <span class="term t-recept">receptivity to</span>, and
+          <span class="term t-detect">detection of</span>, manipulative foreign-origin
+          content</span>, showing resistance and blind-spot factors.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href={url('/demonstrator')}>Try the live demonstrator →</a>
+          <a class="btn btn-ghost" href={url('/explorer')}>Explore the items</a>
+        </div>
+        <dl class="hero-stats">
+          <div><dt>{(totalN/1000).toFixed(0)},000+</dt><dd>respondents</dd></div>
+          <div><dt>5</dt><dd>studies</dd></div>
+          <div><dt>{nLang}</dt><dd>languages</dd></div>
+          <div><dt>13</dt><dd>countries</dd></div>
+        </dl>
+      </div>
+      <div class="hero-instrument">
+        <HeroField />
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────── FEATURED: THE DEMONSTRATOR ───────────────────── -->
+  <section class="wrap demo-feature reveal">
+    <a class="demo-card" href={url('/demonstrator')}>
+      <div class="demo-card-body">
+        <h2>Take the whole instrument, end to end</h2>
+        <p class="prose">A simulated, authentic survey: answer the short questionnaire, receive
+          personalized feedback tailored to your answers, then spot the manipulated headlines in the
+          FIMI choice task, all in one run.
+          <strong>Nothing is stored.</strong> English and Lithuanian (as linguistic examples).</p>
+        <span class="btn btn-primary demo-card-btn">Start the demonstrator →</span>
+      </div>
+      <ol class="demo-flow" aria-hidden="true">
+        <li><span class="mono">1</span> Questionnaire</li>
+        <li><span class="mono">2</span> Personalized feedback</li>
+        <li><span class="mono">3</span> Choice task</li>
+      </ol>
+    </a>
+  </section>
+
+  <!-- ───────────────────── THE DUALITY ───────────────────── -->
+  <section class="band">
+    <div class="wrap reveal">
+      <div class="band-head">
+        <h2>Two readouts, never one number</h2>
+        <p class="prose">
+          The two sides answer different questions, in different response formats. They are related
+          but not opposites, and they <strong>must never be averaged</strong> into a single
+          “susceptibility” or “vulnerability” score. Low endorsement of a worldview is not proven
+          discernment; high endorsement is not a detection failure.
+        </p>
+      </div>
+      <div class="band-panel"><TwoReadouts /></div>
+      <p class="band-foot mono">Illustrative panel, not a data reading</p>
+    </div>
+  </section>
+
+  <!-- ───────────────────── DOMAINS ───────────────────── -->
+  <section class="section wrap reveal">
+    <h2>Four pathways, one anchor</h2>
+    <p class="prose lede-2">Ten recurring belief themes group into four affective pathways: the routes by
+      which a localized foreign narrative can come to feel plausible, urgent, or attractive.</p>
+    <div class="domain-grid">
+      {PATHWAYS.map((d, i) => (
+        <article class="domain" style={`--c: var(${d.cssVar})`}>
+          <span class="domain-no mono">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="domain-name">{d.label}</h3>
+          <p class="domain-blurb">{d.blurb}</p>
+        </article>
+      ))}
+      <article class="domain anchor" style={`--c: var(${GENERAL.cssVar})`}>
+        <span class="domain-no mono">IDX</span>
+        <h3 class="domain-name">{GENERAL.label}</h3>
+        <p class="domain-blurb">{GENERAL.blurb}</p>
+      </article>
+      <article class="domain criterion" style="--c: var(--d-fimi)">
+        <span class="domain-no mono">DV</span>
+        <h3 class="domain-name">FIMI recognition</h3>
+        <p class="domain-blurb">The criterion: eight confirmed foreign-manipulation headlines, balanced
+          across Russian- and Chinese-origin sources.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ───────────────────── COMPONENTS ───────────────────── -->
+  <section class="band band-flush">
+    <div class="wrap reveal">
+      <h2>What’s in the toolkit</h2>
+      <p class="prose lede-2">Three components. Each one is usable on its own.</p>
+      <ToolkitCards />
+    </div>
+  </section>
+
+  <!-- ───────────────────── EVIDENCE STRIP ───────────────────── -->
+  <section class="evidence-band">
+    <div class="band-tri" aria-hidden="true"><BrandTriangles tone="dark" /></div>
+    <div class="wrap reveal">
+      <h2 class="band-h">Five studies, one instrument</h2>
+      <ol class="study-chain">
+        {STUDIES.map((s) => (
+          <li class="study">
+            <span class="study-id mono">{s.id}</span>
+            <span class="study-meta mono">{s.where} · {s.when}</span>
+            <span class="study-n">n&nbsp;=&nbsp;{s.n.toLocaleString('en')}</span>
+            <span class="study-role">{s.role}</span>
+          </li>
+        ))}
+      </ol>
+      <a class="btn btn-onnavy" href={url('/evidence')}>See the evaluation evidence →</a>
+    </div>
+  </section>
+
+  <!-- ───────────────────── DOWNLOADS CTA ───────────────────── -->
+  <section class="section wrap cta-final reveal">
+    <div>
+      <h2>Every resource, ready to deploy</h2>
+      <p class="prose">Item bank in {nItems} items, the {nShort}-item monitoring module translated into
+        {nLang} languages, Qualtrics survey files, the feedback logic, the scoring guide, and the policy report.</p>
+    </div>
+    <a class="btn btn-primary lg" href={url('/downloads')}>Go to downloads →</a>
+  </section>
+</Base>
+
+<style>
+  /* hero */
+  .hero { position: relative; overflow: clip; border-bottom: 1px solid var(--hairline); background:
+    radial-gradient(95% 80% at 88% -15%, rgba(0,168,239,0.12), transparent 55%),
+    radial-gradient(70% 70% at -5% 5%, rgba(22,34,89,0.06), transparent 55%); }
+  .hero-tri { position: absolute; top: -2rem; right: -1.5rem; width: 300px; height: 300px; opacity: 0.42; z-index: 0; }
+  .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: var(--sp-7);
+    align-items: center; padding-block: var(--sp-8) var(--sp-8); }
+  .hero-title { font-size: var(--step-5); font-weight: 800; letter-spacing: -0.03em; margin-top: var(--sp-4); color: var(--navy); }
+  .hero-title .hl { color: var(--azure-600); }
+  .hero-lede { margin-top: var(--sp-5); font-size: var(--step-1); color: var(--text-muted); }
+  .hero-lede strong { color: var(--text); }
+  .hero-cta { display: flex; gap: var(--sp-3); margin-top: var(--sp-6); flex-wrap: wrap; }
+  .hero-stats { display: flex; gap: var(--sp-6); margin-top: var(--sp-7); flex-wrap: wrap; }
+  .hero-stats dt { font-family: var(--font-display); font-weight: 800; font-size: var(--step-2); color: var(--navy); }
+  .hero-stats dd { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); margin-top: 2px; }
+  .hero-instrument { position: relative; display: grid; justify-items: center; }
+
+  .lede-2 { font-size: var(--step-1); color: var(--text-muted); margin-top: var(--sp-3); }
+
+  /* featured demonstrator card */
+  .demo-feature { margin-top: var(--sp-7); }
+  .demo-card { display: grid; grid-template-columns: 1.5fr 1fr; gap: var(--sp-6); align-items: center;
+    padding: var(--sp-6) var(--sp-7); border-radius: var(--radius-lg); text-decoration: none; color: inherit;
+    background:
+      radial-gradient(120% 140% at 100% 0%, rgba(0,168,239,0.16), transparent 55%), var(--navy);
+    box-shadow: var(--shadow-lg); transition: transform 0.15s var(--ease), box-shadow 0.15s var(--ease); }
+  .demo-card:hover { transform: translateY(-3px); }
+  .demo-card h2 { color: #fff; }
+  .demo-card .prose { color: #C7CBDE; margin-top: var(--sp-3); }
+  .demo-card .prose strong { color: #fff; }
+  .demo-card-btn { margin-top: var(--sp-5); background: var(--azure); color: var(--navy); font-weight: 700; }
+  .demo-card:hover .demo-card-btn { background: #fff; }
+  .demo-flow { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--sp-3); }
+  .demo-flow li { display: flex; align-items: center; gap: var(--sp-3); color: #fff; font-family: var(--font-display);
+    font-weight: 600; padding: var(--sp-3) var(--sp-4); border: 1px solid rgba(255,255,255,0.16); border-radius: var(--radius); background: rgba(255,255,255,0.04); }
+  .demo-flow span { width: 1.6rem; height: 1.6rem; flex: none; display: grid; place-items: center; border-radius: 999px;
+    background: var(--azure); color: var(--navy); font-weight: 700; font-size: 0.8rem; }
+  @media (max-width: 760px) { .demo-card { grid-template-columns: 1fr; padding: var(--sp-5); } }
+
+  /* the clause the page is about: foreground ink, with each axis term marked in
+     its own colour. Weight and colour do the work, so nothing here is bolded. */
+  .hero-lede .claim { color: var(--text); }
+  .hero-lede .term { color: var(--text); white-space: nowrap;
+    padding: 0.06em 0.22em; border-radius: 3px;
+    background: linear-gradient(to top, var(--tint) 0.72em, transparent 0.72em); }
+  .hero-lede .t-recept { --tint: color-mix(in srgb, var(--crimson) 18%, transparent); }
+  .hero-lede .t-detect { --tint: color-mix(in srgb, var(--azure) 22%, transparent); }
+
+  /* full-bleed light band: breaks the run of heading-plus-grid sections */
+  .band { background: var(--surface); border-block: 1px solid var(--hairline);
+    padding-block: var(--sp-8); margin-top: var(--sp-8); }
+  .band-head { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: var(--sp-4) var(--sp-7);
+    align-items: start; }
+  .band-head h2 { max-width: 14ch; }
+  .band-head .prose { margin-top: 0; font-size: var(--step-1); color: var(--text-muted); }
+  .band-panel { margin-top: var(--sp-7); }
+  .band-foot { margin-top: var(--sp-3); font-size: 0.62rem; letter-spacing: 0.13em;
+    text-transform: uppercase; color: var(--text-faint); }
+  .band-flush { margin-top: 0; }
+
+  /* domains */
+  .domain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); margin-top: var(--sp-6); }
+  .domain { padding: var(--sp-5); background: var(--surface); border: 1px solid var(--hairline);
+    border-radius: var(--radius-lg); transition: box-shadow 0.15s var(--ease), transform 0.15s var(--ease); }
+  .domain:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+  .domain-no { color: var(--c); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.1em; }
+  .domain-name { font-size: var(--step-1); margin-top: var(--sp-2); }
+  .domain-blurb { color: var(--text-muted); font-size: 0.94rem; margin-top: var(--sp-2); }
+  .domain.criterion { background: linear-gradient(180deg, rgba(14,120,180,0.06), var(--surface)); }
+  .domain.anchor { background: linear-gradient(180deg, rgba(91,98,115,0.05), var(--surface)); border-style: dashed; }
+
+  /* evidence band */
+  .evidence-band { position: relative; overflow: clip; background: var(--navy); color: #C7CBDE; padding-block: var(--sp-8); margin-top: var(--sp-8); }
+  .band-tri { position: absolute; bottom: -2rem; right: -1.5rem; width: 260px; height: 260px; opacity: 0.6; z-index: 0; }
+  .evidence-band .wrap { position: relative; z-index: 1; }
+  .band-h { color: #fff; }
+  .study-chain { list-style: none; padding: 0; margin: var(--sp-6) 0; display: grid; gap: 1px; background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.14); border-radius: var(--radius-lg); overflow: hidden; }
+  .study { display: grid; grid-template-columns: 3rem 12rem 6rem 1fr; gap: var(--sp-4); align-items: baseline;
+    padding: var(--sp-4) var(--sp-5); background: var(--navy); }
+  .study-id { color: var(--azure); font-weight: 700; font-size: 1rem; }
+  .study-meta { color: var(--peri); font-size: 0.8rem; }
+  .study-n { font-family: var(--font-display); font-weight: 700; color: #fff; }
+  .study-role { color: #AEB5D8; font-size: 0.92rem; }
+
+  /* final cta */
+  .cta-final { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-5); flex-wrap: wrap; }
+  .btn.lg { font-size: var(--step-0); padding: 0.9em 1.6em; }
+
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .band-head { grid-template-columns: 1fr; }
+    .band-head h2 { max-width: none; }
+    .domain-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .domain-grid { grid-template-columns: 1fr; }
+    /* four stats wrap 3 + 1 at this width; two rows of two reads better */
+    .hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4) var(--sp-5); }
+    .hero-tri { width: 200px; height: 200px; opacity: 0.32; }
+    .band-tri { width: 190px; height: 190px; }
+    .study { grid-template-columns: 2.5rem 1fr; grid-template-areas: "id meta" "id n" "role role"; row-gap: 2px; }
+    .study-role { grid-area: role; }
+  }
+</style>

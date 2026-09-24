@@ -1,0 +1,130 @@
+---
+// Distraction-reduced "survey mode" shell for the demonstrator. On-brand, but
+// without the site nav/footer: a slim header (brand mark · live progress bar ·
+// language toggle · exit) and a slim foot (simulation notice · EU funding).
+// The progress bar, language buttons and step counter are wired by the page.
+import '@fontsource-variable/montserrat';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import EuFunded from '../components/EuFunded.astro';
+import { url } from '../lib/paths';
+
+interface Props { title?: string; description?: string; }
+const {
+  title = 'Demonstrator',
+  description = 'Take the short DisInforMeter, receive personalized feedback on your domain scores, and try the FIMI choice task — in one simulated survey. Nothing is stored.',
+} = Astro.props;
+const fullTitle = `${title} · DisInforMeter`;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light" />
+    <meta name="robots" content="index, nofollow" />
+    <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+  </head>
+  <body class="survey-body">
+    <a href="#survey-main" class="skip-link">Skip to content</a>
+
+    <header class="sv-head">
+      <div class="sv-head-inner">
+        <a class="sv-brand" href={url('/')} aria-label="DisInforMeter: leave the simulation and return home">
+          <span class="sv-brand-name">DisInfor<span class="meter">Meter</span></span>
+          <span class="sv-brand-sub mono" data-i18n="chip">Demonstrator · simulation</span>
+        </a>
+
+        <div class="sv-head-right">
+          <div class="sv-lang" role="group" aria-label="Language / Kalba">
+            <button type="button" class="sv-lang-btn active" data-lang="EN" aria-pressed="true">EN</button>
+            <button type="button" class="sv-lang-btn" data-lang="LT" aria-pressed="false">LT</button>
+          </div>
+          <a class="sv-exit" href={url('/')} aria-label="Leave the simulation">
+            <span aria-hidden="true">✕</span>
+            <span class="sv-exit-text" data-i18n="exit">Leave</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- live progress: filled by the page; the bar is hidden on the welcome step -->
+      <div class="sv-progress" id="sv-progress" aria-hidden="true" hidden>
+        <div class="sv-progress-track"><i id="sv-progress-fill"></i></div>
+        <span class="sv-progress-label mono" id="sv-progress-label"></span>
+      </div>
+    </header>
+
+    <main id="survey-main" class="sv-main">
+      <slot />
+    </main>
+
+    <footer class="sv-foot">
+      <p class="sv-foot-note" data-i18n="footnote">
+        This is a simulation for demonstration. No responses are stored or transmitted:
+        everything runs in your browser and is discarded when you leave or reload.
+      </p>
+      <div class="sv-foot-eu">
+        <EuFunded tone="light" />
+        <span class="mono sv-foot-grant">DE-CONSPIRATOR · D5.2 · Grant Agreement No. 101132671</span>
+      </div>
+    </footer>
+
+    <style>
+      .survey-body { background: var(--ground); min-height: 100dvh; display: flex; flex-direction: column; }
+
+      /* ---- header ---- */
+      .sv-head { position: sticky; top: 0; z-index: 40; background: color-mix(in srgb, var(--surface) 90%, transparent);
+        backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid var(--hairline); }
+      .sv-head-inner { max-width: 920px; margin-inline: auto; display: flex; align-items: center;
+        gap: var(--sp-4); padding: 0.7rem var(--sp-5); min-height: 58px; }
+      .sv-brand { display: inline-flex; align-items: baseline; gap: var(--sp-3); text-decoration: none; }
+      .sv-brand-name { font-family: var(--font-display); font-weight: 800; font-size: 1.04rem; letter-spacing: -0.02em; color: var(--navy); }
+      .sv-brand-name .meter { color: var(--azure-600); }
+      .sv-brand-sub { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-faint); }
+
+      .sv-head-right { margin-left: auto; display: inline-flex; align-items: center; gap: var(--sp-4); }
+      .sv-lang { display: inline-flex; border: 1px solid var(--hairline-strong); border-radius: 999px; overflow: hidden; background: var(--surface); }
+      .sv-lang-btn { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em;
+        padding: 0.34em 0.7em; border: 0; background: transparent; color: var(--text-muted); cursor: pointer;
+        transition: background 0.15s var(--ease), color 0.15s var(--ease); }
+      .sv-lang-btn + .sv-lang-btn { border-left: 1px solid var(--hairline); }
+      .sv-lang-btn:hover { color: var(--navy); }
+      .sv-lang-btn.active { background: var(--navy); color: #fff; }
+
+      .sv-exit { display: inline-flex; align-items: center; gap: 0.4em; font-family: var(--font-display);
+        font-weight: 600; font-size: 0.82rem; color: var(--text-muted); text-decoration: none; }
+      .sv-exit:hover { color: var(--crimson-700); }
+
+      .sv-progress { max-width: 920px; margin-inline: auto; display: flex; align-items: center; gap: var(--sp-3);
+        padding: 0 var(--sp-5) 0.7rem; }
+      .sv-progress-track { flex: 1; height: 5px; border-radius: 999px; background: var(--hairline); overflow: hidden; }
+      .sv-progress-track > i { display: block; height: 100%; width: 0%; border-radius: 999px;
+        background: var(--brand-gradient); transition: width 0.4s var(--ease); }
+      .sv-progress-label { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint);
+        white-space: nowrap; flex: none; }
+
+      /* ---- main ---- */
+      .sv-main { flex: 1; width: 100%; max-width: 920px; margin-inline: auto; padding: var(--sp-7) var(--sp-5) var(--sp-8); }
+
+      /* ---- footer ---- */
+      .sv-foot { border-top: 1px solid var(--hairline); padding: var(--sp-5) var(--sp-5) var(--sp-6); background: var(--surface-2); }
+      .sv-foot-note { max-width: 920px; margin: 0 auto var(--sp-4); font-size: 0.8rem; color: var(--text-faint); text-align: center; }
+      .sv-foot-eu { max-width: 920px; margin-inline: auto; display: flex; align-items: center; justify-content: center;
+        gap: var(--sp-4) var(--sp-5); flex-wrap: wrap; }
+      .sv-foot-grant { font-size: 0.64rem; letter-spacing: 0.08em; color: var(--text-faint); text-transform: uppercase; }
+
+      @media (max-width: 560px) {
+        .sv-brand-sub { display: none; }
+        .sv-exit-text { display: none; }
+        .sv-main { padding-top: var(--sp-6); }
+      }
+    </style>
+  </body>
+</html>

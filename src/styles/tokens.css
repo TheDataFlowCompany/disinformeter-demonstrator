@@ -1,0 +1,80 @@
+/* DisInforMeter demonstrator — DE-CONSPIRATOR brand design tokens.
+   Source of truth: the D5.3 Policy Report + deliverable template + project logo.
+   Identity: institutional navy structure, a bright-azure signal accent, crimson for
+   the receptivity/alert axis, and a navy→azure gradient rule. Type is Montserrat
+   throughout (as embedded in the policy report); IBM Plex Mono for instrument labels.
+   Domain data-viz hues mirror the ColorBrewer Dark2 palette baked into the figures. */
+:root {
+  /* ---- brand core (sampled from logo, cover, gradient bar) ---- */
+  --navy: #162259;          /* primary structural — headers, footer, titles */
+  --navy-800: #1E2B6B;
+  --navy-700: #2A357A;
+  --navy-300: #6A72A6;      /* muted navy for secondary text on light */
+
+  --azure: #00A8EF;         /* signal azure — accents, rules, large highlights */
+  --azure-600: #1487C9;     /* azure for medium/bold text on light */
+  --azure-700: #0A6CA8;     /* azure that meets AA for body links on white */
+  --azure-soft: #DCEFFB;
+
+  --crimson: #E1202A;       /* logo red — alert / receptivity axis */
+  --crimson-700: #C2121B;   /* crimson that meets AA for text on white */
+  --crimson-soft: #FBE0E1;
+
+  --slate: #555D86;         /* periwinkle-slate — triangle motif, tertiary UI */
+  --peri: #8689A8;
+  --peri-200: #C7CBDE;
+  --peri-100: #DEDEEB;
+
+  /* ---- surfaces & text ---- */
+  --ground: #F4F6FB;        /* cool porcelain, faint periwinkle cast */
+  --surface: #FFFFFF;
+  --surface-2: #F8FAFD;
+  --text: #11173A;          /* near-navy ink */
+  --text-muted: #4C5478;
+  --text-faint: #8389A6;
+
+  --hairline: #E1E5F0;
+  --hairline-strong: #C7CDDE;
+
+  /* ---- data-viz axes (receptivity runs opposite detection) ---- */
+  --axis-receptivity: var(--crimson);
+  --axis-receptivity-soft: var(--crimson-soft);
+  --axis-detection: #0E78B4;        /* azure-deep, distinct from domain teal */
+  --axis-detection-soft: #D7EBF7;
+
+  /* ---- domain hues = ColorBrewer Dark2 (matches the embedded figures) ---- */
+  --d-threat: #1B9E77;
+  --d-aband: #D95F02;
+  --d-fear: #7570B3;
+  --d-admire: #E7298A;
+  --d-general: #5B6273;     /* the figures' grey, nudged toward slate */
+  --d-fimi: #0E78B4;        /* azure-deep — the detection criterion */
+
+  /* ---- type ---- */
+  --font-display: "Montserrat Variable", "Montserrat", system-ui, sans-serif;
+  --font-body: "Montserrat Variable", "Montserrat", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* fluid type scale */
+  --step--1: clamp(0.78rem, 0.74rem + 0.18vw, 0.85rem);
+  --step-0: clamp(0.98rem, 0.95rem + 0.16vw, 1.04rem);
+  --step-1: clamp(1.15rem, 1.08rem + 0.36vw, 1.34rem);
+  --step-2: clamp(1.4rem, 1.26rem + 0.7vw, 1.78rem);
+  --step-3: clamp(1.72rem, 1.48rem + 1.2vw, 2.45rem);
+  --step-4: clamp(2rem, 1.6rem + 2vw, 3.4rem);
+  --step-5: clamp(2.3rem, 1.7rem + 3.4vw, 4.8rem);
+
+  /* ---- space & shape ---- */
+  --sp-1: 0.25rem; --sp-2: 0.5rem; --sp-3: 0.75rem; --sp-4: 1rem;
+  --sp-5: 1.5rem; --sp-6: 2rem; --sp-7: 3rem; --sp-8: 4.5rem; --sp-9: 7rem;
+  --radius: 6px;
+  --radius-lg: 14px;
+  --maxw: 1180px;
+  --maxw-prose: 66ch;
+  --shadow: 0 1px 2px rgba(22, 34, 89, 0.06), 0 10px 28px -14px rgba(22, 34, 89, 0.22);
+  --shadow-lg: 0 2px 8px rgba(22, 34, 89, 0.08), 0 28px 64px -28px rgba(22, 34, 89, 0.34);
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* the signature navy→azure brand gradient (footer rule, dividers, accents) */
+  --brand-gradient: linear-gradient(90deg, #29235C 0%, #1C3A75 42%, #1267A8 72%, #00A8EF 100%);
+}

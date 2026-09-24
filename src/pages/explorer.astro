@@ -1,0 +1,236 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { bank, trans, scales, type BankItem } from '../lib/data';
+
+const langs = trans._meta.languages;
+
+// translation lookup: { code: { lang: text } } for short-module items
+const transByCode: Record<string, Record<string, string>> = {};
+for (const it of trans.items) transByCode[it.item_code] = it.translations;
+
+function displayCode(i: BankItem): string {
+  return i.short_module_code || i.waves.S4 || i.waves.S5 || i.waves.S2 || i.waves.S3 || i.waves.S1 || '—';
+}
+function sectionKey(s: string): string {
+  if (s.startsWith('First')) return 'first';
+  if (s.startsWith('Higher')) return 'higher';
+  return 'fimi';
+}
+const sectionLabel: Record<string, string> = { first: 'First-order belief blocks', higher: 'Higher-order composites', fimi: 'FIMI detection criterion' };
+
+// group items by scale_display, preserving section order
+const order = ['First-order construct items', 'Higher-order composite indicators', 'FIMI news items'];
+const items = [...bank.items].sort((a, b) => order.indexOf(a.section) - order.indexOf(b.section));
+
+const versionFilters = [
+  { v: 'all', label: 'All versions' },
+  { v: 'long', label: 'Long' },
+  { v: 'short', label: 'Short' },
+  { v: 'ultra_brief', label: 'Ultra-brief' },
+];
+const sectionFilters = [
+  { s: 'all', label: 'All types' },
+  { s: 'first', label: 'First-order' },
+  { s: 'higher', label: 'Higher-order' },
+  { s: 'fimi', label: 'FIMI' },
+];
+---
+<Base title="Item explorer" description="Browse every DisInforMeter item by version, domain, and study, in 19 languages.">
+  <PageHeader title="Item explorer">
+    <p>Every item carried in the programme, {bank.items.length} in total, with full English
+       wording and the version it belongs to. Shown first: the recommended 27-item short module, available in
+       any of <strong>{langs.length} languages</strong>; switch the version filter to browse the full bank.</p>
+  </PageHeader>
+
+  <section class="wrap explorer">
+    <!-- controls -->
+    <form class="controls panel" id="controls" aria-label="Filter items">
+      <div class="ctl ctl-search">
+        <label for="q" class="ctl-label mono">Search</label>
+        <input type="search" id="q" placeholder="Search wording or code…" autocomplete="off" />
+      </div>
+      <div class="ctl">
+        <label for="version" class="ctl-label mono">Version</label>
+        <select id="version">{versionFilters.map((f) => <option value={f.v} selected={f.v === 'short'}>{f.label}</option>)}</select>
+      </div>
+      <div class="ctl">
+        <label for="section" class="ctl-label mono">Type</label>
+        <select id="section">{sectionFilters.map((f) => <option value={f.s}>{f.label}</option>)}</select>
+      </div>
+      <div class="ctl">
+        <label for="lang" class="ctl-label mono">Language <span class="ctl-note">(short module)</span></label>
+        <select id="lang">
+          {langs.map((l) => <option value={l.code}>{l.name}{l.primary ? '' : ' ·'}</option>)}
+        </select>
+      </div>
+    </form>
+
+    <!-- response-scale anchors for the chosen language -->
+    <div class="scalebar" id="scalebar" hidden>
+      <span class="scale-tag mono receptivity">Agreement</span>
+      <span class="scale-anchors mono" id="anchor-likert"></span>
+      <span class="scale-tag mono detection">FIMI detection</span>
+      <span class="scale-anchors mono" id="anchor-fimi"></span>
+    </div>
+
+    <p class="result-count mono" id="count" aria-live="polite"></p>
+
+    <!-- items -->
+    <div class="items" id="items">
+      {items.map((i) => {
+        const sk = sectionKey(i.section);
+        const code = displayCode(i);
+        const searchText = `${i.item_text} ${code} ${i.scale} ${i.domain_label ?? ''}`.toLowerCase();
+        const domainHue = sk === 'fimi' ? '--d-fimi'
+          : i.domain_label === 'Threat' ? '--d-threat'
+          : i.domain_label === 'Betrayal / Abandonment' ? '--d-aband'
+          : i.domain_label === 'Fear / Pragmatism' ? '--d-fear'
+          : i.domain_label === 'Foreign-Power Admiration' ? '--d-admire'
+          : i.domain_label === 'General Anchor' ? '--d-general' : '--ink-300';
+        return (
+          <article class="item"
+            data-versions={i.versions.join(' ')}
+            data-section={sk}
+            data-code={i.short_module_code ?? ''}
+            data-search={searchText}
+            style={`--hue: var(${domainHue})`}>
+            <div class="item-side">
+              <span class="item-code mono">{code}</span>
+            </div>
+            <div class="item-main">
+              <p class="item-text" data-en={i.item_text}>{i.item_text}</p>
+              <div class="item-tags">
+                <span class="tag domain">{i.domain_label ?? i.scale}</span>
+                {i.versions.includes('short') && <span class="tag tag-short">short</span>}
+                {i.versions.includes('ultra_brief') && <span class="tag tag-ultra">ultra-brief</span>}
+                {i.fimi && <span class="tag tag-origin">{i.fimi.origin}{i.fimi.short_fimi ? ' · Short-FIMI' : ''}</span>}
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+    <p class="empty mono" id="empty" hidden>No items match these filters.</p>
+  </section>
+
+</Base>
+
+<script define:vars={{ transByCode, scales }}>
+  const els = {
+    q: document.getElementById('q'),
+    version: document.getElementById('version'),
+    section: document.getElementById('section'),
+    lang: document.getElementById('lang'),
+    items: [...document.querySelectorAll('.item')],
+    count: document.getElementById('count'),
+    empty: document.getElementById('empty'),
+    scalebar: document.getElementById('scalebar'),
+    anchorLikert: document.getElementById('anchor-likert'),
+    anchorFimi: document.getElementById('anchor-fimi'),
+  };
+
+  // pre-select version from ?version= query
+  const qp = new URLSearchParams(location.search).get('version');
+  if (qp && [...els.version.options].some((o) => o.value === qp)) els.version.value = qp;
+
+  function applyLanguage(lang) {
+    for (const el of els.items) {
+      const code = el.dataset.code;
+      const span = el.querySelector('.item-text');
+      if (code && transByCode[code] && transByCode[code][lang]) {
+        span.textContent = transByCode[code][lang];
+        el.classList.toggle('translated', lang !== 'EN');
+      } else {
+        span.textContent = span.dataset.en;
+        el.classList.remove('translated');
+      }
+    }
+    // scale anchors
+    const s = scales[lang];
+    if (lang !== 'EN' && s) {
+      const lk = s.likert_agreement, fm = s.fimi_detection;
+      els.anchorLikert.textContent = `1 ${strip(lk['1'])} → 7 ${strip(lk['7'])}`;
+      els.anchorFimi.textContent = `1 ${strip(fm['1'])} → 7 ${strip(fm['7'])}`;
+      els.scalebar.hidden = false;
+    } else {
+      els.scalebar.hidden = true;
+    }
+  }
+  function strip(t) { return (t || '').replace(/^\d+\s*[-–]\s*/, '').trim(); }
+
+  function apply() {
+    const q = els.q.value.trim().toLowerCase();
+    const v = els.version.value, sec = els.section.value;
+    let shown = 0;
+    for (const el of els.items) {
+      const okV = v === 'all' || el.dataset.versions.split(' ').includes(v);
+      const okS = sec === 'all' || el.dataset.section === sec;
+      const okQ = !q || el.dataset.search.includes(q);
+      const show = okV && okS && okQ;
+      el.hidden = !show;
+      if (show) shown++;
+    }
+    els.count.textContent = `${shown} item${shown === 1 ? '' : 's'}`;
+    els.empty.hidden = shown !== 0;
+  }
+
+  els.q.addEventListener('input', apply);
+  els.version.addEventListener('change', apply);
+  els.section.addEventListener('change', apply);
+  els.lang.addEventListener('change', () => applyLanguage(els.lang.value));
+  applyLanguage('EN');
+  apply();
+</script>
+
+<style>
+  .explorer { padding-block: var(--sp-6) var(--sp-8); }
+  .controls { display: grid; grid-template-columns: 2fr 1fr 1fr 1.4fr; gap: var(--sp-4); padding: var(--sp-4) var(--sp-5);
+    position: sticky; top: 68px; z-index: 10;
+    background: color-mix(in srgb, var(--surface) 78%, transparent);
+    backdrop-filter: blur(16px) saturate(1.5); -webkit-backdrop-filter: blur(16px) saturate(1.5);
+    border-color: color-mix(in srgb, #fff 45%, var(--hairline-strong));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.75), var(--shadow); }
+  .ctl { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .ctl-label { font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); }
+  .ctl-note { color: var(--hairline-strong); }
+  .controls input, .controls select {
+    font-family: var(--font-body); font-size: 0.92rem; padding: 0.5em 0.6em; width: 100%; min-width: 0;
+    border: 1px solid var(--hairline-strong); border-radius: var(--radius); background: var(--surface-2); color: var(--text);
+  }
+  .controls input:focus, .controls select:focus { outline: 2px solid var(--azure-600); outline-offset: 1px; border-color: var(--azure-600); }
+
+  .scalebar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-3); margin-top: var(--sp-4);
+    padding: var(--sp-3) var(--sp-4); background: var(--surface-2); border: 1px solid var(--hairline); border-radius: var(--radius); font-size: 0.8rem; }
+  .scale-tag { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; padding: 0.15em 0.5em; border-radius: 999px; }
+  .scale-tag.receptivity { color: var(--crimson-700); background: var(--crimson-soft); }
+  .scale-tag.detection { color: var(--axis-detection); background: var(--axis-detection-soft); }
+  .scale-anchors { color: var(--text-muted); }
+
+  .result-count { margin-top: var(--sp-4); color: var(--text-faint); font-size: 0.8rem; letter-spacing: 0.06em; }
+
+  .items { margin-top: var(--sp-3); display: grid; gap: var(--sp-2); }
+  .item { display: grid; grid-template-columns: 8.5rem 1fr; gap: var(--sp-4); padding: var(--sp-4);
+    background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius-lg); }
+  .item[hidden] { display: none; }
+  .item-side { display: flex; flex-direction: column; gap: var(--sp-2); }
+  .item-code { font-weight: 600; color: var(--hue); font-size: 0.92rem; }
+  .item-text { font-size: 1.02rem; line-height: 1.45; }
+  .item.translated .item-text { font-style: normal; }
+  .item-tags { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-3); }
+  .tag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.03em; padding: 0.2em 0.55em; border-radius: 999px;
+    border: 1px solid var(--hairline-strong); color: var(--text-muted); background: var(--surface-2); }
+  .tag.domain { color: var(--hue); border-color: color-mix(in srgb, var(--hue) 40%, var(--hairline)); }
+  .tag-short { color: var(--azure-700); border-color: var(--azure); background: var(--azure-soft); }
+  .tag-ultra { color: var(--d-general); }
+  .empty { text-align: center; padding: var(--sp-7); color: var(--text-faint); }
+
+  @media (max-width: 860px) {
+    .controls { grid-template-columns: 1fr 1fr; position: static; }
+    .ctl-search { grid-column: 1 / -1; }
+  }
+  @media (max-width: 560px) {
+    .item { grid-template-columns: 1fr; }
+    .item-side { flex-direction: row; align-items: center; gap: var(--sp-3); }
+  }
+</style>

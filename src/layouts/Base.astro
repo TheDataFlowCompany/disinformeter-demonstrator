@@ -1,0 +1,42 @@
+---
+import '@fontsource-variable/montserrat';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = 'DisInforMeter Toolkit',
+  description = 'An interactive demonstrator of the DisInforMeter, a validated population indicator for receptivity to, and detection of, Foreign Information Manipulation and Interference (FIMI). DE-CONSPIRATOR Deliverable D5.2.',
+} = Astro.props;
+const fullTitle = title === 'DisInforMeter Toolkit' ? title : `${title} · DisInforMeter`;
+import { url } from '../lib/paths';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Nav />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

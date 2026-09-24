@@ -1,0 +1,131 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { url } from '../lib/paths';
+import { STUDIES } from '../lib/data';
+
+const fig = (name: string) => url(`/figures/${name}`);
+const totalN = STUDIES.reduce((s, x) => s + x.n, 0);
+
+const qualities = [
+  { k: 'Reliability', v: 'Composite reliability (ω) and AVE reported per domain across waves; the higher-order composites hold together.' },
+  { k: 'Measurement invariance', v: 'Configural → metric → scalar ladders, staged first- then higher-order, across countries (S2↔S3) and over time (S2↔S5), plus S4 country ladders.' },
+  { k: 'Cross-national', v: 'Replicated in Germany (S3) and fielded across 13 countries (S4); profiles, ranks, and associations are the strongest comparisons.' },
+  { k: 'External validity', v: 'Validated against preregistered civic anchors in S5 (Lithuania).' },
+];
+---
+<Base title="Evidence" description="Evaluate the DisInforMeter: the five-study chain, sample, reliability, invariance, and external validity.">
+  <PageHeader title="The evidence base">
+    <p>The DisInforMeter was built through a staged evidence pipeline: conceptual work, item generation,
+       empirical refinement, cross-national comparability, and external validation. It spans five studies
+       and <strong>{totalN.toLocaleString('en')}+</strong> respondents.</p>
+  </PageHeader>
+
+  <!-- study chain -->
+  <section class="section wrap reveal">
+    <h2>From item pool to multinational deployment</h2>
+    <ol class="chain">
+      {STUDIES.map((s, i) => (
+        <li class="chain-step">
+          <div class="chain-mark"><span class="mono">{s.id}</span></div>
+          <div class="chain-body">
+            <p class="chain-meta mono">{s.where} · {s.when} · n&nbsp;=&nbsp;{s.n.toLocaleString('en')}</p>
+            <p class="chain-role">{s.role}</p>
+          </div>
+          {i < STUDIES.length - 1 && <span class="chain-line" aria-hidden="true"></span>}
+        </li>
+      ))}
+    </ol>
+    <figure class="fig">
+      <img src={fig('F-35_construction_funnel.png')} alt="Construction funnel: from conceptual sources and an initial item pool through empirical refinement, cross-country comparability, and external validation." loading="lazy" />
+      <figcaption>The construction funnel: how the item pool was narrowed and validated.</figcaption>
+    </figure>
+  </section>
+
+  <!-- architecture + sample -->
+  <section class="section wrap two-fig reveal">
+    <figure class="fig">
+      <img src={fig('F-02_five_domain_architecture.png')} alt="DisInforMeter architecture: ten first-order belief themes feed four higher-order affective pathways; the General Anchor is measured directly by its own items and sits apart, and the FIMI recognition criterion is kept separate." loading="lazy" />
+      <figcaption>Ten belief themes feed four affective pathways. The General Anchor is measured
+        directly by its own items and sits apart; the FIMI recognition criterion is kept analytically separate.</figcaption>
+    </figure>
+    <figure class="fig">
+      <img src={fig('F-04_sample_composition.png')} alt="Sample composition across the five studies." loading="lazy" />
+      <figcaption>Sample composition across the five studies.</figcaption>
+    </figure>
+  </section>
+
+  <!-- measurement quality -->
+  <section class="section wrap reveal">
+    <h2>Why you can trust the numbers</h2>
+    <div class="qual-grid">
+      {qualities.map((q) => (
+        <article class="qual">
+          <h3 class="qual-k">{q.k}</h3>
+          <p>{q.v}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- boundary -->
+  <section class="section wrap reveal">
+    <aside class="boundary panel">
+      <h2 class="boundary-h">Boundary of interpretation</h2>
+      <p class="boundary-lead">The DisInforMeter is a population-monitoring and survey-research
+        instrument, not a tool for individual risk-profiling, content moderation, or enforcement.</p>
+      <p>Country results are evidence for policy prioritisation and follow-up analysis, not country verdicts,
+        and never a basis for individual-level targeting. Cross-national comparisons are strongest as profiles,
+        ranks, and associations; absolute latent-mean comparisons carry a scalar-invariance caveat.</p>
+    </aside>
+  </section>
+
+  <!-- deeper -->
+  <section class="section wrap go-deeper reveal">
+    <div>
+      <h2>The full evidence is public</h2>
+      <p class="prose">The policy report and its online supplement carry the complete reliability, invariance, and
+        external-validation diagnostics, country profiles for all 13 multinational-wave countries, and the
+        reproducible code behind every figure.</p>
+    </div>
+    <div class="deeper-links">
+      <a class="btn btn-primary" href={url('/downloads')}>Download the policy report →</a>
+      <a class="btn btn-ghost" href="https://thedataflowcompany.github.io/disinformeter-policy-report-supplement/" target="_blank" rel="noopener">Open the online supplement ↗</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .chain { list-style: none; padding: 0; margin: var(--sp-6) 0; display: grid; gap: 0; }
+  .chain-step { position: relative; display: grid; grid-template-columns: 3.5rem 1fr; gap: var(--sp-4); padding-bottom: var(--sp-5); }
+  .chain-mark { width: 3rem; height: 3rem; border-radius: 999px; display: grid; place-items: center; z-index: 1;
+    background: var(--navy); color: #fff; box-shadow: 0 0 0 4px var(--ground), 0 0 0 5px var(--hairline); }
+  .chain-mark .mono { font-weight: 700; color: var(--azure); }
+  .chain-line { position: absolute; left: 1.5rem; top: 3rem; bottom: 0; width: 2px; background: var(--hairline-strong); }
+  .chain-meta { color: var(--text-faint); font-size: 0.78rem; }
+  .chain-role { margin-top: 2px; font-weight: 600; }
+
+  .fig { margin: var(--sp-6) 0 0; background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius-lg); padding: var(--sp-5); }
+  .fig img { margin-inline: auto; }
+  .fig figcaption { margin-top: var(--sp-3); font-size: 0.84rem; color: var(--text-muted); text-align: center; }
+  .fig.narrow { max-width: 760px; }
+  .two-fig { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); align-items: start; }
+  .two-fig .fig { margin-top: 0; }
+
+  .qual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-top: var(--sp-6); }
+  .qual { padding: var(--sp-5); background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius-lg); }
+  .qual-k { font-size: var(--step-1); color: var(--navy); }
+  .qual p { color: var(--text-muted); font-size: 0.95rem; margin-top: var(--sp-2); }
+
+  .boundary { padding: var(--sp-6); border-radius: var(--radius-lg); background: var(--crimson-soft);
+    border-color: color-mix(in srgb, var(--crimson) 22%, var(--hairline)); }
+  .boundary-h { font-size: var(--step-1); color: var(--crimson-700); }
+  .boundary-lead { font-size: var(--step-1); margin-top: var(--sp-3); color: var(--text); }
+  .boundary p + p { margin-top: var(--sp-3); color: #7A2620; }
+  .boundary strong { color: var(--crimson-700); }
+
+  .go-deeper { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-6); flex-wrap: wrap; }
+  .deeper-links { display: flex; flex-direction: column; gap: var(--sp-3); }
+
+  @media (max-width: 820px) { .two-fig, .qual-grid { grid-template-columns: 1fr; } }
+</style>

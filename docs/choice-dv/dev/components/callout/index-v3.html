@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deconspirator — local dev harness</title>
+  <link rel="stylesheet" href="../css/deconspirator-task.css">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px;
+      color: #222;
+    }
+    h1 { font-size: 1.25rem; margin: 0 0 4px; }
+    h2 { font-size: 0.95rem; margin: 24px 0 8px; }
+    .lede { color: #555; margin: 0 0 16px; font-size: 0.88rem; line-height: 1.5; }
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      margin: 12px 0 20px;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: 10px 12px;
+      background: #f7f7f7;
+      border-radius: 4px;
+    }
+    .toolbar button {
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: 1px solid #bbb;
+      background: white;
+      border-radius: 3px;
+    }
+    .toolbar button:hover { background: #eee; }
+    .toolbar label { font-size: 0.85rem; user-select: none; }
+    .toolbar code { font-size: 0.78rem; color: #16697A; }
+    #qualtrics-log {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 12px;
+      background: #fafafa;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.78rem;
+      max-height: 320px;
+      overflow: auto;
+    }
+    #qualtrics-log:empty::before {
+      content: "(no embedded data writes yet — start playing through the task)";
+      color: #999;
+    }
+    .log-entry {
+      padding: 6px 0;
+      border-bottom: 1px dashed #eee;
+      word-break: break-all;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-field { font-weight: 600; color: #16697A; }
+    .log-value { color: #444; }
+
+    /* ------------------------------------------------------------------
+       Callouts — warning-box system
+
+       Calibrated for the deconspirator task. Each box is a focused
+       intervention: a single uppercase eyebrow + a single body paragraph,
+       anchored by a solid filled glyph (meteor-icon-kit style). A 5px
+       accent bar on the leading edge gives the box clear "stop and read"
+       presence without overwhelming the surrounding survey question.
+
+       Variants:
+         .callout-note        slate blue,   info-circle glyph
+         .callout-tip         sage green,   question-circle glyph
+         .callout-warning     warm amber,   exclamation-triangle glyph
+         .callout-important   dark hero,    times-hexagon glyph
+         .callout-quote       editorial pullquote (serif)
+       ------------------------------------------------------------------ */
+
+    .callout {
+      --c-bg: #eef3fb;
+      --c-line: #c5d6ea;
+      --c-accent: #2b5fa3;
+      --c-ink: #14315c;
+      --c-body: #2a3a51;
+
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.95rem;
+      margin: 1.5rem 0;
+      padding: 1.15rem 1.4rem 1.2rem 1.5rem;
+      background: var(--c-bg);
+      border: 1px solid var(--c-line);
+      border-radius: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                   "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.55;
+      color: var(--c-body);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.65),
+        0 1px 2px rgba(15, 37, 69, 0.05);
+      overflow: hidden;
+    }
+
+    /* Leading accent bar — wider than before so the box reads as a sign */
+    .callout::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 5px;
+      background: var(--c-accent);
+    }
+
+    .callout__icon {
+      flex: none;
+      display: grid;
+      place-items: center;
+      width: 1.35rem;
+      height: 1.35rem;
+      margin-top: 0.12rem;
+      color: var(--c-accent);
+    }
+
+    .callout__icon svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
+    }
+
+    .callout__body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .callout__label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--c-accent);
+    }
+
+    .callout__text {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--c-body);
+    }
+
+    .callout__text + .callout__text {
+      margin-top: 0.4rem;
+    }
+
+    /* Note — calm, informational, slate-blue */
+    .callout-note {
+      --c-bg: #eef3fb;
+      --c-line: #c5d6ea;
+      --c-accent: #2b5fa3;
+      --c-ink: #14315c;
+      --c-body: #2a3a51;
+    }
+
+    /* Tip — encouraging, sage green */
+    .callout-tip {
+      --c-bg: #ecf4ee;
+      --c-line: #bfd4c5;
+      --c-accent: #2f7a45;
+      --c-ink: #143b1f;
+      --c-body: #2c4031;
+    }
+
+    /* Warning — warm amber, brand-aligned (--warning #fe9c5d) */
+    .callout-warning {
+      --c-bg: #fdeed4;
+      --c-line: #ecc081;
+      --c-accent: #a85408;
+      --c-ink: #5a2b00;
+      --c-body: #6b3d10;
+    }
+
+    /* Important — hero intervention. Dark, brand-aligned (--dark #41302b) */
+    .callout-important {
+      --c-line: #2a221e;
+      --c-accent: #fe9c5d;
+      --c-ink: #ffffff;
+      --c-body: rgba(255, 255, 255, 0.84);
+
+      background: linear-gradient(180deg, #2c241f 0%, #1d1714 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 12px 28px -16px rgba(28, 22, 18, 0.55);
+    }
+
+    .callout-important .callout__label {
+      color: #fe9c5d;
+    }
+
+    /* Quote — editorial pullquote. Serif, oversized opening mark. */
+    .callout-quote {
+      position: relative;
+      display: block;
+      margin: 1.75rem 0;
+      padding: 1.6rem 1.75rem 1.5rem 3.75rem;
+      background: #faf7f1;
+      border: 1px solid #ece5d6;
+      border-radius: 12px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia,
+                   "Times New Roman", serif;
+      color: #2a2018;
+    }
+
+    .callout-quote::before {
+      content: "\201C";
+      position: absolute;
+      top: -0.35rem;
+      left: 1rem;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 5.25rem;
+      line-height: 1;
+      color: #41302b;
+      opacity: 0.32;
+      pointer-events: none;
+    }
+
+    .callout-quote p {
+      margin: 0;
+      font-size: 1.1rem;
+      line-height: 1.55;
+      font-style: italic;
+      color: #1f1813;
+    }
+
+    .callout-quote cite {
+      display: block;
+      margin-top: 0.7rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.78rem;
+      font-style: normal;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #7a6a5e;
+    }
+  </style>
+</head>
+<body>
+  <h1>Deconspirator — local dev harness</h1>
+
+  <aside class="callout callout-note" role="note">
+    <span class="callout__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12ZM10.5 16.5C10.5 17.3284 11.1716 18 12 18C12.8284 18 13.5 17.3284 13.5 16.5V12C13.5 11.1716 12.8284 10.5 12 10.5C11.1716 10.5 10.5 11.1716 10.5 12V16.5ZM12 6C11.1716 6 10.5 6.67157 10.5 7.5C10.5 8.32843 11.1716 9 12 9C12.8284 9 13.5 8.32843 13.5 7.5C13.5 6.67157 12.8284 6 12 6Z"/></svg>
+    </span>
+    <div class="callout__body">
+      <span class="callout__label">Important</span>
+      <p class="callout__text">More and more people are not relying on online information unless they pause to consider whether it may be part of coordinated efforts by foreign actors to mislead — and others should not do so either.</p>
+    </div>
+  </aside>
+
+  <aside class="callout callout-tip" role="note">
+    <span class="callout__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12ZM12 16C11.1716 16 10.5 16.6716 10.5 17.5C10.5 18.3284 11.1716 19 12 19C12.8284 19 13.5 18.3284 13.5 17.5C13.5 16.6716 12.8284 16 12 16ZM10.5 9.5C10.5 8.32843 10.8284 8 12 8C13.0641 8 13.3215 8.19307 13.4337 8.64158C13.4859 8.85034 13.5 9.06237 13.5 9.5C13.5 9.82337 13.4246 9.93939 12.938 10.3287C12.9624 10.3091 12.4319 10.7246 12.2619 10.8662C11.5638 11.4479 11.055 12.036 10.6584 12.8292C10.2879 13.5701 10.5882 14.4712 11.3292 14.8416C12.0701 15.2121 12.9712 14.9118 13.3416 14.1708C13.5298 13.7944 13.7772 13.5086 14.1825 13.1709C14.3108 13.0639 14.8049 12.677 14.812 12.6713C15.94 11.7689 16.5 10.9074 16.5 9.5C16.5 8.82652 16.4737 8.43249 16.3441 7.91397C15.8921 6.10608 14.4174 5 12 5C9.17157 5 7.5 6.67157 7.5 9.5C7.5 10.3284 8.17157 11 9 11C9.82843 11 10.5 10.3284 10.5 9.5Z"/></svg>
+    </span>
+    <div class="callout__body">
+      <span class="callout__label">Important</span>
+      <p class="callout__text">More and more people are not relying on online information unless they pause to consider whether it may be part of coordinated efforts by foreign actors to mislead — and others should not do so either.</p>
+    </div>
+  </aside>
+
+  <aside class="callout callout-warning" role="note">
+    <span class="callout__icon" aria-hidden="true">
+      <svg viewBox="0 -0.5 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M13.7744 1.41218L23.4802 20.0771C23.9898 21.0571 23.6085 22.2646 22.6285 22.7742C22.3435 22.9224 22.027 22.9998 21.7058 22.9998H2.29425C1.18968 22.9998 0.29425 22.1044 0.29425 20.9998C0.29425 20.6786 0.371621 20.3621 0.519817 20.0771L10.2256 1.41218C10.7352 0.432187 11.9427 0.0508554 12.9227 0.560452C13.2874 0.75009 13.5848 1.04749 13.7744 1.41218ZM10.5 9.49981V13.9998C10.5 14.8282 11.1716 15.4998 12 15.4998C12.8284 15.4998 13.5 14.8282 13.5 13.9998V9.49981C13.5 8.67138 12.8284 7.99981 12 7.99981C11.1716 7.99981 10.5 8.67138 10.5 9.49981ZM12 19.9998C12.8284 19.9998 13.5 19.3282 13.5 18.4998C13.5 17.6714 12.8284 16.9998 12 16.9998C11.1716 16.9998 10.5 17.6714 10.5 18.4998C10.5 19.3282 11.1716 19.9998 12 19.9998Z"/></svg>
+    </span>
+    <div class="callout__body">
+      <span class="callout__label">Important</span>
+      <p class="callout__text">More and more people are not relying on online information unless they pause to consider whether it may be part of coordinated efforts by foreign actors to mislead — and others should not do so either.</p>
+    </div>
+  </aside>
+
+  <aside class="callout callout-important" role="note">
+    <span class="callout__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M14.1213 12L17.5607 8.56066C18.1464 7.97487 18.1464 7.02513 17.5607 6.43934C16.9749 5.85355 16.0251 5.85355 15.4393 6.43934L12 9.87868L8.56066 6.43934C7.97487 5.85355 7.02513 5.85355 6.43934 6.43934C5.85355 7.02513 5.85355 7.97487 6.43934 8.56066L9.87868 12L6.43934 15.4393C5.85355 16.0251 5.85355 16.9749 6.43934 17.5607C7.02513 18.1464 7.97487 18.1464 8.56066 17.5607L12 14.1213L15.4393 17.5607C16.0251 18.1464 16.9749 18.1464 17.5607 17.5607C18.1464 16.9749 18.1464 16.0251 17.5607 15.4393L14.1213 12ZM7.24264 0H16.7574C17.553 0 18.3161 0.31607 18.8787 0.87868L23.1213 5.12132C23.6839 5.68393 24 6.44699 24 7.24264V16.7574C24 17.553 23.6839 18.3161 23.1213 18.8787L18.8787 23.1213C18.3161 23.6839 17.553 24 16.7574 24H7.24264C6.44699 24 5.68393 23.6839 5.12132 23.1213L0.87868 18.8787C0.31607 18.3161 0 17.553 0 16.7574V7.24264C0 6.44699 0.31607 5.68393 0.87868 5.12132L5.12132 0.87868C5.68393 0.31607 6.44699 0 7.24264 0Z"/></svg>
+    </span>
+    <div class="callout__body">
+      <span class="callout__label">Important</span>
+      <p class="callout__text">More and more people are not relying on online information unless they pause to consider whether it may be part of coordinated efforts by foreign actors to mislead — and others should not do so either.</p>
+    </div>
+  </aside>
+
+  <blockquote class="callout-quote">
+    <p>More and more people are not relying on online information unless they pause to consider whether it may be part of coordinated efforts by foreign actors to mislead — and others should not do so either.</p>
+    <cite>— Important</cite>
+  </blockquote>
+
+  <p class="lede">
+    Loads <code>js/deconspirator-task.js</code> with a fake <code>Qualtrics.SurveyEngine</code>
+    that captures embedded-data writes to the panel below. Edit
+    <code>dev/dev-config.js</code> to tweak per-study settings.
+    Reload the page to restart a session.
+  </p>
+
+  <div class="toolbar">
+    <button id="reset" type="button">Reload &amp; restart</button>
+    <button id="dump" type="button">Log captured data to console</button>
+    <button id="copy" type="button">Copy <code>taskData</code> JSON</button>
+    <label>
+      <input type="checkbox" id="force-touch">
+      Force touch mode
+    </label>
+    <span style="margin-left:auto; color:#888; font-size:0.78rem;">
+      engine: <code id="engine-version">…</code>
+    </span>
+  </div>
+
+  <div id="task"></div>
+
+  <h2>Captured embedded data writes</h2>
+  <div id="qualtrics-log"></div>
+
+  <script>
+    // Restore force-touch toggle from sessionStorage so reloads preserve it.
+    const _forceTouchEl = document.getElementById('force-touch');
+    _forceTouchEl.checked = sessionStorage.getItem('decon.forceTouch') === '1';
+    window.__DECONSPIRATOR_FORCE_TOUCH = _forceTouchEl.checked;
+    _forceTouchEl.addEventListener('change', (e) => {
+      sessionStorage.setItem('decon.forceTouch', e.target.checked ? '1' : '0');
+      location.reload();
+    });
+
+    // Capture embedded-data writes for the log panel.
+    const _qLog = document.getElementById('qualtrics-log');
+    const _captured = {};
+    function _renderLog() {
+      _qLog.replaceChildren();
+      for (const [k, v] of Object.entries(_captured)) {
+        const row = document.createElement('div');
+        row.className = 'log-entry';
+        const label = document.createElement('span');
+        label.className = 'log-field';
+        label.textContent = k + ': ';
+        const val = document.createElement('span');
+        val.className = 'log-value';
+        const str = String(v);
+        val.textContent = str.length > 240 ? str.slice(0, 240) + ' …(' + str.length + ' chars)' : str;
+        row.appendChild(label);
+        row.appendChild(val);
+        _qLog.appendChild(row);
+      }
+    }
+
+    // Fake question-data with the methods the engine touches.
+    const fakeQuestionData = {
+      disableNextButton() {},
+      enableNextButton() { console.log('[harness] task complete — Next button would be enabled.'); },
+    };
+
+    // Fake SurveyEngine. Critical: addOnload must run our handler even if
+    // DOMContentLoaded already fired, since this script is at end-of-body.
+    function _runWhenReady(fn) {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fn, { once: true });
+      } else {
+        queueMicrotask(fn);
+      }
+    }
+    window.Qualtrics = {
+      SurveyEngine: {
+        addOnload(fn) { _runWhenReady(() => fn.call(fakeQuestionData)); },
+        addOnReady(_) {},
+        addOnUnload(_) {},
+        setEmbeddedData(field, value) {
+          _captured[field] = value;
+          _renderLog();
+        },
+        getEmbeddedData() { return null; },
+      },
+    };
+
+    // Toolbar wiring
+    document.getElementById('reset').addEventListener('click', () => location.reload());
+    document.getElementById('dump').addEventListener('click', () => {
+      const parsed = {};
+      for (const [k, v] of Object.entries(_captured)) {
+        try { parsed[k] = JSON.parse(v); } catch { parsed[k] = v; }
+      }
+      console.log('[harness] captured embedded data:', parsed);
+    });
+    document.getElementById('copy').addEventListener('click', async () => {
+      const v = _captured.taskData || '';
+      try {
+        await navigator.clipboard.writeText(v);
+        console.log('[harness] taskData copied to clipboard (' + v.length + ' chars).');
+      } catch (e) {
+        console.warn('[harness] clipboard write failed:', e);
+      }
+    });
+  </script>
+
+  <!-- Engine -->
+  <script src="../js/deconspirator-task.js"></script>
+
+  <!-- Per-study config (edit me) -->
+  <script src="dev-config.js"></script>
+
+  <!-- Stamp engine version into toolbar after engine loads -->
+  <script>
+    document.getElementById('engine-version').textContent =
+      (typeof window.startTask === 'function') ? 'loaded' : 'NOT loaded';
+  </script>
+</body>
+</html>

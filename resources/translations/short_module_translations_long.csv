@@ -1,0 +1,514 @@
+item_code,construct,construct_label,origin,lang,language_name,primary,text
+gen1,GEN,General Anchor,,EN,English,yes,I have a very negative feeling about how my state handles external threats
+gen1,GEN,General Anchor,,AR,Arabic,no,لدي شعور سلبي للغاية بشأن كيفية تعامل ولايتي مع التهديدات الخارجية
+gen1,GEN,General Anchor,,BG,Bulgarian,yes,"Имам много негативно отношение към начина, по който държавата ми се справя с външните заплахи"
+gen1,GEN,General Anchor,,ZH-S,Chinese (Simplified),no,我对我国应对外部威胁的方式感到非常不满
+gen1,GEN,General Anchor,,NL,Dutch,yes,Ik heb een zeer negatief gevoel over de manier waarop mijn staat omgaat met externe bedreigingen
+gen1,GEN,General Anchor,,ET,Estonian,yes,"Mul on väga negatiivne tunne selle kohta, kuidas minu riik väliste ohtudega toime tuleb"
+gen1,GEN,General Anchor,,FR,French,yes,J'ai un sentiment très négatif sur la façon dont mon État gère les menaces extérieures
+gen1,GEN,General Anchor,,KAT,Georgian,no,"ძალიან ნეგატიური განწყობა მაქვს იმასთან დაკავშირებით, თუ როგორ უმკლავდება ჩემი სახელმწიფო გარე საფრთხეებს."
+gen1,GEN,General Anchor,,DE,German,yes,"Ich habe ein sehr negatives Gefühl über die Art und Weise, wie mein Staat mit externen Bedrohungen umgeht"
+gen1,GEN,General Anchor,,HU,Hungarian,yes,"Nagyon negatív érzéseim vannak azzal kapcsolatban, hogy az állam hogyan kezeli a külső fenyegetéseket."
+gen1,GEN,General Anchor,,IT,Italian,yes,Ho una sensazione molto negativa su come il mio stato gestisce le minacce esterne
+gen1,GEN,General Anchor,,LV,Latvian,yes,"Man ir ļoti negatīva sajūta par to, kā mana valsts tiek galā ar ārējiem draudiem"
+gen1,GEN,General Anchor,,LT,Lithuanian,yes,"Man kyla labai neigiami jausmai, kai galvoju apie tai, ar mano valstybė tinkamai tvarkosi su išorinėmis grėsmėmis"
+gen1,GEN,General Anchor,,FA,Persian (Farsi),no,من احساس بسیار منفی‌ای در مورد نحوه برخورد دولت کشورم با تهدیدات خارجی دارم.
+gen1,GEN,General Anchor,,PL,Polish,yes,"Mam bardzo negatywne odczucia co do tego, jak mój kraj radzi sobie z zagrożeniami zewnętrznymi"
+gen1,GEN,General Anchor,,RU,Russian,yes,"У меня крайне негативное ощущение от того, как моё государство справляется с внешними угрозами."
+gen1,GEN,General Anchor,,SR,Serbian,yes,Имам веома негативан осећај о томе како се моја држава носи са спољним претњама
+gen1,GEN,General Anchor,,TR,Turkish,yes,Devletimin dış tehditlerle nasıl başa çıktığı konusunda çok olumsuz hislerim var
+gen1,GEN,General Anchor,,UK,Ukrainian,no,"У мене дуже негативне відчуття щодо того, як моя держава справляється зі зовнішніми загрозами"
+gen2,GEN,General Anchor,,EN,English,yes,I dislike the actions of our international allies in ensuring the safety of my state
+gen2,GEN,General Anchor,,AR,Arabic,no,أنا لا أحب تصرفات حلفائنا الدوليين في ضمان سلامة ولايتي
+gen2,GEN,General Anchor,,BG,Bulgarian,yes,"Не харесвам действията на нашите международни съюзници, насочени към осигуряване на безопасността на моята държава"
+gen2,GEN,General Anchor,,ZH-S,Chinese (Simplified),no,我不喜欢我国国际盟友保障我国安全时的做法为
+gen2,GEN,General Anchor,,NL,Dutch,yes,Ik heb een hekel aan de acties van onze internationale bondgenoten bij het waarborgen van de veiligheid van mijn staat
+gen2,GEN,General Anchor,,ET,Estonian,yes,Mulle ei meeldi meie rahvusvaheliste liitlaste tegevus minu riigi turvalisuse tagamisel
+gen2,GEN,General Anchor,,FR,French,yes,Je n’aime pas les actions de nos alliés internationaux pour assurer la sécurité de mon État
+gen2,GEN,General Anchor,,KAT,Georgian,no,არ მომწონს ჩვენი საერთაშორისო მოკავშირეების ქმედებები ჩემი სახელმწიფოს უსაფრთხოების უზრუნველყოფის კუთხით.
+gen2,GEN,General Anchor,,DE,German,yes,Ich stehe den Maßnahmen unserer internationalen Partner zur Gewährleistung der Sicherheit meines Landes kritisch gegenüber
+gen2,GEN,General Anchor,,HU,Hungarian,yes,"Nem szeretem a nemzetközi szövetségeseink intézkedéseit, amelyekkel államom biztonságát garantálják."
+gen2,GEN,General Anchor,,IT,Italian,yes,Non mi piacciono le azioni dei nostri alleati internazionali nel garantire la sicurezza del mio Stato
+gen2,GEN,General Anchor,,LV,Latvian,yes,Man nepatīk mūsu starptautisko sabiedroto rīcība manas valsts drošības nodrošināšanā
+gen2,GEN,General Anchor,,LT,Lithuanian,yes,"Man nepatinka mūsų tarptautinių sąjungininkų veiksmai, užtikrinant mano valstybės saugumą"
+gen2,GEN,General Anchor,,FA,Persian (Farsi),no,من از اقدامات متحدان بین‌المللی‌مان در تضمین امنیت کشورم ناراضی‌ام.
+gen2,GEN,General Anchor,,PL,Polish,yes,Nie podobają mi się działania naszych międzynarodowych sojuszników mające na celu zapewnienie bezpieczeństwa mojego kraju
+gen2,GEN,General Anchor,,RU,Russian,yes,Мне не нравятся действия наших международных союзников по обеспечению безопасности моего государства.
+gen2,GEN,General Anchor,,SR,Serbian,yes,Не свиђају ми се поступци наших међународних савезника у обезбеђивању безбедности моје државе
+gen2,GEN,General Anchor,,TR,Turkish,yes,Uluslararası müttefiklerimizin devletimin güvenliğini sağlama konusundaki eylemlerinden hoşlanmıyorum
+gen2,GEN,General Anchor,,UK,Ukrainian,no,Мені не подобаються дії наших міжнародних союзників щодо забезпечення безпеки моєї держави
+gen3,GEN,General Anchor,,EN,English,yes,I fear the consequences of provoking countries like Russia or China
+gen3,GEN,General Anchor,,AR,Arabic,no,أخشى من عواقب استفزاز دول مثل روسيا أو الصين
+gen3,GEN,General Anchor,,BG,Bulgarian,yes,Страхувам се от последствията от провокирането на страни като Русия или Китай
+gen3,GEN,General Anchor,,ZH-S,Chinese (Simplified),no,我担心激怒俄罗斯或中国等国家可能带来的后果
+gen3,GEN,General Anchor,,NL,Dutch,yes,Ik vrees de gevolgen van het provoceren van landen als Rusland of China
+gen3,GEN,General Anchor,,ET,Estonian,yes,"Ma kardan tagajärgi, mis kaasnevad selliste riikide nagu Venemaa või Hiina provotseerimisega"
+gen3,GEN,General Anchor,,FR,French,yes,Je crains les conséquences de provoquer des pays comme la Russie ou la Chine
+gen3,GEN,General Anchor,,KAT,Georgian,no,მეშინია რუსეთის ან ჩინეთის მსგავსი ქვეყნების პროვოცირების შედეგების
+gen3,GEN,General Anchor,,DE,German,yes,"Ich fürchte die möglichen Folgen, wenn Länder wie Russland oder China provoziert werden"
+gen3,GEN,General Anchor,,HU,Hungarian,yes,"Félek az olyan országok provokálásának következményeitől, mint Oroszország vagy Kína."
+gen3,GEN,General Anchor,,IT,Italian,yes,Temo le conseguenze di provocare paesi come la Russia o la Cina
+gen3,GEN,General Anchor,,LV,Latvian,yes,"Es baidos no sekām, ko rada tādu valstu kā Krievijas vai Ķīnas provocēšana"
+gen3,GEN,General Anchor,,LT,Lithuanian,yes,"Bijau pasekmių, kurios gali kilti dėl tokių šalių kaip Rusija ar Kinija provokavimo"
+gen3,GEN,General Anchor,,FA,Persian (Farsi),no,من از عواقب تحریک کشورهایی مانند روسیه یا چین می‌ترسم.
+gen3,GEN,General Anchor,,PL,Polish,yes,Obawiam się konsekwencji prowokowania krajów takich jak Rosja czy Chiny
+gen3,GEN,General Anchor,,RU,Russian,yes,"Меня тревожат возможные последствия провоцирования таких стран, как Россия или Китай."
+gen3,GEN,General Anchor,,SR,Serbian,yes,Плашим се последица провоцирања земаља попут Русије или Кине
+gen3,GEN,General Anchor,,TR,Turkish,yes,Rusya veya Çin gibi ülkeleri kışkırtmanın sonuçlarından korkuyorum
+gen3,GEN,General Anchor,,UK,Ukrainian,no,"Я боюся наслідків провокації таких країн, як Росія чи Китай"
+gen5,GEN,General Anchor,,EN,English,yes,I like Russia
+gen5,GEN,General Anchor,,AR,Arabic,no,انا احب روسيا
+gen5,GEN,General Anchor,,BG,Bulgarian,yes,Харесвам Русия
+gen5,GEN,General Anchor,,ZH-S,Chinese (Simplified),no,我喜欢俄罗斯
+gen5,GEN,General Anchor,,NL,Dutch,yes,Ik hou van Rusland
+gen5,GEN,General Anchor,,ET,Estonian,yes,Mulle meeldib Venemaa
+gen5,GEN,General Anchor,,FR,French,yes,J'aime la Russie
+gen5,GEN,General Anchor,,KAT,Georgian,no,მე მომწონს რუსეთი
+gen5,GEN,General Anchor,,DE,German,yes,Ich mag Russland
+gen5,GEN,General Anchor,,HU,Hungarian,yes,Szeretem Oroszországot.
+gen5,GEN,General Anchor,,IT,Italian,yes,Mi piace la Russia
+gen5,GEN,General Anchor,,LV,Latvian,yes,Man patīk Krievija
+gen5,GEN,General Anchor,,LT,Lithuanian,yes,Man patinka Rusija
+gen5,GEN,General Anchor,,FA,Persian (Farsi),no,من از روسیه خوشم می‌آید.
+gen5,GEN,General Anchor,,PL,Polish,yes,Lubię Rosję
+gen5,GEN,General Anchor,,RU,Russian,yes,Мне нравится Россия.
+gen5,GEN,General Anchor,,SR,Serbian,yes,Свиђа ми се Русија
+gen5,GEN,General Anchor,,TR,Turkish,yes,Rusya'yı seviyorum
+gen5,GEN,General Anchor,,UK,Ukrainian,no,Мені подобається Росія
+gen7,GEN,General Anchor,,EN,English,yes,I like China
+gen7,GEN,General Anchor,,AR,Arabic,no,انا احب الصين
+gen7,GEN,General Anchor,,BG,Bulgarian,yes,Харесвам Китай
+gen7,GEN,General Anchor,,ZH-S,Chinese (Simplified),no,我喜欢中国
+gen7,GEN,General Anchor,,NL,Dutch,yes,Ik hou van China
+gen7,GEN,General Anchor,,ET,Estonian,yes,Mulle meeldib Hiina
+gen7,GEN,General Anchor,,FR,French,yes,J'aime la Chine
+gen7,GEN,General Anchor,,KAT,Georgian,no,მე მომწონს ჩინეთი
+gen7,GEN,General Anchor,,DE,German,yes,Ich mag China
+gen7,GEN,General Anchor,,HU,Hungarian,yes,Szeretem Kínát.
+gen7,GEN,General Anchor,,IT,Italian,yes,Mi piace la Cina
+gen7,GEN,General Anchor,,LV,Latvian,yes,Man patīk Ķīna
+gen7,GEN,General Anchor,,LT,Lithuanian,yes,Man patinka Kinija
+gen7,GEN,General Anchor,,FA,Persian (Farsi),no,من چین را دوست دارم.
+gen7,GEN,General Anchor,,PL,Polish,yes,Lubię Chiny
+gen7,GEN,General Anchor,,RU,Russian,yes,Мне нравится Китай.
+gen7,GEN,General Anchor,,SR,Serbian,yes,Свиђа ми се Кина
+gen7,GEN,General Anchor,,TR,Turkish,yes,Çin'i seviyorum
+gen7,GEN,General Anchor,,UK,Ukrainian,no,Мені подобається Китай
+th6,THREAT,Threat,,EN,English,yes,I am angry when I think about how my country is being used by foreign countries
+th6,THREAT,Threat,,AR,Arabic,no,أشعر بالغضب عندما أفكر في كيفية استخدام بلدي من قبل الدول الأجنبية
+th6,THREAT,Threat,,BG,Bulgarian,yes,"Ядосвам се, когато си помисля как страната ми се използва от чужди държави"
+th6,THREAT,Threat,,ZH-S,Chinese (Simplified),no,想到我的国家被外国利用，我就感到愤怒
+th6,THREAT,Threat,,NL,Dutch,yes,Ik word boos als ik denk aan de manier waarop mijn land door andere landen wordt gebruikt
+th6,THREAT,Threat,,ET,Estonian,yes,"Mind ajab vihale mõte sellest, kuidas võõrad riigid minu riiki ära kasutavad"
+th6,THREAT,Threat,,FR,French,yes,Je suis en colère quand je pense à la façon dont mon pays est utilisé par des pays étrangers
+th6,THREAT,Threat,,KAT,Georgian,no,"ვბრაზდები, როცა ვფიქრობ, როგორ იყენებენ ჩემს ქვეყანას უცხო ქვეყნები."
+th6,THREAT,Threat,,DE,German,yes,"Ich werde wütend, wenn ich daran denke, wie mein Land vom Ausland ausgenutzt wird"
+th6,THREAT,Threat,,HU,Hungarian,yes,"Dühös vagyok, amikor arra gondolok, hogyan használják fel a hazámat külföldi országok"
+th6,THREAT,Threat,,IT,Italian,yes,Mi arrabbio quando penso a come il mio paese viene usato dai paesi stranieri
+th6,THREAT,Threat,,LV,Latvian,yes,"Jūtu dusmas, kad domāju par to, kā ārvalstis izmanto manu valsti"
+th6,THREAT,Threat,,LT,Lithuanian,yes,"Pykstu, kai galvoju, kaip mano šalimi naudojasi užsienio šalys"
+th6,THREAT,Threat,,FA,Persian (Farsi),no,وقتی به این فکر می‌کنم که کشورهای خارجی چطور از کشورم سوءاستفاده می‌کنند، عصبانی می‌شوم.
+th6,THREAT,Threat,,PL,Polish,yes,"Złości mnie myśl o tym, jak mój kraj jest wykorzystywany przez inne kraje"
+th6,THREAT,Threat,,RU,Russian,yes,"Я злюсь, когда думаю о том, как мою страну используют другие страны."
+th6,THREAT,Threat,,SR,Serbian,yes,Љут/a сам када помислим како моју земљу користе стране земље
+th6,THREAT,Threat,,TR,Turkish,yes,Ülkemin yabancı ülkeler tarafından nasıl kullanıldığını düşündüğümde öfkeleniyorum
+th6,THREAT,Threat,,UK,Ukrainian,no,"Я злюся, коли думаю про те, як мою країну використовують іноземні держави"
+th9,THREAT,Threat,,EN,English,yes,I am worried by the spread of LGBT+ propaganda
+th9,THREAT,Threat,,AR,Arabic,no,أنا قلق بشأن انتشار دعاية LGBT+
+th9,THREAT,Threat,,BG,Bulgarian,yes,Притеснявам се от разпространението на ЛГБТ+ пропаганда
+th9,THREAT,Threat,,ZH-S,Chinese (Simplified),no,我对 LGBT+ 宣传的扩散感到担忧
+th9,THREAT,Threat,,NL,Dutch,yes,Ik maak me zorgen over de verspreiding van LGBT+-propaganda
+th9,THREAT,Threat,,ET,Estonian,yes,Olen mures LGBT+ propaganda leviku pärast
+th9,THREAT,Threat,,FR,French,yes,Je suis préoccupé par la propagation de la propagande LGBT+
+th9,THREAT,Threat,,KAT,Georgian,no,მე შეშფოთებული ვარ ლგბტ+ პროპაგანდის გავრცელებით
+th9,THREAT,Threat,,DE,German,yes,Ich mache mir Sorgen wegen der Verbreitung von LGBT+-Propaganda
+th9,THREAT,Threat,,HU,Hungarian,yes,Aggódom az LMBT+ propaganda terjedése miatt
+th9,THREAT,Threat,,IT,Italian,yes,Sono preoccupato per la diffusione della propaganda LGBT+
+th9,THREAT,Threat,,LV,Latvian,yes,Mani uztrauc LGBT+ propagandas izplatība
+th9,THREAT,Threat,,LT,Lithuanian,yes,Esu susirūpinęs (-usi) dėl LGBT+ propagandos plitimo
+th9,THREAT,Threat,,FA,Persian (Farsi),no,من نگران گسترش تبلیغات LGBT+ هستم.
+th9,THREAT,Threat,,PL,Polish,yes,Martwi mnie rozprzestrzenianie się propagandy LGBT+
+th9,THREAT,Threat,,RU,Russian,yes,Меня беспокоит распространение пропаганды ЛГБТ+.
+th9,THREAT,Threat,,SR,Serbian,yes,Забринут/a сам због ширења ЛГБТ+ пропаганде
+th9,THREAT,Threat,,TR,Turkish,yes,LGBT+ propagandasının yayılmasından endişe duyuyorum
+th9,THREAT,Threat,,UK,Ukrainian,no,Мене турбує поширення ЛГБТ+ пропаганди
+ab2,ABAND,Betrayal / Abandonment,,EN,English,yes,I feel disappointed by the actions of the international community in protecting my country
+ab2,ABAND,Betrayal / Abandonment,,AR,Arabic,no,أشعر بخيبة أمل إزاء تصرفات المجتمع الدولي في حماية بلدي
+ab2,ABAND,Betrayal / Abandonment,,BG,Bulgarian,yes,Чувствам се разочарован/а от действията на международната общност в защита на страната ми
+ab2,ABAND,Betrayal / Abandonment,,ZH-S,Chinese (Simplified),no,我对国际社会保护我国的行动感到失望
+ab2,ABAND,Betrayal / Abandonment,,NL,Dutch,yes,Ik ben teleurgesteld over de acties van de internationale gemeenschap bij het beschermen van mijn land
+ab2,ABAND,Betrayal / Abandonment,,ET,Estonian,yes,Olen pettunud rahvusvahelise üldsuse tegevuses minu riigi kaitsmisel
+ab2,ABAND,Betrayal / Abandonment,,FR,French,yes,Je suis déçu par les actions de la communauté internationale pour protéger mon pays
+ab2,ABAND,Betrayal / Abandonment,,KAT,Georgian,no,იმედგაცრუებული ვარ საერთაშორისო საზოგადოების ქმედებებით ჩემი ქვეყნის დასაცავად
+ab2,ABAND,Betrayal / Abandonment,,DE,German,yes,Ich bin enttäuscht vom Handeln der internationalen Gemeinschaft beim Schutz meines Landes
+ab2,ABAND,Betrayal / Abandonment,,HU,Hungarian,yes,Csalódott vagyok a nemzetközi közösség országom védelmében tett intézkedései miatt.
+ab2,ABAND,Betrayal / Abandonment,,IT,Italian,yes,Sono deluso dalle azioni della comunità internazionale nel proteggere il mio Paese
+ab2,ABAND,Betrayal / Abandonment,,LV,Latvian,yes,Izjūtu vilšanos par starptautiskās sabiedrības rīcību manas valsts aizsardzībā
+ab2,ABAND,Betrayal / Abandonment,,LT,Lithuanian,yes,Jaučiuosi nusivylęs (-usi) tarptautinių sąjungininkų veiksmais ginant mano šalį
+ab2,ABAND,Betrayal / Abandonment,,FA,Persian (Farsi),no,من از اقدامات جامعه بین‌المللی در حفاظت از کشورم ناامید هستم.
+ab2,ABAND,Betrayal / Abandonment,,PL,Polish,yes,Jestem zawiedziony/na działaniami społeczności międzynarodowej mającymi na celu ochronę mojego kraju
+ab2,ABAND,Betrayal / Abandonment,,RU,Russian,yes,Я разочарован действиями международного сообщества по защите моей страны.
+ab2,ABAND,Betrayal / Abandonment,,SR,Serbian,yes,Разочаран/a сам поступцима међународне заједнице у заштити моје земље
+ab2,ABAND,Betrayal / Abandonment,,TR,Turkish,yes,Uluslararası toplumun ülkemin güvenliğini sağlama konusundaki tutumu beni hayal kırıklığına uğratıyor
+ab2,ABAND,Betrayal / Abandonment,,UK,Ukrainian,no,Я розчарований діями міжнародної спільноти щодо захисту моєї країни
+ab4,ABAND,Betrayal / Abandonment,,EN,English,yes,I’m angry at my state for failing to protect the interests of its citizens
+ab4,ABAND,Betrayal / Abandonment,,AR,Arabic,no,أنا غاضب من ولايتي لفشلها في حماية مصالح مواطنيها
+ab4,ABAND,Betrayal / Abandonment,,BG,Bulgarian,yes,"Ядосан съм на държавата си, че не успява да защити интересите на своите граждани"
+ab4,ABAND,Betrayal / Abandonment,,ZH-S,Chinese (Simplified),no,我对我国未能保护公民的利益感到愤怒
+ab4,ABAND,Betrayal / Abandonment,,NL,Dutch,yes,Ik ben boos op mijn staat omdat deze de belangen van haar burgers niet beschermt
+ab4,ABAND,Betrayal / Abandonment,,ET,Estonian,yes,"Olen oma riigi peale vihane, et see ei kaitse oma kodanike huve"
+ab4,ABAND,Betrayal / Abandonment,,FR,French,yes,Je suis en colère contre mon État parce qu’il ne parvient pas à protéger les intérêts de ses citoyens
+ab4,ABAND,Betrayal / Abandonment,,KAT,Georgian,no,"მე გაბრაზებული ვარ ჩემს სახელმწიფოზე, რომ ვერ იცავდა მოქალაქეების ინტერესებს"
+ab4,ABAND,Betrayal / Abandonment,,DE,German,yes,"Ich bin wütend auf meinen Staat, weil er die Interessen seiner Bürger nicht schützt"
+ab4,ABAND,Betrayal / Abandonment,,HU,Hungarian,yes,"Dühös vagyok az államra, amiért nem védi meg polgárai érdekeit."
+ab4,ABAND,Betrayal / Abandonment,,IT,Italian,yes,Sono arrabbiato con il mio Stato perché non riesce a proteggere gli interessi dei suoi cittadini
+ab4,ABAND,Betrayal / Abandonment,,LV,Latvian,yes,"Izjūtu dusmas uz savu valsti par to, ka tā neaizsargā savu pilsoņu intereses"
+ab4,ABAND,Betrayal / Abandonment,,LT,Lithuanian,yes,"Pykstu ant savo valstybės, nes ji nesugeba apsaugoti savo piliečių interesų"
+ab4,ABAND,Betrayal / Abandonment,,FA,Persian (Farsi),no,من از دولت کشورم عصبانی هستم که از منافع شهروندانش محافظت نمی‌کند.
+ab4,ABAND,Betrayal / Abandonment,,PL,Polish,yes,"Jestem zły/zła na mój krak za to, że nie chroni interesów swoich obywateli"
+ab4,ABAND,Betrayal / Abandonment,,RU,Russian,yes,"Я злюсь на свое государство за то, что оно не защищает интересы своих граждан."
+ab4,ABAND,Betrayal / Abandonment,,SR,Serbian,yes,Љут/a сам на своју државу јер није успела да заштити интересе својих грађана
+ab4,ABAND,Betrayal / Abandonment,,TR,Turkish,yes,Devletimin vatandaşlarının çıkarlarını koruyamaması beni öfkelendiriyor
+ab4,ABAND,Betrayal / Abandonment,,UK,Ukrainian,no,"Я злюся на свою державу за те, що вона не захищає інтереси своїх громадян"
+ab7,ABAND,Betrayal / Abandonment,,EN,English,yes,I feel anger because the information I want to access is being censored in my country
+ab7,ABAND,Betrayal / Abandonment,,AR,Arabic,no,أشعر بالغضب لأن المعلومات التي أريد الوصول إليها تخضع للرقابة في بلدي
+ab7,ABAND,Betrayal / Abandonment,,BG,Bulgarian,yes,"Чувствам гняв, защото информацията, до която искам да получа достъп, е цензурирана в моята страна"
+ab7,ABAND,Betrayal / Abandonment,,ZH-S,Chinese (Simplified),no,我想要获取的信息在我国受到审查，我对此感到愤怒
+ab7,ABAND,Betrayal / Abandonment,,NL,Dutch,yes,Ik voel woede omdat de informatie die ik wil raadplegen in mijn land wordt gecensureerd
+ab7,ABAND,Betrayal / Abandonment,,ET,Estonian,yes,"Tunnen viha, sest infot, millele ma tahan ligi pääseda, tsenseeritakse minu riigis"
+ab7,ABAND,Betrayal / Abandonment,,FR,French,yes,Je ressens de la colère parce que les informations auxquelles je veux accéder sont censurées dans mon pays
+ab7,ABAND,Betrayal / Abandonment,,KAT,Georgian,no,"გაბრაზებული ვარ, რადგან ინფორმაცია, რომელზეც წვდომა მსურს, ჩემს ქვეყანაში ცენზურის ქვეშაა."
+ab7,ABAND,Betrayal / Abandonment,,DE,German,yes,"Ich bin wütend, weil die Informationen, auf die ich zugreifen möchte, in meinem Land zensiert werden"
+ab7,ABAND,Betrayal / Abandonment,,HU,Hungarian,yes,"Dühöt érzek, mert az országomban cenzúrázzák az információkat, amelyekhez hozzáférni szeretnék."
+ab7,ABAND,Betrayal / Abandonment,,IT,Italian,yes,Provo rabbia perché le informazioni a cui voglio accedere vengono censurate nel mio paese
+ab7,ABAND,Betrayal / Abandonment,,LV,Latvian,yes,"Izjūtu dusmas, jo informācija, kurai vēlos piekļūt, manā valstī tiek cenzēta"
+ab7,ABAND,Betrayal / Abandonment,,LT,Lithuanian,yes,"Pykstu, nes informacija, kurią noriu pasiekti, mano šalyje yra cenzūruojama"
+ab7,ABAND,Betrayal / Abandonment,,FA,Persian (Farsi),no,من عصبانی هستم چون اطلاعاتی که می‌خواهم به آنها دسترسی داشته باشم در کشورم سانسور می‌شود.
+ab7,ABAND,Betrayal / Abandonment,,PL,Polish,yes,"Czuję złość, ponieważ informacje, do których chcę uzyskać dostęp, są w moim kraju cenzurowane"
+ab7,ABAND,Betrayal / Abandonment,,RU,Russian,yes,"Я чувствую гнев, потому что информация, к которой я хочу получить доступ, подвергается цензуре в моей стране."
+ab7,ABAND,Betrayal / Abandonment,,SR,Serbian,yes,Бесан/сна сам јер су информације којима желим да приступим цензурисане у мојој земљи
+ab7,ABAND,Betrayal / Abandonment,,TR,Turkish,yes,Erişmek istediğim bilgilerin ülkemde sansürlenmesi beni öfkelendiriyor
+ab7,ABAND,Betrayal / Abandonment,,UK,Ukrainian,no,"Я відчуваю гнів, бо інформація, до якої я хочу отримати доступ, цензурується в моїй країні"
+pa1,FEAR,Fear / Pragmatism,,EN,English,yes,I feel tense when thinking about potential conflicts with countries like Russia or China
+pa1,FEAR,Fear / Pragmatism,,AR,Arabic,no,أشعر بالتوتر عندما أفكر في الصراعات المحتملة مع دول مثل روسيا أو الصين
+pa1,FEAR,Fear / Pragmatism,,BG,Bulgarian,yes,"Чувствам се напрегнат/а, когато мисля за потенциални конфликти със страни като Русия или Китай"
+pa1,FEAR,Fear / Pragmatism,,ZH-S,Chinese (Simplified),no,想到与俄罗斯或中国等国家的潜在冲突，我就感到紧张
+pa1,FEAR,Fear / Pragmatism,,NL,Dutch,yes,Ik voel me gespannen als ik denk aan mogelijke conflicten met landen als Rusland of China
+pa1,FEAR,Fear / Pragmatism,,ET,Estonian,yes,"Tunnen pinget, kui mõtlen võimalikele konfliktidele selliste riikidega nagu Venemaa või Hiina"
+pa1,FEAR,Fear / Pragmatism,,FR,French,yes,Je me sens tendu lorsque je pense à des conflits potentiels avec des pays comme la Russie ou la Chine
+pa1,FEAR,Fear / Pragmatism,,KAT,Georgian,no,"დაძაბულობას ვგრძნობ, როდესაც ვფიქრობ პოტენციურ კონფლიქტებზე ისეთ ქვეყნებთან, როგორიცაა რუსეთი ან ჩინეთი."
+pa1,FEAR,Fear / Pragmatism,,DE,German,yes,"Ich fühle mich angespannt, wenn ich an mögliche Konflikte mit Ländern wie Russland oder China denke"
+pa1,FEAR,Fear / Pragmatism,,HU,Hungarian,yes,"Feszültnek érzem magam, amikor olyan országokkal, mint Oroszország vagy Kína, lehetséges konfliktusokra gondolok."
+pa1,FEAR,Fear / Pragmatism,,IT,Italian,yes,Sono preoccupato quando penso a potenziali conflitti con paesi come la Russia o la Cina
+pa1,FEAR,Fear / Pragmatism,,LV,Latvian,yes,"Saspringstu, domājot par iespējamiem konfliktiem ar tādām valstīm kā Krievija vai Ķīna"
+pa1,FEAR,Fear / Pragmatism,,LT,Lithuanian,yes,Nervinuosi galvodamas (-a) apie galimus konfliktus su tokiomis šalimis kaip Rusija ar Kinija
+pa1,FEAR,Fear / Pragmatism,,FA,Persian (Farsi),no,وقتی به درگیری‌های احتمالی با کشورهایی مثل روسیه یا چین فکر می‌کنم، احساس تنش می‌کنم.
+pa1,FEAR,Fear / Pragmatism,,PL,Polish,yes,"Czuję napięcie, gdy myślę o potencjalnych konfliktach z krajami takimi jak Rosja czy Chiny"
+pa1,FEAR,Fear / Pragmatism,,RU,Russian,yes,"Я чувствую напряжение, когда думаю о потенциальных конфликтах с такими странами, как Россия или Китай."
+pa1,FEAR,Fear / Pragmatism,,SR,Serbian,yes,Осећам се напето када размишљам о потенцијалним сукобима са земљама попут Русије или Кине
+pa1,FEAR,Fear / Pragmatism,,TR,Turkish,yes,Rusya veya Çin gibi ülkelerle olası çatışmaları düşündüğümde gergin hissediyorum
+pa1,FEAR,Fear / Pragmatism,,UK,Ukrainian,no,"Я відчуваю напругу, коли думаю про потенційні конфлікти з такими країнами, як Росія чи Китай"
+pa2,FEAR,Fear / Pragmatism,,EN,English,yes,I would feel safer if peace with countries like Russia or China is struck at any cost
+pa2,FEAR,Fear / Pragmatism,,AR,Arabic,no,سأشعر بأمان أكبر إذا تم التوصل إلى السلام مع دول مثل روسيا أو الصين بأي ثمن
+pa2,FEAR,Fear / Pragmatism,,BG,Bulgarian,yes,"Бих се чувствал/а по-сигурен/а, ако мирът със страни като Русия или Китай бъде сключен на всяка цена"
+pa2,FEAR,Fear / Pragmatism,,ZH-S,Chinese (Simplified),no,如果不惜一切代价与俄罗斯或中国等国家达成和平协议，我会感到更安全
+pa2,FEAR,Fear / Pragmatism,,NL,Dutch,yes,Ik zou me veiliger voelen als er tegen elke prijs vrede wordt gesloten met landen als Rusland of China
+pa2,FEAR,Fear / Pragmatism,,ET,Estonian,yes,"Tunneksin end turvalisemalt, kui selliste riikidega nagu Venemaa või Hiina saavutatakse rahu iga hinna eest"
+pa2,FEAR,Fear / Pragmatism,,FR,French,yes,Je me sentirais plus en sécurité si la paix avec des pays comme la Russie ou la Chine était conclue à tout prix
+pa2,FEAR,Fear / Pragmatism,,KAT,Georgian,no,"თავს უფრო უსაფრთხოდ ვიგრძნობდი, თუ რუსეთი ან ჩინეთის მსგავს ქვეყნებთან მშვიდობა ნებისმიერ ფასად იქნებოდა დამყარებული."
+pa2,FEAR,Fear / Pragmatism,,DE,German,yes,"Ich würde mich sicherer fühlen, wenn um jeden Preis Frieden mit Ländern wie Russland oder China geschlossen würde"
+pa2,FEAR,Fear / Pragmatism,,HU,Hungarian,yes,"Biztonságosabbnak érezném magam, ha bármi áron békét kötnének olyan országokkal, mint Oroszország vagy Kína."
+pa2,FEAR,Fear / Pragmatism,,IT,Italian,yes,Mi sentirei più sicuro se la pace con paesi come la Russia o la Cina venisse raggiunta a qualunque costo
+pa2,FEAR,Fear / Pragmatism,,LV,Latvian,yes,"Es justos drošāk, ja par katru cenu tiktu panākts miers ar tādām valstīm kā Krievija vai Ķīna"
+pa2,FEAR,Fear / Pragmatism,,LT,Lithuanian,yes,"Jausčiausi saugiau, jei bet kokia kaina būtų pasiekta taika su tokiomis šalimis kaip Rusija ar Kinija"
+pa2,FEAR,Fear / Pragmatism,,FA,Persian (Farsi),no,اگر صلح با کشورهایی مانند روسیه یا چین به هر قیمتی برقرار شود، احساس امنیت بیشتری خواهم کرد.
+pa2,FEAR,Fear / Pragmatism,,PL,Polish,yes,"Czułbym się bezpieczniej, gdyby za wszelką cenę udało się zawrzeć pokój z krajami takimi jak Rosja czy Chiny"
+pa2,FEAR,Fear / Pragmatism,,RU,Russian,yes,"Я бы чувствовал себя в большей безопасности, если бы мир с такими странами, как Россия или Китай, был достигнут любой ценой."
+pa2,FEAR,Fear / Pragmatism,,SR,Serbian,yes,Осећао бих се сигурније када би се по сваку цену постигао мир са земљама попут Русије или Кине
+pa2,FEAR,Fear / Pragmatism,,TR,Turkish,yes,Rusya veya Çin gibi ülkelerle her ne pahasına olursa olsun barış sağlanırsa kendimi daha güvende hissederim
+pa2,FEAR,Fear / Pragmatism,,UK,Ukrainian,no,"Я б почувався в більшій безпеці, якби мир з такими країнами, як Росія чи Китай, був досягнутий будь-якою ціною"
+pa4,FEAR,Fear / Pragmatism,,EN,English,yes,I’m anxious about the consequences of a conflict with countries like Russia or China
+pa4,FEAR,Fear / Pragmatism,,AR,Arabic,no,أنا قلق بشأن عواقب الصراع مع دول مثل روسيا أو الصين
+pa4,FEAR,Fear / Pragmatism,,BG,Bulgarian,yes,Притеснявам се за последствията от конфликт със страни като Русия или Китай
+pa4,FEAR,Fear / Pragmatism,,ZH-S,Chinese (Simplified),no,我对与俄罗斯或中国等国家发生冲突的后果感到担忧
+pa4,FEAR,Fear / Pragmatism,,NL,Dutch,yes,Ik maak me zorgen over de gevolgen van een conflict met landen als Rusland of China
+pa4,FEAR,Fear / Pragmatism,,ET,Estonian,yes,Olen mures konflikti tagajärgede pärast selliste riikidega nagu Venemaa või Hiina
+pa4,FEAR,Fear / Pragmatism,,FR,French,yes,Je suis inquiet des conséquences d’un conflit avec des pays comme la Russie ou la Chine
+pa4,FEAR,Fear / Pragmatism,,KAT,Georgian,no,მე შეშფოთებული ვარ რუსეთის ან ჩინეთის მსგავს ქვეყნებთან კონფლიქტის შედეგებით.
+pa4,FEAR,Fear / Pragmatism,,DE,German,yes,Ich mache mir Sorgen über die Folgen eines Konflikts mit Ländern wie Russland oder China
+pa4,FEAR,Fear / Pragmatism,,HU,Hungarian,yes,"Aggódom egy olyan országgal való konfliktus következményei miatt, mint Oroszország vagy Kína."
+pa4,FEAR,Fear / Pragmatism,,IT,Italian,yes,Sono preoccupato per le conseguenze di un conflitto con paesi come la Russia o la Cina
+pa4,FEAR,Fear / Pragmatism,,LV,Latvian,yes,"Jūtu raizes par sekām, ko varētu radīt konflikts ar tādām valstīm kā Krievija vai Ķīna"
+pa4,FEAR,Fear / Pragmatism,,LT,Lithuanian,yes,Man neramu dėl konflikto su tokiomis šalimis kaip Rusija ar Kinija pasekmių
+pa4,FEAR,Fear / Pragmatism,,FA,Persian (Farsi),no,من نگران عواقب درگیری با کشورهایی مانند روسیه یا چین هستم.
+pa4,FEAR,Fear / Pragmatism,,PL,Polish,yes,Martwię się konsekwencjami konfliktu z krajami takimi jak Rosja czy Chiny
+pa4,FEAR,Fear / Pragmatism,,RU,Russian,yes,"Меня беспокоят последствия конфликта с такими странами, как Россия или Китай."
+pa4,FEAR,Fear / Pragmatism,,SR,Serbian,yes,Забринут сам због последица сукоба са земљама попут Русије или Кине
+pa4,FEAR,Fear / Pragmatism,,TR,Turkish,yes,Rusya veya Çin gibi ülkelerle yaşanacak bir çatışmanın sonuçları konusunda endişeliyim
+pa4,FEAR,Fear / Pragmatism,,UK,Ukrainian,no,"Я стурбований наслідками конфлікту з такими країнами, як Росія чи Китай"
+fru1,SUPF,Foreign-Power Admiration — Russia,,EN,English,yes,"To a certain extent, I admire Russia"
+fru1,SUPF,Foreign-Power Admiration — Russia,,AR,Arabic,no,إلى حد ما، أنا معجب بروسيا
+fru1,SUPF,Foreign-Power Admiration — Russia,,BG,Bulgarian,yes,До известна степен се възхищавам на Русия
+fru1,SUPF,Foreign-Power Admiration — Russia,,ZH-S,Chinese (Simplified),no,在某种程度上，我钦佩俄罗斯
+fru1,SUPF,Foreign-Power Admiration — Russia,,NL,Dutch,yes,Tot op zekere hoogte bewonder ik Rusland
+fru1,SUPF,Foreign-Power Admiration — Russia,,ET,Estonian,yes,Imetlen Venemaad teatud määral
+fru1,SUPF,Foreign-Power Admiration — Russia,,FR,French,yes,"Dans une certaine mesure, j'admire la Russie"
+fru1,SUPF,Foreign-Power Admiration — Russia,,KAT,Georgian,no,"გარკვეულწილად, მე აღფრთოვანებული ვარ რუსეთით"
+fru1,SUPF,Foreign-Power Admiration — Russia,,DE,German,yes,Bis zu einem gewissen Grad bewundere ich Russland
+fru1,SUPF,Foreign-Power Admiration — Russia,,HU,Hungarian,yes,Bizonyos mértékig csodálom Oroszországot
+fru1,SUPF,Foreign-Power Admiration — Russia,,IT,Italian,yes,In una certa misura ammiro la Russia
+fru1,SUPF,Foreign-Power Admiration — Russia,,LV,Latvian,yes,Zināmā mērā es apbrīnoju Krieviju
+fru1,SUPF,Foreign-Power Admiration — Russia,,LT,Lithuanian,yes,Tam tikra prasme aš žaviuosi Rusija
+fru1,SUPF,Foreign-Power Admiration — Russia,,FA,Persian (Farsi),no,تا حدودی، من روسیه را تحسین می‌کنم.
+fru1,SUPF,Foreign-Power Admiration — Russia,,PL,Polish,yes,Do pewnego stopnia podziwiam Rosję
+fru1,SUPF,Foreign-Power Admiration — Russia,,RU,Russian,yes,В определенной степени я восхищаюсь Россией.
+fru1,SUPF,Foreign-Power Admiration — Russia,,SR,Serbian,yes,"До извесне мере, дивим се Русији"
+fru1,SUPF,Foreign-Power Admiration — Russia,,TR,Turkish,yes,Bir bakıma Rusya'ya hayranım
+fru1,SUPF,Foreign-Power Admiration — Russia,,UK,Ukrainian,no,Певною мірою я захоплююся Росією
+fru2,SUPF,Foreign-Power Admiration — Russia,,EN,English,yes,Sometimes I feel inspired by Russia
+fru2,SUPF,Foreign-Power Admiration — Russia,,AR,Arabic,no,أحيانًا أشعر بالإلهام من روسيا
+fru2,SUPF,Foreign-Power Admiration — Russia,,BG,Bulgarian,yes,Понякога се чувствам вдъхновен/а от Русия
+fru2,SUPF,Foreign-Power Admiration — Russia,,ZH-S,Chinese (Simplified),no,有时我会受到俄罗斯的启发
+fru2,SUPF,Foreign-Power Admiration — Russia,,NL,Dutch,yes,Soms voel ik mij geïnspireerd door Rusland
+fru2,SUPF,Foreign-Power Admiration — Russia,,ET,Estonian,yes,Tunnen end vahel Venemaast inspireerituna
+fru2,SUPF,Foreign-Power Admiration — Russia,,FR,French,yes,"Parfois, je me sens inspiré par la Russie"
+fru2,SUPF,Foreign-Power Admiration — Russia,,KAT,Georgian,no,ხანდახან რუსეთით ვარ შთაგონებული
+fru2,SUPF,Foreign-Power Admiration — Russia,,DE,German,yes,Manchmal fühle ich mich von Russland inspiriert
+fru2,SUPF,Foreign-Power Admiration — Russia,,HU,Hungarian,yes,Néha Oroszország inspirál
+fru2,SUPF,Foreign-Power Admiration — Russia,,IT,Italian,yes,A volte mi sento ispirato dalla Russia
+fru2,SUPF,Foreign-Power Admiration — Russia,,LV,Latvian,yes,Dažreiz mani iedvesmo Krievija
+fru2,SUPF,Foreign-Power Admiration — Russia,,LT,Lithuanian,yes,Kartais Rusijos veiksmai mane įkvepia
+fru2,SUPF,Foreign-Power Admiration — Russia,,FA,Persian (Farsi),no,بعضی وقت‌ها از روسیه الهام می‌گیرم.
+fru2,SUPF,Foreign-Power Admiration — Russia,,PL,Polish,yes,Czasami czuję inspirację Rosją
+fru2,SUPF,Foreign-Power Admiration — Russia,,RU,Russian,yes,Иногда меня вдохновляет Россия.
+fru2,SUPF,Foreign-Power Admiration — Russia,,SR,Serbian,yes,Понекад ме инспирише Русија
+fru2,SUPF,Foreign-Power Admiration — Russia,,TR,Turkish,yes,Bazen Rusya'dan ilham alıyorum
+fru2,SUPF,Foreign-Power Admiration — Russia,,UK,Ukrainian,no,Іноді мене надихає Росія
+fru3,SUPF,Foreign-Power Admiration — Russia,,EN,English,yes,Russia gives me hope
+fru3,SUPF,Foreign-Power Admiration — Russia,,AR,Arabic,no,روسيا تمنحني الأمل
+fru3,SUPF,Foreign-Power Admiration — Russia,,BG,Bulgarian,yes,Русия ми дава надежда
+fru3,SUPF,Foreign-Power Admiration — Russia,,ZH-S,Chinese (Simplified),no,俄罗斯给了我希望
+fru3,SUPF,Foreign-Power Admiration — Russia,,NL,Dutch,yes,Rusland geeft mij hoop
+fru3,SUPF,Foreign-Power Admiration — Russia,,ET,Estonian,yes,Venemaa annab mulle lootust
+fru3,SUPF,Foreign-Power Admiration — Russia,,FR,French,yes,La Russie me donne de l'espoir
+fru3,SUPF,Foreign-Power Admiration — Russia,,KAT,Georgian,no,რუსეთი იმედს მაძლევს
+fru3,SUPF,Foreign-Power Admiration — Russia,,DE,German,yes,Russland gibt mir Hoffnung
+fru3,SUPF,Foreign-Power Admiration — Russia,,HU,Hungarian,yes,Oroszország reményt ad nekem
+fru3,SUPF,Foreign-Power Admiration — Russia,,IT,Italian,yes,La Russia mi dà speranza
+fru3,SUPF,Foreign-Power Admiration — Russia,,LV,Latvian,yes,Krievija man dod cerību
+fru3,SUPF,Foreign-Power Admiration — Russia,,LT,Lithuanian,yes,Rusija man suteikia vilties
+fru3,SUPF,Foreign-Power Admiration — Russia,,FA,Persian (Farsi),no,روسیه به من امید می‌دهد.
+fru3,SUPF,Foreign-Power Admiration — Russia,,PL,Polish,yes,Rosja daje mi nadzieję
+fru3,SUPF,Foreign-Power Admiration — Russia,,RU,Russian,yes,Россия дает мне надежду.
+fru3,SUPF,Foreign-Power Admiration — Russia,,SR,Serbian,yes,Русија ми даје наду
+fru3,SUPF,Foreign-Power Admiration — Russia,,TR,Turkish,yes,Rusya bana umut veriyor
+fru3,SUPF,Foreign-Power Admiration — Russia,,UK,Ukrainian,no,Росія дає мені надію
+fch1,SUPFCH,Foreign-Power Admiration — China,,EN,English,yes,"To a certain extent, I admire China"
+fch1,SUPFCH,Foreign-Power Admiration — China,,AR,Arabic,no,إلى حد ما، أنا معجب بالصين
+fch1,SUPFCH,Foreign-Power Admiration — China,,BG,Bulgarian,yes,До известна степен се възхищавам на Китай
+fch1,SUPFCH,Foreign-Power Admiration — China,,ZH-S,Chinese (Simplified),no,在某种程度上，我钦佩中国
+fch1,SUPFCH,Foreign-Power Admiration — China,,NL,Dutch,yes,Tot op zekere hoogte bewonder ik China
+fch1,SUPFCH,Foreign-Power Admiration — China,,ET,Estonian,yes,Imetlen Hiinat teatud määral
+fch1,SUPFCH,Foreign-Power Admiration — China,,FR,French,yes,"Dans une certaine mesure, j'admire la Chine"
+fch1,SUPFCH,Foreign-Power Admiration — China,,KAT,Georgian,no,"გარკვეულწილად, მე აღფრთოვანებული ვარ ჩინეთით"
+fch1,SUPFCH,Foreign-Power Admiration — China,,DE,German,yes,Bis zu einem gewissen Grad bewundere ich China
+fch1,SUPFCH,Foreign-Power Admiration — China,,HU,Hungarian,yes,Bizonyos mértékig csodálom Kínát
+fch1,SUPFCH,Foreign-Power Admiration — China,,IT,Italian,yes,In una certa misura ammiro la Cina
+fch1,SUPFCH,Foreign-Power Admiration — China,,LV,Latvian,yes,Zināmā mērā es apbrīnoju Ķīnu
+fch1,SUPFCH,Foreign-Power Admiration — China,,LT,Lithuanian,yes,Tam tikra prasme aš žaviuosi Kinija
+fch1,SUPFCH,Foreign-Power Admiration — China,,FA,Persian (Farsi),no,تا حدودی، من چین را تحسین می‌کنم.
+fch1,SUPFCH,Foreign-Power Admiration — China,,PL,Polish,yes,Do pewnego stopnia podziwiam Chiny
+fch1,SUPFCH,Foreign-Power Admiration — China,,RU,Russian,yes,В определенной степени я восхищаюсь Китаем.
+fch1,SUPFCH,Foreign-Power Admiration — China,,SR,Serbian,yes,"До извесне мере, дивим се Кини"
+fch1,SUPFCH,Foreign-Power Admiration — China,,TR,Turkish,yes,Bir bakıma Çin'e hayranım
+fch1,SUPFCH,Foreign-Power Admiration — China,,UK,Ukrainian,no,Певною мірою я захоплююся Китаєм
+fch2,SUPFCH,Foreign-Power Admiration — China,,EN,English,yes,Sometimes I feel inspired by China
+fch2,SUPFCH,Foreign-Power Admiration — China,,AR,Arabic,no,أحيانًا أشعر بالإلهام من الصين
+fch2,SUPFCH,Foreign-Power Admiration — China,,BG,Bulgarian,yes,Понякога се чувствам вдъхновен/а от Китай
+fch2,SUPFCH,Foreign-Power Admiration — China,,ZH-S,Chinese (Simplified),no,有时我会受到中国的启发
+fch2,SUPFCH,Foreign-Power Admiration — China,,NL,Dutch,yes,Soms voel ik mij geïnspireerd door China
+fch2,SUPFCH,Foreign-Power Admiration — China,,ET,Estonian,yes,Tunnen end vahel Hiinast inspireerituna
+fch2,SUPFCH,Foreign-Power Admiration — China,,FR,French,yes,"Parfois, je me sens inspiré par la Chine"
+fch2,SUPFCH,Foreign-Power Admiration — China,,KAT,Georgian,no,ზოგჯერ ჩინეთით შთაგონებას ვგრძნობ
+fch2,SUPFCH,Foreign-Power Admiration — China,,DE,German,yes,Manchmal fühle ich mich von China inspiriert
+fch2,SUPFCH,Foreign-Power Admiration — China,,HU,Hungarian,yes,Néha Kína inspirál
+fch2,SUPFCH,Foreign-Power Admiration — China,,IT,Italian,yes,A volte mi sento ispirato dalla Cina
+fch2,SUPFCH,Foreign-Power Admiration — China,,LV,Latvian,yes,Dažreiz mani iedvesmo Ķīna
+fch2,SUPFCH,Foreign-Power Admiration — China,,LT,Lithuanian,yes,Kartais Kinijos veiksmai mane įkvepia
+fch2,SUPFCH,Foreign-Power Admiration — China,,FA,Persian (Farsi),no,بعضی وقت‌ها از چین الهام می‌گیرم.
+fch2,SUPFCH,Foreign-Power Admiration — China,,PL,Polish,yes,Czasami czuję inspirację Chinami
+fch2,SUPFCH,Foreign-Power Admiration — China,,RU,Russian,yes,Иногда меня вдохновляет Китай.
+fch2,SUPFCH,Foreign-Power Admiration — China,,SR,Serbian,yes,Понекад ме Кина инспирише
+fch2,SUPFCH,Foreign-Power Admiration — China,,TR,Turkish,yes,Bazen Çin'den ilham alıyorum
+fch2,SUPFCH,Foreign-Power Admiration — China,,UK,Ukrainian,no,Іноді мене надихає Китай
+fch3,SUPFCH,Foreign-Power Admiration — China,,EN,English,yes,China gives me hope
+fch3,SUPFCH,Foreign-Power Admiration — China,,AR,Arabic,no,الصين تمنحني الأمل
+fch3,SUPFCH,Foreign-Power Admiration — China,,BG,Bulgarian,yes,Китай ми дава надежда
+fch3,SUPFCH,Foreign-Power Admiration — China,,ZH-S,Chinese (Simplified),no,中国给了我希望
+fch3,SUPFCH,Foreign-Power Admiration — China,,NL,Dutch,yes,China geeft mij hoop
+fch3,SUPFCH,Foreign-Power Admiration — China,,ET,Estonian,yes,Hiina annab mulle lootust
+fch3,SUPFCH,Foreign-Power Admiration — China,,FR,French,yes,La Chine me donne de l'espoir
+fch3,SUPFCH,Foreign-Power Admiration — China,,KAT,Georgian,no,ჩინეთი იმედს მაძლევს
+fch3,SUPFCH,Foreign-Power Admiration — China,,DE,German,yes,China gibt mir Hoffnung
+fch3,SUPFCH,Foreign-Power Admiration — China,,HU,Hungarian,yes,Kína reményt ad nekem
+fch3,SUPFCH,Foreign-Power Admiration — China,,IT,Italian,yes,La Cina mi dà speranza
+fch3,SUPFCH,Foreign-Power Admiration — China,,LV,Latvian,yes,Ķīna man dod cerību
+fch3,SUPFCH,Foreign-Power Admiration — China,,LT,Lithuanian,yes,Kinija man suteikia vilties
+fch3,SUPFCH,Foreign-Power Admiration — China,,FA,Persian (Farsi),no,چین به من امید می‌دهد.
+fch3,SUPFCH,Foreign-Power Admiration — China,,PL,Polish,yes,Chiny dają mi nadzieję
+fch3,SUPFCH,Foreign-Power Admiration — China,,RU,Russian,yes,Китай дает мне надежду.
+fch3,SUPFCH,Foreign-Power Admiration — China,,SR,Serbian,yes,Кина ми даје наду
+fch3,SUPFCH,Foreign-Power Admiration — China,,TR,Turkish,yes,Çin bana umut veriyor
+fch3,SUPFCH,Foreign-Power Admiration — China,,UK,Ukrainian,no,Китай дає мені надію
+news1,FIMI,FIMI detection criterion,Russian-origin,EN,English,yes,Zelenskyy bought a British mansion from King Charles for 20 million pounds
+news1,FIMI,FIMI detection criterion,Russian-origin,AR,Arabic,no,زيلينسكي اشترى قصرًا بريطانيًا من الملك تشارلز مقابل 20 مليون جنيه إسترليني
+news1,FIMI,FIMI detection criterion,Russian-origin,BG,Bulgarian,yes,Зеленски купи британско имение от крал Чарлз за 20 милиона паунда
+news1,FIMI,FIMI detection criterion,Russian-origin,ZH-S,Chinese (Simplified),no,泽连斯基用2000万英镑从英国国王查尔斯处购入一栋英国豪宅 ​​​​​​​
+news1,FIMI,FIMI detection criterion,Russian-origin,NL,Dutch,yes,Zelenskyy kocht een Brits landhuis van koning Charles voor 20 miljoen pond
+news1,FIMI,FIMI detection criterion,Russian-origin,ET,Estonian,yes,Zelenski ostis kuningas Charlesilt 20 miljoni naela eest Briti mõisa
+news1,FIMI,FIMI detection criterion,Russian-origin,FR,French,yes,Zelensky a acheté un manoir britannique au roi Charles pour 20 millions de livres
+news1,FIMI,FIMI detection criterion,Russian-origin,KAT,Georgian,no,ზელენსკიმ მეფე ჩარლზისგან 20 მილიონ ფუნტ სტერლინგად ბრიტანული სასახლე შეიძინა
+news1,FIMI,FIMI detection criterion,Russian-origin,DE,German,yes,Selenskyj kauft von König Charles ein britisches Herrenhaus für 20 Millionen Pfund
+news1,FIMI,FIMI detection criterion,Russian-origin,HU,Hungarian,yes,Zelenszkij 20 millió fontért vásárolt egy brit kúriát Károly királytól
+news1,FIMI,FIMI detection criterion,Russian-origin,IT,Italian,yes,Zelenskyy ha acquistato una villa britannica da Re Carlo per 20 milioni di sterline
+news1,FIMI,FIMI detection criterion,Russian-origin,LV,Latvian,yes,Zelenskis no karaļa Čārlza par 20 miljoniem mārciņu iegādājies britu savrupmāju
+news1,FIMI,FIMI detection criterion,Russian-origin,LT,Lithuanian,yes,Zelenskis nusipirko dvarą iš Didžiosios Britanijos karaliaus Karolio III už 20 milijonų svarų
+news1,FIMI,FIMI detection criterion,Russian-origin,FA,Persian (Farsi),no,زلنسکی عمارتی بریتانیایی را از شاه چارلز به قیمت ۲۰ میلیون پوند خریداری کرد
+news1,FIMI,FIMI detection criterion,Russian-origin,PL,Polish,yes,Zełenski kupił od króla Karola brytyjską rezydencję za 20 milionów funtów
+news1,FIMI,FIMI detection criterion,Russian-origin,RU,Russian,yes,Зеленский купил у короля Карла британский особняк за 20 миллионов фунтов стерлингов
+news1,FIMI,FIMI detection criterion,Russian-origin,SR,Serbian,yes,Зеленски је купио британску вилу од краља Чарлса за 20 милиона фунти
+news1,FIMI,FIMI detection criterion,Russian-origin,TR,Turkish,yes,"Zelenskyy, Kral Charles'tan 20 milyon pound değerinde bir İngiliz malikanesi satın aldı"
+news1,FIMI,FIMI detection criterion,Russian-origin,UK,Ukrainian,no,Зеленський купив британський особняк у короля Чарльза за 20 мільйонів фунтів стерлінгів
+news2,FIMI,FIMI detection criterion,Russian-origin,EN,English,yes,France asked Russia not to touch the French military in Ukraine
+news2,FIMI,FIMI detection criterion,Russian-origin,AR,Arabic,no,فرنسا طلبت من روسيا عدم المساس بالجيش الفرنسي في أوكرانيا
+news2,FIMI,FIMI detection criterion,Russian-origin,BG,Bulgarian,yes,Франция поиска от Русия да не докосва френските военни в Украйна
+news2,FIMI,FIMI detection criterion,Russian-origin,ZH-S,Chinese (Simplified),no,法国要求俄罗斯不要对驻乌法军动手
+news2,FIMI,FIMI detection criterion,Russian-origin,NL,Dutch,yes,Frankrijk heeft Rusland gevraagd het Franse leger in Oekraïne niet aan te vallen
+news2,FIMI,FIMI detection criterion,Russian-origin,ET,Estonian,yes,Prantsusmaa palus Venemaal mitte puutuda Ukrainas asuvaid Prantsuse sõjaväelasi
+news2,FIMI,FIMI detection criterion,Russian-origin,FR,French,yes,La France a demandé à la Russie de ne pas toucher à l'armée française en Ukraine
+news2,FIMI,FIMI detection criterion,Russian-origin,KAT,Georgian,no,"საფრანგეთმა რუსეთს მოუწოდა, უკრაინაში მყოფ ფრანგ სამხედროებს არ შეეხოს"
+news2,FIMI,FIMI detection criterion,Russian-origin,DE,German,yes,"Frankreich bittet Russland, das französische Militär in der Ukraine nicht anzugreifen"
+news2,FIMI,FIMI detection criterion,Russian-origin,HU,Hungarian,yes,"Franciaország arra kérte Oroszországot, hogy ne nyúljon a francia hadsereghez Ukrajnában"
+news2,FIMI,FIMI detection criterion,Russian-origin,IT,Italian,yes,La Francia ha chiesto alla Russia di non toccare l'esercito francese in Ucraina
+news2,FIMI,FIMI detection criterion,Russian-origin,LV,Latvian,yes,Francija lūdza Krieviju neaiztikt Francijas militārpersonas Ukrainā
+news2,FIMI,FIMI detection criterion,Russian-origin,LT,Lithuanian,yes,Prancūzija paprašė Rusijos neliesti prancūzų kariuomenės Ukrainoje
+news2,FIMI,FIMI detection criterion,Russian-origin,FA,Persian (Farsi),no,فرانسه از روسیه خواست به نظامیان فرانسوی مستقر در اوکراین آسیبی نرساند
+news2,FIMI,FIMI detection criterion,Russian-origin,PL,Polish,yes,Francja zwróciła się do Rosji z prośbą o nieatakowanie wojsk francuskich na terytorium Ukrainy
+news2,FIMI,FIMI detection criterion,Russian-origin,RU,Russian,yes,Франция попросила Россию не трогать французских военных в Украине
+news2,FIMI,FIMI detection criterion,Russian-origin,SR,Serbian,yes,Француска је затражила од Русије да не дира француску војску у Украјини
+news2,FIMI,FIMI detection criterion,Russian-origin,TR,Turkish,yes,"Fransa, Rusya'dan Ukrayna’daki Fransız ordusuna dokunmamasını istedi"
+news2,FIMI,FIMI detection criterion,Russian-origin,UK,Ukrainian,no,Франція звернулася до Росії з проханням не чіпати французьких військових в Україні
+news3,FIMI,FIMI detection criterion,Russian-origin,EN,English,yes,The 2026 Milan–Cortina d'Ampezzo Olympics and Paralympics will be openly LGBT+
+news3,FIMI,FIMI detection criterion,Russian-origin,AR,Arabic,no,ستكون دورة الألعاب الأولمبية والبارالمبية ميلانو-كورتينا دامبيزو 2026 مفتوحة أمام مجتمع LGBT+
+news3,FIMI,FIMI detection criterion,Russian-origin,BG,Bulgarian,yes,Олимпийските и Параолимпийските игри в Милано-Кортина д'Ампецо през 2026 г. ще бъдат отворени за ЛГБТ+
+news3,FIMI,FIMI detection criterion,Russian-origin,ZH-S,Chinese (Simplified),no,2026 年米兰-科尔蒂纳丹佩佐奥运会和残奥会将公开支持LGBT+ 群体参赛
+news3,FIMI,FIMI detection criterion,Russian-origin,NL,Dutch,yes,De Olympische en Paralympische Spelen van 2026 in Milaan-Cortina d'Ampezzo zullen openlijk LGBT+ zijn
+news3,FIMI,FIMI detection criterion,Russian-origin,ET,Estonian,yes,2026. aasta Milano-Cortina d'Ampezzo olümpia- ja paraolümpiamängud on avalikult LGBT+ teemalised
+news3,FIMI,FIMI detection criterion,Russian-origin,FR,French,yes,Les Jeux olympiques et paralympiques de Milan-Cortina d'Ampezzo 2026 seront ouvertement LGBT+
+news3,FIMI,FIMI detection criterion,Russian-origin,KAT,Georgian,no,2026 წლის მილან-კორტინა დ’ამპეცოს ოლიმპიური და პარალიმპიური თამაშები ღიად ლგბტ+ თემებს მიეკუთვნება.
+news3,FIMI,FIMI detection criterion,Russian-origin,DE,German,yes,Die Olympischen und Paralympischen Spiele 2026 in Mailand–Cortina d'Ampezzo werden offen LGBT+ sein
+news3,FIMI,FIMI detection criterion,Russian-origin,HU,Hungarian,yes,A 2026-os Milánó–Cortina d'Ampezzo olimpia és paralimpia nyíltan LMBT+ lesz
+news3,FIMI,FIMI detection criterion,Russian-origin,IT,Italian,yes,Le Olimpiadi e le Paralimpiadi di Milano-Cortina d'Ampezzo 2026 saranno dichiaratamente LGBT+
+news3,FIMI,FIMI detection criterion,Russian-origin,LV,Latvian,yes,2026. gada Milānas–Kortīnas d'Ampeco olimpiskās un paralimpiskās spēles atklāti atbalstīs LGBT+
+news3,FIMI,FIMI detection criterion,Russian-origin,LT,Lithuanian,yes,2026 m. Milano–Kortinos d'Ampeco olimpinės ir parolimpinės žaidynės bus atvirai pro-LGBT+
+news3,FIMI,FIMI detection criterion,Russian-origin,FA,Persian (Farsi),no,المپیک و پارالمپیک میلان-کورتینا دامپتزو ۲۰۲۶ آشکارا متعلق به افراد LGBT+ خواهد بود
+news3,FIMI,FIMI detection criterion,Russian-origin,PL,Polish,yes,Igrzyska olimpijskie i paraolimpijskie Mediolan–Cortina d'Ampezzo 2026 będą oficjalnie przyjazne dla osób LGBT+
+news3,FIMI,FIMI detection criterion,Russian-origin,RU,Russian,yes,Олимпийские и Паралимпийские игры 2026 года в Милане и Кортина-д’Ампеццо будут открыто ЛГБТ+
+news3,FIMI,FIMI detection criterion,Russian-origin,SR,Serbian,yes,Олимпијске и Параолимпијске игре Милано–Кортина Дампецо 2026. године биће јавно ЛГБТ+
+news3,FIMI,FIMI detection criterion,Russian-origin,TR,Turkish,yes,2026 Milano–Cortina d'Ampezzo Olimpiyatları ve Paralimpik Oyunları açık şekilde LGBT+ destekçisi olacak
+news3,FIMI,FIMI detection criterion,Russian-origin,UK,Ukrainian,no,Олімпійські та Паралімпійські ігри 2026 року в Мілані та Кортіні-д'Ампеццо будуть відкрито ЛГБТ+
+news4,FIMI,FIMI detection criterion,Russian-origin,EN,English,yes,The Ukrainian army is looking for a mentor on tolerance working with front line troops
+news4,FIMI,FIMI detection criterion,Russian-origin,AR,Arabic,no,الجيش الأوكراني يبحث عن مرشد في مجال التسامح للعمل مع قوات الخطوط الأمامية
+news4,FIMI,FIMI detection criterion,Russian-origin,BG,Bulgarian,yes,"Украинската армия търси ментор по толерантност, работещ с войски на фронтовата линия"
+news4,FIMI,FIMI detection criterion,Russian-origin,ZH-S,Chinese (Simplified),no,乌克兰军方正在为前线部队寻找一位包容性培训导师 ​​​​​​​
+news4,FIMI,FIMI detection criterion,Russian-origin,NL,Dutch,yes,Het Oekraïense leger is op zoek naar een mentor voor tolerantie in samenwerking met troepen aan het front
+news4,FIMI,FIMI detection criterion,Russian-origin,ET,Estonian,yes,Ukraina armee otsib sallivuse mentorit rindel olevate vägedega töötamiseks
+news4,FIMI,FIMI detection criterion,Russian-origin,FR,French,yes,L'armée ukrainienne recherche un mentor en tolérance travaillant avec les troupes de première ligne
+news4,FIMI,FIMI detection criterion,Russian-origin,KAT,Georgian,no,უკრაინის არმია ფრონტის ხაზზე მომუშავე ჯარისკაცებთან ტოლერანტობის საკითხებში მენტორს ეძებს.
+news4,FIMI,FIMI detection criterion,Russian-origin,DE,German,yes,Die ukrainische Armee sucht einen Toleranz-Mentor für die Arbeit mit Frontsoldaten
+news4,FIMI,FIMI detection criterion,Russian-origin,HU,Hungarian,yes,Az ukrán hadsereg a frontvonalbeli csapatokkal való együttműködésre keres tolerancia mentort
+news4,FIMI,FIMI detection criterion,Russian-origin,IT,Italian,yes,L'esercito ucraino è alla ricerca di un esperto sulla tolleranza che lavori con le truppe in prima linea
+news4,FIMI,FIMI detection criterion,Russian-origin,LV,Latvian,yes,Ukrainas armija meklē mentoru tolerances jautājumos darbam ar frontes līnijas karavīriem
+news4,FIMI,FIMI detection criterion,Russian-origin,LT,Lithuanian,yes,Ukrainos kariuomenė ieško tolerancijos mentoriaus darbui fronto linijose
+news4,FIMI,FIMI detection criterion,Russian-origin,FA,Persian (Farsi),no,ارتش اوکراین به دنبال مربی‌ای برای آموزش مدارا برای نیروهای خط مقدم است
+news4,FIMI,FIMI detection criterion,Russian-origin,PL,Polish,yes,"Ukraińska armia poszukuje mentora ds. tolerancji, który będzie pracował z żołnierzami pierwszej linii"
+news4,FIMI,FIMI detection criterion,Russian-origin,RU,Russian,yes,Украинская армия ищет наставника по толерантности для работы с военнослужащими на передовой
+news4,FIMI,FIMI detection criterion,Russian-origin,SR,Serbian,yes,Украјинска војска тражи ментора за рад на толеранцији са јединицама на првој линији фронта
+news4,FIMI,FIMI detection criterion,Russian-origin,TR,Turkish,yes,"Ukrayna ordusu, ön saflardaki birliklerle hoşgörü konusunda çalışacak bir akıl hocası arıyor"
+news4,FIMI,FIMI detection criterion,Russian-origin,UK,Ukrainian,no,Українська армія шукає наставника з толерантності для роботи з військовими на передовій
+news5,FIMI,FIMI detection criterion,Russian-origin,EN,English,yes,Gays and transvestites in Kyiv are invited to join LGBT+ military brigades
+news5,FIMI,FIMI detection criterion,Russian-origin,AR,Arabic,no,تم دعوة المثليين والمتحولين جنسيا للانضمام إلى الألوية العسكرية للمثليين
+news5,FIMI,FIMI detection criterion,Russian-origin,BG,Bulgarian,yes,Гейове и травестити в Киев са поканени да се присъединят към ЛГБТ+ военни бригади
+news5,FIMI,FIMI detection criterion,Russian-origin,ZH-S,Chinese (Simplified),no,基辅的同性恋和变装者受邀加入 LGBT+ 军事旅
+news5,FIMI,FIMI detection criterion,Russian-origin,NL,Dutch,yes,Homoseksuelen en travestieten in Kiev worden uitgenodigd om zich aan te sluiten bij LGBT+-militaire brigades
+news5,FIMI,FIMI detection criterion,Russian-origin,ET,Estonian,yes,Kiievis kutsutakse geisid ja transvestiite LGBT+ sõjaväebrigaadidesse
+news5,FIMI,FIMI detection criterion,Russian-origin,FR,French,yes,Les gays et les travestis de Kyiv sont invités à rejoindre les brigades militaires LGBT+
+news5,FIMI,FIMI detection criterion,Russian-origin,KAT,Georgian,no,კიევში გეებსა და ტრანსვესტიტებს ლგბტ სამხედრო ბრიგადებში გასაწევრიანებლად იწვევენ
+news5,FIMI,FIMI detection criterion,Russian-origin,DE,German,yes,Schwule und Transvestiten in Kiew werden zum Beitritt von LGBT-Militärbrigaden aufgefordert
+news5,FIMI,FIMI detection criterion,Russian-origin,HU,Hungarian,yes,Kijevben melegeket és transzvesztitákat hívnak az LMBT+ katonai brigádokba
+news5,FIMI,FIMI detection criterion,Russian-origin,IT,Italian,yes,Gay e travestiti a Kiev sono invitati a unirsi alle brigate militari LGBT+
+news5,FIMI,FIMI detection criterion,Russian-origin,LV,Latvian,yes,Kijivā geji un transvestīti tiek aicināti pievienoties LGBT+ militārajām brigādēm
+news5,FIMI,FIMI detection criterion,Russian-origin,LT,Lithuanian,yes,Gėjai ir transvestitai Kijeve kviečiami prisijungti prie LGBT+ karinių brigadų
+news5,FIMI,FIMI detection criterion,Russian-origin,FA,Persian (Farsi),no,از همجنسگرایان و تراجنسیتی‌ها در کیف دعوت می‌شود تا به تیپ‌های نظامی LGBT+ بپیوندند
+news5,FIMI,FIMI detection criterion,Russian-origin,PL,Polish,yes,Geje i transwestyci w Kijowie są zaproszeni do dołączenia do wojskowych brygad LGBT+
+news5,FIMI,FIMI detection criterion,Russian-origin,RU,Russian,yes,Геев и трансвеститов в Киеве приглашают вступить в ЛГБТ+ военные бригады
+news5,FIMI,FIMI detection criterion,Russian-origin,SR,Serbian,yes,Гејеви и трансвестити у Кијеву су позвани да се придруже ЛГБТ+ војним бригадама
+news5,FIMI,FIMI detection criterion,Russian-origin,TR,Turkish,yes,"Kiev'deki eşcinseller ve travestiler, LGBT+ askeri birliklerine katılmaya davet ediliyor"
+news5,FIMI,FIMI detection criterion,Russian-origin,UK,Ukrainian,no,Геїв та трансвеститів у Києві запрошують вступати до військових бригад ЛГБТ+
+news6,FIMI,FIMI detection criterion,Chinese-origin,EN,English,yes,"Li-Meng Yan, a Chinese virologist who alleges that the COVID-19 virus originated from a Chinese government laboratory is a known rumor maker"
+news6,FIMI,FIMI detection criterion,Chinese-origin,AR,Arabic,no,لي مينج يان، عالم الفيروسات الصيني الذي يزعم أن فيروس كوفيد-19 نشأ في مختبر حكومي صيني، هو صانع شائعات معروف
+news6,FIMI,FIMI detection criterion,Chinese-origin,BG,Bulgarian,yes,"Ли-Менг Ян, китайски вирусолог, който твърди, че вирусът COVID-19 произхожда от китайска правителствена лаборатория, е известен като разпространител на слухове."
+news6,FIMI,FIMI detection criterion,Chinese-origin,ZH-S,Chinese (Simplified),no,宣称新冠病毒源自中国政府实验室的华人病毒学家闫丽梦，是知名谣言制造者
+news6,FIMI,FIMI detection criterion,Chinese-origin,NL,Dutch,yes,"Li-Meng Yan, een Chinese viroloog die beweert dat het COVID-19-virus afkomstig is uit een Chinees overheidslaboratorium, is een bekende geruchtenmaker"
+news6,FIMI,FIMI detection criterion,Chinese-origin,ET,Estonian,yes,"Hiina viroloog Li-Meng Yan, kes väidab, et COVID-19 viirus pärines Hiina valitsuse laborist, on tuntud kuulujuttude levitaja"
+news6,FIMI,FIMI detection criterion,Chinese-origin,FR,French,yes,"Li-Meng Yan, une virologue chinoise qui prétend que le virus COVID-19 provient d'un laboratoire du gouvernement chinois, est une rumeur connue"
+news6,FIMI,FIMI detection criterion,Chinese-origin,KAT,Georgian,no,"ლი-მენგ იანი, ჩინელი ვირუსოლოგი, რომელიც ამტკიცებს, რომ COVID-19 ვირუსი ჩინეთის მთავრობის ლაბორატორიიდან წარმოიშვა, ცნობილი ჭორების ავტორია."
+news6,FIMI,FIMI detection criterion,Chinese-origin,DE,German,yes,"Li-Meng Yan, eine chinesische Virologin, die behauptet, das COVID-19-Virus stamme aus einem chinesischen Regierungslabor, ist als Gerüchteverbreiterin bekannt"
+news6,FIMI,FIMI detection criterion,Chinese-origin,HU,Hungarian,yes,"Li-Meng Yan, egy kínai virológus, aki azt állítja, hogy a COVID-19 vírus egy kínai kormányzati laboratóriumból származik, közismerten pletykaterjesztő"
+news6,FIMI,FIMI detection criterion,Chinese-origin,IT,Italian,yes,"Li-Meng Yan, virologa cinese che sostiene che il virus COVID-19 abbia avuto origine in un laboratorio del governo cinese, è nota per diffondere voci infondate"
+news6,FIMI,FIMI detection criterion,Chinese-origin,LV,Latvian,yes,"Ķīniešu virusologs Li-Mens Jaņs, kurš apgalvo, ka COVID-19 vīruss cēlies no Ķīnas valdības laboratorijas, ir zināms baumu izplatītājs"
+news6,FIMI,FIMI detection criterion,Chinese-origin,LT,Lithuanian,yes,"Kinijos virusologė Li-Meng Yan, teigianti, kad COVID-19 virusas sukurtas Kinijos vyriausybės laboratorijoje, yra absoliuti gandų kūrėja"
+news6,FIMI,FIMI detection criterion,Chinese-origin,FA,Persian (Farsi),no,لی-منگ یان، ویروس‌شناس چینی که ادعا می‌کند ویروس کووید-۱۹ از یک آزمایشگاه دولتی چین سرچشمه گرفته، به شایعه‌پراکنی معروف است
+news6,FIMI,FIMI detection criterion,Chinese-origin,PL,Polish,yes,"Li-Meng Yan, chiński wirusolog który twierdzi, że wirus COVID-19 pochodzi z chińskiego laboratorium rządowego, jest znanym twórcą plotek"
+news6,FIMI,FIMI detection criterion,Chinese-origin,RU,Russian,yes,"Ли-Мэн Янь, китайский вирусолог, утверждающий, что вирус COVID-19 возник в китайской правительственной лаборатории, является известным распространителем слухов"
+news6,FIMI,FIMI detection criterion,Chinese-origin,SR,Serbian,yes,"Ли-Менг Јан, кинески вирусолог који тврди да вирус COVID-19 потиче из кинеске владине лабораторије, познат је по ширењу гласина"
+news6,FIMI,FIMI detection criterion,Chinese-origin,TR,Turkish,yes,"COVID-19 virüsünün Çin hükümetine ait bir laboratuvardan kaynaklandığını iddia eden Çinli virolog Li-Meng Yan, söylenti yaymakla tanınan bir isimdir"
+news6,FIMI,FIMI detection criterion,Chinese-origin,UK,Ukrainian,no,"Лі-Мен Янь, китайський вірусолог, який стверджує, що вірус COVID-19 походить з китайської урядової лабораторії, є відомим поширювачем чуток"
+news7,FIMI,FIMI detection criterion,Chinese-origin,EN,English,yes,CGTN: Closer People-to-People Bonds foster China-Vietnam Friendship
+news7,FIMI,FIMI detection criterion,Chinese-origin,AR,Arabic,no,شبكة تلفزيون الصين الدولية: تعزيز الروابط الشعبية يعزز الصداقة بين الصين وفيتنام
+news7,FIMI,FIMI detection criterion,Chinese-origin,BG,Bulgarian,yes,CGTN: По-тесните междуличностни отношения насърчават приятелството между Китай и Виетнам
+news7,FIMI,FIMI detection criterion,Chinese-origin,ZH-S,Chinese (Simplified),no,中国国际电视台（CGTN）：“民心相通”推动中越友谊进一步发展
+news7,FIMI,FIMI detection criterion,Chinese-origin,NL,Dutch,yes,CGTN: Nauwere persoonlijke banden tussen mensen bevorderen vriendschap tussen China en Vietnam
+news7,FIMI,FIMI detection criterion,Chinese-origin,ET,Estonian,yes,CGTN: Tihedamad inimestevahelised sidemed edendavad Hiina ja Vietnami sõprust
+news7,FIMI,FIMI detection criterion,Chinese-origin,FR,French,yes,CGTN : Des liens plus étroits entre les peuples renforcent l'amitié sino-vietnamienne
+news7,FIMI,FIMI detection criterion,Chinese-origin,KAT,Georgian,no,CGTN: ხალხთა შორის უფრო მჭიდრო კავშირები ჩინეთ-ვიეტნამის მეგობრობას უწყობს ხელს
+news7,FIMI,FIMI detection criterion,Chinese-origin,DE,German,yes,CGTN: Engere zwischenmenschliche Kontakte fördern die Freundschaft zwischen China und Vietnam
+news7,FIMI,FIMI detection criterion,Chinese-origin,HU,Hungarian,yes,"CGTN: A szorosabb, emberek közötti kötelékek elősegítik a kínai-vietnami barátságot"
+news7,FIMI,FIMI detection criterion,Chinese-origin,IT,Italian,yes,CGTN: Legami più stretti tra i popoli favoriscono l'amicizia tra Cina e Vietnam
+news7,FIMI,FIMI detection criterion,Chinese-origin,LV,Latvian,yes,CGTN: Ciešākas cilvēku savstarpējās saites veicina Ķīnas un Vjetnamas draudzību
+news7,FIMI,FIMI detection criterion,Chinese-origin,LT,Lithuanian,yes,CGTN: artimesni žmonių tarpusavio ryšiai skatina Kinijos ir Vietnamo draugystę
+news7,FIMI,FIMI detection criterion,Chinese-origin,FA,Persian (Farsi),no,CGTN: پیوندهای نزدیک‌تر مردمی، دوستی چین و ویتنام را تقویت می‌کند
+news7,FIMI,FIMI detection criterion,Chinese-origin,PL,Polish,yes,CGTN: Bliższe więzi międzyludzkie sprzyjają przyjaźni chińsko-wietnamskiej
+news7,FIMI,FIMI detection criterion,Chinese-origin,RU,Russian,yes,CGTN: Укрепление связей между народами способствует развитию дружбы между Китаем и Вьетнамом
+news7,FIMI,FIMI detection criterion,Chinese-origin,SR,Serbian,yes,CGTN: Ближе међуљудске везе подстичу пријатељство између Кине и Вијетнама
+news7,FIMI,FIMI detection criterion,Chinese-origin,TR,Turkish,yes,CGTN: İnsanlar arasındaki yakınlaşma Çin-Vietnam dostluğunu geliştiriyor
+news7,FIMI,FIMI detection criterion,Chinese-origin,UK,Ukrainian,no,CGTN: Тісніші міжособистісні зв'язки сприяють дружбі між Китаєм та В'єтнамом
+news8,FIMI,FIMI detection criterion,Chinese-origin,EN,English,yes,The plague-like rule of extreme right-wing religious leader Li Hongzhi is banned in China
+news8,FIMI,FIMI detection criterion,Chinese-origin,AR,Arabic,no,تم حظر حكم الزعيم الديني اليميني المتطرف لي هونغ تشي الذي يشبه الطاعون في الصين
+news8,FIMI,FIMI detection criterion,Chinese-origin,BG,Bulgarian,yes,Подобното на чума управление на крайно десния религиозен лидер Ли Хонгджъ е забранено в Китай
+news8,FIMI,FIMI detection criterion,Chinese-origin,ZH-S,Chinese (Simplified),no,极右翼宗教领袖李洪志的“瘟疫式统治”被中国禁止
+news8,FIMI,FIMI detection criterion,Chinese-origin,NL,Dutch,yes,Het pestachtige bewind van extreemrechtse religieuze leider Li Hongzhi is in China verboden
+news8,FIMI,FIMI detection criterion,Chinese-origin,ET,Estonian,yes,Paremäärmusliku usujuhi Li Hongzhi katkulaadne valitsemine keelati Hiinas ära
+news8,FIMI,FIMI detection criterion,Chinese-origin,FR,French,yes,Le régime pestiféré du leader religieux d'extrême droite Li Hongzhi est interdit en Chine
+news8,FIMI,FIMI detection criterion,Chinese-origin,KAT,Georgian,no,"ჩინეთში ექსტრემალურად მემარჯვენე რელიგიური ლიდერის, ლი ჰონგჟის, ჭირის მსგავსი მმართველობა აიკრძალა."
+news8,FIMI,FIMI detection criterion,Chinese-origin,DE,German,yes,Die pestartige Herrschaft des rechtsextremen Sektenführers Li Hongzhi ist in China verboten
+news8,FIMI,FIMI detection criterion,Chinese-origin,HU,Hungarian,yes,Kínában betiltották Li Hongzhi szélsőjobboldali vallási vezető pestisszerű uralmát
+news8,FIMI,FIMI detection criterion,Chinese-origin,IT,Italian,yes,La piaga del regime imposto dal leader religioso di estrema destra Li Hongzhi è vietato in Cina
+news8,FIMI,FIMI detection criterion,Chinese-origin,LV,Latvian,yes,"Ķīnā ir aizliegta galēji labējā reliģiskā līdera Li Hundži valdīšana, kas līdzinās mērim"
+news8,FIMI,FIMI detection criterion,Chinese-origin,LT,Lithuanian,yes,Kinijoje uždrausto kraštutinių dešiniųjų religinio lyderio Li Hongzhi valdžia - kaip maro apimta
+news8,FIMI,FIMI detection criterion,Chinese-origin,FA,Persian (Farsi),no,حکومت طاعون‌مانند لی هنگجی، رهبر مذهبی راست افراطی، در چین ممنوع شد
+news8,FIMI,FIMI detection criterion,Chinese-origin,PL,Polish,yes,W Chinach zakazano przypominających zarazę rządów skrajnie prawicowego przywódcy religijnego Li Hongzhi
+news8,FIMI,FIMI detection criterion,Chinese-origin,RU,Russian,yes,Чумоподобное правление ультраправого религиозного лидера Ли Хунчжи запрещено в Китае
+news8,FIMI,FIMI detection criterion,Chinese-origin,SR,Serbian,yes,"Владавина екстремно десничарског верског вође Ли Хонгџија, слична куги, забрањена је у Кини"
+news8,FIMI,FIMI detection criterion,Chinese-origin,TR,Turkish,yes,"Aşırı sağ görüşleriyle tanınan dinî lider Li Hongzhi’nin etkisi altındaki yapılanma, Çin'de yasaklanmıştır."
+news8,FIMI,FIMI detection criterion,Chinese-origin,UK,Ukrainian,no,У Китаї заборонили схоже на чуму правління ультраправого релігійного лідера Лі Хунчжи

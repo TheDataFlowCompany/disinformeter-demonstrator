@@ -1,0 +1,135 @@
+---
+// The three components of the toolkit, each shown as a miniature of its real
+// interface as well as described. The miniatures were first drafted as a hero,
+// but they read better here, where the reader is looking for detail rather than
+// an opening image. They are static on purpose: the hero carries the motion.
+import { url } from '../lib/paths';
+
+const DOTS = 7;
+const SELECTED = 5;
+---
+
+<div class="comp-grid">
+  <a class="comp" href={url('/explorer')}>
+    <p class="comp-head">
+      <span class="comp-no mono">01</span>
+      <span class="comp-name">The receptivity scale</span>
+    </p>
+    <div class="mini" aria-hidden="true">
+      <p class="stmt">“I am angry when I think about how my country is being used by foreign countries.”</p>
+      <span class="likert">
+        {Array.from({ length: DOTS }, (_, i) => (
+          <i class:list={['dot', { on: i + 1 === SELECTED }]}></i>
+        ))}
+      </span>
+      <p class="ends mono"><span>disagree</span><span>agree</span></p>
+    </div>
+    <p class="comp-body">The instrument itself: four affective pathways over ten belief themes, the
+      General Anchor, and the FIMI recognition battery. Every item, in three versions and 19 languages.</p>
+    <span class="comp-go mono">Open →</span>
+  </a>
+
+  <a class="comp" href={url('/feedback')}>
+    <p class="comp-head">
+      <span class="comp-no mono">02</span>
+      <span class="comp-name">Personalized feedback</span>
+    </p>
+    <div class="mini" aria-hidden="true">
+      <ul class="fb-lines">
+        <li><i class="hue" style="--c: var(--d-threat)"></i>Threat
+          <span class="tag more">resonates more</span></li>
+        <li><i class="hue" style="--c: var(--d-admire)"></i>Admiration
+          <span class="tag less">resonates less</span></li>
+      </ul>
+    </div>
+    <p class="comp-body">The intervention: feedback tuned to a respondent’s relatively strongest and
+      weakest domains, written to inform without alarming. Try the live simulator.</p>
+    <span class="comp-go mono">Open →</span>
+  </a>
+
+  <a class="comp" href={url('/choice-task')}>
+    <p class="comp-head">
+      <span class="comp-no mono">03</span>
+      <span class="comp-name">FIMI choice task</span>
+    </p>
+    <div class="mini" aria-hidden="true">
+      <p class="ask">Which clipping is the foreign-manipulated one?</p>
+      <span class="pair"><i class="tile"></i><i class="tile picked"></i></span>
+    </div>
+    <p class="comp-body">The behavioural counterpart to the scale: spot the manipulated headline
+      against a genuine one. Playable in your browser.</p>
+    <span class="comp-go mono">Open →</span>
+  </a>
+</div>
+
+<style>
+  .comp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); margin-top: var(--sp-6); }
+
+  .comp {
+    display: flex; flex-direction: column; gap: var(--sp-3);
+    padding: var(--sp-5); border-radius: var(--radius-lg);
+    border: 1px solid var(--hairline); background: var(--surface-2);
+    text-decoration: none; color: var(--text);
+    transition: border-color 0.15s var(--ease), transform 0.15s var(--ease), box-shadow 0.15s var(--ease);
+  }
+  .comp:hover { border-color: var(--navy-300); transform: translateY(-3px); box-shadow: var(--shadow); }
+  .comp:nth-child(1) { --accent: var(--axis-receptivity); }
+  .comp:nth-child(2) { --accent: var(--azure-700); }
+  .comp:nth-child(3) { --accent: var(--axis-detection); }
+
+  .comp-head { display: flex; align-items: baseline; gap: 0.5em; margin: 0; }
+  .comp-no { font-size: 0.6rem; color: var(--accent); font-weight: 700; letter-spacing: 0.08em; }
+  .comp-name { font-family: var(--font-display); font-weight: 700; font-size: var(--step-1);
+    color: var(--navy); line-height: 1.15; }
+  .comp-body { color: var(--text-muted); font-size: 0.94rem; flex: 1; }
+  .comp-go { color: var(--azure-700); font-size: 0.78rem; font-weight: 600; }
+
+  /* the miniature sits on its own white screen, the way a readout does */
+  .mini {
+    display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;
+    min-height: 6.6rem; padding: var(--sp-4);
+    border: 1px solid var(--hairline); border-radius: var(--radius); background: var(--surface);
+  }
+
+  /* 01 — a statement on its response scale */
+  .stmt { font-size: 0.74rem; line-height: 1.4; color: var(--text-muted); }
+  .likert { display: flex; justify-content: space-between; align-items: center; }
+  .dot { width: 10px; height: 10px; border-radius: 999px; background: var(--surface);
+    box-shadow: inset 0 0 0 1.5px var(--hairline-strong); }
+  .dot.on { background: var(--navy); box-shadow: inset 0 0 0 1.5px var(--navy),
+    0 0 0 3px color-mix(in srgb, var(--navy) 12%, transparent); }
+  .ends { display: flex; justify-content: space-between; font-size: 0.55rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-faint); }
+
+  /* 02 — two feedback lines, in the intervention's own wording */
+  .fb-lines { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.5rem; }
+  .fb-lines li { display: flex; align-items: center; gap: 0.5em; font-size: 0.78rem; color: var(--text); }
+  .hue { width: 0.5rem; height: 0.5rem; border-radius: 999px; background: var(--c); flex: none; }
+  .tag { margin-left: auto; font-family: var(--font-mono); font-size: 0.57rem; letter-spacing: 0.06em;
+    padding: 0.15em 0.5em; border-radius: 999px; border: 1px solid var(--hairline-strong); color: var(--text-muted); }
+  .tag.more { background: var(--crimson-soft); border-color: color-mix(in srgb, var(--crimson) 26%, transparent);
+    color: var(--crimson-700); }
+  .tag.less { background: var(--azure-soft); border-color: color-mix(in srgb, var(--azure) 30%, transparent);
+    color: var(--azure-700); }
+
+  /* 03 — the paired clippings, one chosen */
+  .ask { font-size: 0.74rem; line-height: 1.4; color: var(--text-muted); }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
+  .tile { height: 2.2rem; border-radius: var(--radius); border: 1px solid var(--hairline-strong);
+    background-image:
+      linear-gradient(var(--peri-200) 0 0),
+      repeating-linear-gradient(to bottom, var(--hairline-strong) 0 2px, transparent 2px 7px);
+    background-size: 58% 5px, 72% 14px;
+    background-position: 0.45rem 0.45rem, 0.45rem 1.05rem;
+    background-repeat: no-repeat; }
+  .tile.picked { position: relative; border-color: var(--accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 22%, transparent); }
+  .tile.picked::after {
+    content: ""; position: absolute; right: 0.5rem; top: 50%; width: 0.32rem; height: 0.62rem;
+    border: 2px solid var(--accent); border-top: 0; border-left: 0;
+    transform: translateY(-60%) rotate(42deg);
+  }
+
+  @media (max-width: 900px) { .comp-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 640px) { .comp-grid { grid-template-columns: 1fr; } }
+</style>

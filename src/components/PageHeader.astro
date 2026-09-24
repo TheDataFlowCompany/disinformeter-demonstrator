@@ -1,0 +1,28 @@
+---
+import BrandTriangles from './BrandTriangles.astro';
+interface Props { title: string; eyebrow?: string; }
+const { title, eyebrow } = Astro.props;
+---
+<header class="page-head">
+  <div class="page-head-tri" aria-hidden="true"><BrandTriangles tone="light" /></div>
+  <div class="wrap page-head-inner">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1 class="page-title">{title}</h1>
+    <div class="page-lede prose"><slot /></div>
+  </div>
+  <div class="wrap"><div class="gradient-rule page-head-rule"></div></div>
+</header>
+<style>
+  .page-head { position: relative; overflow: clip; padding-block: var(--sp-8) var(--sp-5);
+    background:
+      radial-gradient(80% 120% at 100% -30%, rgba(0,168,239,0.10), transparent 60%),
+      radial-gradient(60% 100% at -5% 0%, rgba(22,34,89,0.05), transparent 55%); }
+  .page-head-inner { position: relative; z-index: 1; }
+  .page-head-tri { position: absolute; top: -2.5rem; right: -2rem; width: 230px; height: 230px; opacity: 0.5; z-index: 0; }
+  .page-title { font-size: var(--step-4); font-weight: 800; }
+  .eyebrow + .page-title { margin-top: var(--sp-3); }
+  .page-lede { margin-top: var(--sp-4); font-size: var(--step-1); color: var(--text-muted); }
+  .page-lede :global(strong) { color: var(--text); }
+  .page-head-rule { margin-top: var(--sp-6); width: 5rem; }
+  @media (max-width: 640px) { .page-head-tri { width: 150px; height: 150px; opacity: 0.4; } }
+</style>
